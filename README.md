@@ -4,6 +4,8 @@ A repo for me to publish trained models. Complete models have all been trained f
 
 If there are N, C and R versions this means that N is without (No) degradation (for good quality small input), C for compression handling (web sources) and R to handle additional degradations like noise. C and R can often be interpolated with 75% and 25% to handle compression and just a little bit of noise.
 
+Since Github does not like files above 100MB (unless LFS were used) not all .pth files will be uploaded but the conversions (ONNX, NCNN) produce a way smaller file so these should all be presentr on this repo.
+
 ### Released
 
 **4xLSDIRCompact** - my first released / completely trained model for photo upscaling. Up to 3 versions, version 3 contains N C R models, version 2 is a general model interpolated of C and R. Trained on the huge LSDIR dataset (84991 images *2 for paired training C around 160 GB)
