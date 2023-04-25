@@ -1,0 +1,10 @@
+Status: Experimental / Complete
+
+A normal ESRGAN model without degradations and without any pretrain, simply an RRDBNet model trained on paired dataset (4x downsampled) on the full LSDIR dataset (84,991 images / 165 GB)
+
+iter: 225000
+arch: RRSBNet
+degragation: none
+dataset: LSDIR (full)
+pretrain: none
+batch size: 1-5
