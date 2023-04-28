@@ -1,6 +1,6 @@
 # Models
 
-A repo for me to publish trained models. Complete models have all been trained for a minimum of 24 hours.
+A repo for me to publish trained models. After having made my [interactive visual comparison site of upscaling models](https://phhofm.github.io/upscale/) I started experimenting around of training such image models myself instead of just applying them and these are some of the results. Complete models here have all been trained for a minimum of 24 hours.
 
 If there are N, C and R versions this means that N is without (No) degradation (for good quality small input), C for compression handling (web sources) and R to handle additional degradations like noise. C and R can often be interpolated with 75% and 25% to handle compression and just a little bit of noise.
 
