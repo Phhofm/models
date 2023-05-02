@@ -10,13 +10,11 @@ Since Github does not like files above 100MB (unless LFS were used) not all .pth
 
 **2xHFA2xCompact** - My second release - an anime compact (=fast) upscaling model for anime video clips, can also be used for still images.  
 
-### In Progress  
+### Experimental / In Progress  
 
 **4xHFA2k** - Anime upscaling RRDBNet model for still images (can also be used for clips but will be way slower).  
 
 **4xNomos8kS** - A photo upscaling RRDBNet model based on musl's Nomos8k_sfw dataset.  
-
-### Experiments  
 
 **1xunstroyerCompact** - A compact model removing various degradations from an image. Trained with using kim's destroyer script on musl's Nomos8k_sfw dataset.  
 
