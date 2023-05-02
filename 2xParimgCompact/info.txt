@@ -1,9 +1,0 @@
-Status: Experimental
-
-This was a compact model I started when trying out to get the whole model training code running. As a paired image dataset, the ImagePairs (11,421 pairs of low- and high-resolution images of diverse scenes, 111 GB). I abandoned this project and worked on the 4xLSDIRCompact which became my first model.
-
-iter: 88000
-dataset: ImagePairs
-arch: compact
-degradations: none
-
