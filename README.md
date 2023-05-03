@@ -2,8 +2,6 @@
 
 A repo for me to publish trained models. After having made my [interactive visual comparison site of upscaling models](https://phhofm.github.io/upscale/) I started  training image models myself. Released models have been trained for a minimum of 24 hours. Each folder should contain its own *README.md* file with infos to the model.
 
-Since Github does not like files above 100MB (unless LFS were used) not all .pth files could be uploaded (like RRDBNet model files), but since the conversions (ONNX, NCNN) produced a way smaller file size, these should all be present in this repo.  
-
 ### Released  
 
 **4xLSDIRCompact** - My first release - a compact model for photo upscaling. Up to 3 versions, version 3 contains N C R models, version 2 is a general model interpolated of C and R. Trained on the huge LSDIR dataset (84991 images *2 for paired training C around 160 GB).  
@@ -16,9 +14,13 @@ Since Github does not like files above 100MB (unless LFS were used) not all .pth
 
 **4xNomos8kS** - A photo upscaling RRDBNet model based on musl's Nomos8k_sfw dataset.  
 
-**1xunstroyerCompact** - A compact model removing various degradations from an image. Trained with using kim's destroyer script on musl's Nomos8k_sfw dataset.  
+**1xunstroyerCompact** - A compact model removing various degradations (blur, noise, compression) from an image. Trained with using kim's destroyer script on musl's Nomos8k_sfw dataset.  
 
 **1xunvideoCompact** - A compact model removing video compression (MPEG, MPEG-2, H264, HEVC) from an image. Trained with using kim's destroyer script on musl's Nomos8k_sfw dataset. 
+
+**1xunstroyerAnimeCompact** - Like 1xunstroyerCompact but trained on anime images, musl's HFA2k dataset, using kim's destroyer.  
+
+**1xunvideoAnimeCompact** - Like 1xunvideCompact to remove video compression but trained on anime images, musl's HFA2k dataset, using kim's destroyer.  
 
 **2xParimgCompact** - The very first training process I had started without any adaptation to the dataset, a compact model on Microsofts ImagePairs (11,421 images, 111 GB ) for photo upscaling.  
 

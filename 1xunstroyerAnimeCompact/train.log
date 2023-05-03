@@ -1,0 +1,636 @@
+2023-05-03 16:33:57,040 INFO: 
+                ____                _       _____  ____
+               / __ ) ____ _ _____ (_)_____/ ___/ / __ \
+              / __  |/ __ `// ___// // ___/\__ \ / /_/ /
+             / /_/ // /_/ /(__  )/ // /__ ___/ // _, _/
+            /_____/ \__,_//____//_/ \___//____//_/ |_|
+     ______                   __   __                 __      __
+    / ____/____   ____   ____/ /  / /   __  __ _____ / /__   / /
+   / / __ / __ \ / __ \ / __  /  / /   / / / // ___// //_/  / /
+  / /_/ // /_/ // /_/ // /_/ /  / /___/ /_/ // /__ / /<    /_/
+  \____/ \____/ \____/ \____/  /_____/\____/ \___//_/|_|  (_)
+    
+Version Information: 
+	BasicSR: 1.4.2
+	PyTorch: 1.7.0+cu110
+	TorchVision: 0.8.1+cu110
+2023-05-03 16:33:57,041 INFO: 
+  name: 1xunstroyerAnimeCompact
+  model_type: RealESRGANModel
+  scale: 1
+  num_gpu: 1
+  manual_seed: 0
+  l1_gt_usm: False
+  percep_gt_usm: False
+  gan_gt_usm: False
+  high_order_degradation: False
+  datasets:[
+    train:[
+      name: HFA2k
+      type: PairedImageDataset
+      dataroot_gt: /media/phips/HD2/Training/dir0000.chk/datasets/HFA2k
+      dataroot_lq: /media/phips/HD2/Training/dir0000.chk/datasets/HFA2k_destroyed
+      io_backend:[
+        type: disk
+      ]
+      gt_size: 128
+      use_hflip: True
+      use_rot: True
+      use_shuffle: True
+      num_worker_per_gpu: 4
+      batch_size_per_gpu: 10
+      dataset_enlarge_ratio: 1
+      prefetch_mode: None
+      phase: train
+      scale: 1
+    ]
+  ]
+  network_g:[
+    type: SRVGGNetCompact
+    num_in_ch: 3
+    num_out_ch: 3
+    num_feat: 64
+    num_conv: 16
+    upscale: 1
+    act_type: prelu
+  ]
+  network_d:[
+    type: UNetDiscriminatorSN
+    num_in_ch: 3
+    num_feat: 64
+    skip_connection: True
+  ]
+  path:[
+    pretrain_network_g: None
+    param_key_g: params_ema
+    strict_load_g: True
+    pretrain_network_d: None
+    param_key_d: params
+    strict_load_d: True
+    resume_state: None
+    experiments_root: /media/phips/HD2/Training/dir0000.chk/experiments/1xunstroyerAnimeCompact
+    models: /media/phips/HD2/Training/dir0000.chk/experiments/1xunstroyerAnimeCompact/models
+    training_states: /media/phips/HD2/Training/dir0000.chk/experiments/1xunstroyerAnimeCompact/training_states
+    log: /media/phips/HD2/Training/dir0000.chk/experiments/1xunstroyerAnimeCompact
+    visualization: /media/phips/HD2/Training/dir0000.chk/experiments/1xunstroyerAnimeCompact/visualization
+  ]
+  train:[
+    ema_decay: 0.999
+    optim_g:[
+      type: Adam
+      lr: 0.0001
+      weight_decay: 0
+      betas: [0.9, 0.99]
+    ]
+    optim_d:[
+      type: Adam
+      lr: 0.0001
+      weight_decay: 0
+      betas: [0.9, 0.99]
+    ]
+    scheduler:[
+      type: MultiStepLR
+      milestones: [100000]
+      gamma: 0.5
+    ]
+    total_iter: 100000
+    warmup_iter: -1
+    pixel_opt:[
+      type: L1Loss
+      loss_weight: 1.0
+      reduction: mean
+    ]
+    perceptual_opt:[
+      type: PerceptualLoss
+      layer_weights:[
+        conv1_2: 0.1
+        conv2_2: 0.1
+        conv3_4: 1
+        conv4_4: 1
+        conv5_4: 1
+      ]
+      vgg_type: vgg19
+      use_input_norm: True
+      perceptual_weight: 0.1
+      style_weight: 0
+      range_norm: False
+      criterion: l1
+    ]
+    gan_opt:[
+      type: GANLoss
+      gan_type: vanilla
+      real_label_val: 1.0
+      fake_label_val: 0.0
+      loss_weight: 0.1
+    ]
+    contextual_opt:[
+      type: ContextualLoss
+      layer_weights:[
+        conv_3_2: 0.15
+        conv_4_2: 0.15
+      ]
+      max_1d_size: 64
+      distance_type: cosine
+      calc_type: regular
+      z_norm: False
+      crop_quarter: False
+      b: 1.0
+      band_width: 0.5
+      use_vgg: True
+      net: vgg19
+    ]
+    color_opt:[
+      type: ColorLoss
+      criterion: l1
+      loss_weight: 1.0
+    ]
+    net_d_iters: 1
+    net_d_init_iters: 0
+  ]
+  logger:[
+    print_freq: 100
+    save_checkpoint_freq: 1000
+    use_tb_logger: True
+    wandb:[
+      project: None
+      resume_id: None
+    ]
+  ]
+  dist_params:[
+    backend: nccl
+    port: 29500
+  ]
+  dist: False
+  rank: 0
+  world_size: 1
+  auto_resume: True
+  is_train: True
+  root_path: /media/phips/HD2/Training/dir0000.chk
+
+2023-05-03 16:33:57,173 INFO: Dataset [PairedImageDataset] - HFA2k is built.
+2023-05-03 16:33:57,173 INFO: Training statistics:
+	Number of train images: 2568
+	Dataset enlarge ratio: 1
+	Batch size per gpu: 10
+	World size (gpu number): 1
+	Require iter number per epoch: 257
+	Total epochs: 390; iters: 100000.
+2023-05-03 16:33:57,179 INFO: Network [SRVGGNetCompact] is created.
+2023-05-03 16:33:59,240 INFO: Network: SRVGGNetCompact, with parameters: 595,459
+2023-05-03 16:33:59,240 INFO: SRVGGNetCompact(
+  (body): ModuleList(
+    (0): Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): PReLU(num_parameters=64)
+    (2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (3): PReLU(num_parameters=64)
+    (4): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (5): PReLU(num_parameters=64)
+    (6): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (7): PReLU(num_parameters=64)
+    (8): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (9): PReLU(num_parameters=64)
+    (10): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (11): PReLU(num_parameters=64)
+    (12): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (13): PReLU(num_parameters=64)
+    (14): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (15): PReLU(num_parameters=64)
+    (16): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (17): PReLU(num_parameters=64)
+    (18): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (19): PReLU(num_parameters=64)
+    (20): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (21): PReLU(num_parameters=64)
+    (22): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (23): PReLU(num_parameters=64)
+    (24): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (25): PReLU(num_parameters=64)
+    (26): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (27): PReLU(num_parameters=64)
+    (28): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (29): PReLU(num_parameters=64)
+    (30): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (31): PReLU(num_parameters=64)
+    (32): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (33): PReLU(num_parameters=64)
+    (34): Conv2d(64, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  )
+  (upsampler): PixelShuffle(upscale_factor=1)
+)
+2023-05-03 16:33:59,240 INFO: Use Exponential Moving Average with decay: 0.999
+2023-05-03 16:33:59,244 INFO: Network [SRVGGNetCompact] is created.
+2023-05-03 16:33:59,267 INFO: Network [UNetDiscriminatorSN] is created.
+2023-05-03 16:33:59,271 INFO: Network: UNetDiscriminatorSN, with parameters: 4,376,897
+2023-05-03 16:33:59,271 INFO: UNetDiscriminatorSN(
+  (conv0): Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (conv1): Conv2d(64, 128, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+  (conv2): Conv2d(128, 256, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+  (conv3): Conv2d(256, 512, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+  (conv4): Conv2d(512, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+  (conv5): Conv2d(256, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+  (conv6): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+  (conv7): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+  (conv8): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+  (conv9): Conv2d(64, 1, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+)
+2023-05-03 16:33:59,271 INFO: Loss [L1Loss] is created.
+2023-05-03 16:34:00,143 INFO: Loss [PerceptualLoss] is created.
+2023-05-03 16:34:00,154 INFO: Loss [GANLoss] is created.
+2023-05-03 16:34:00,173 INFO: Model [RealESRGANModel] is created.
+2023-05-03 16:34:00,311 INFO: Start training from epoch: 0, iter: 0
+2023-05-03 16:34:57,655 INFO: [1xuns..][epoch:  0, iter:     100, lr:(1.000e-04,)] [eta: 15:04:45, time (data): 0.573 (0.088)] l_g_pix: 6.8970e-02 l_g_percep: 1.2952e+00 l_g_gan: 7.0760e-02 l_d_real: 6.9469e-01 out_d_real: -1.8962e-03 l_d_fake: 6.7994e-01 out_d_fake: -2.7679e-02 
+2023-05-03 16:35:56,608 INFO: [1xuns..][epoch:  0, iter:     200, lr:(1.000e-04,)] [eta: 15:42:00, time (data): 0.581 (0.102)] l_g_pix: 5.8721e-02 l_g_percep: 1.0479e+00 l_g_gan: 1.9920e-01 l_d_real: 6.0539e-01 out_d_real: 1.9028e-01 l_d_fake: 6.2342e-01 out_d_fake: -1.3683e+00 
+2023-05-03 16:36:45,046 INFO: [1xuns..][epoch:  1, iter:     300, lr:(1.000e-04,)] [eta: 14:55:49, time (data): 0.484 (0.007)] l_g_pix: 3.9552e-02 l_g_percep: 1.0246e+00 l_g_gan: 1.3418e-01 l_d_real: 7.3154e-01 out_d_real: -7.2862e-02 l_d_fake: 5.8739e-01 out_d_fake: -7.5436e-01 
+2023-05-03 16:37:32,901 INFO: [1xuns..][epoch:  1, iter:     400, lr:(1.000e-04,)] [eta: 14:29:51, time (data): 0.481 (0.004)] l_g_pix: 7.6094e-02 l_g_percep: 1.0945e+00 l_g_gan: 2.2303e-01 l_d_real: 6.7933e-01 out_d_real: 5.2145e-02 l_d_fake: 5.7929e-01 out_d_fake: -1.6509e+00 
+2023-05-03 16:38:20,750 INFO: [1xuns..][epoch:  1, iter:     500, lr:(1.000e-04,)] [eta: 14:13:54, time (data): 0.478 (0.001)] l_g_pix: 4.0118e-02 l_g_percep: 1.0218e+00 l_g_gan: 6.2776e-02 l_d_real: 6.2144e-01 out_d_real: 1.5554e-01 l_d_fake: 7.6959e-01 out_d_fake: 1.4182e-01 
+2023-05-03 16:39:09,034 INFO: [1xuns..][epoch:  2, iter:     600, lr:(1.000e-04,)] [eta: 14:04:12, time (data): 0.480 (0.003)] l_g_pix: 4.2744e-02 l_g_percep: 1.0389e+00 l_g_gan: 7.2744e-02 l_d_real: 7.1684e-01 out_d_real: -3.0218e-02 l_d_fake: 6.7550e-01 out_d_fake: -5.1944e-02 
+2023-05-03 16:39:56,884 INFO: [1xuns..][epoch:  2, iter:     700, lr:(1.000e-04,)] [eta: 13:56:01, time (data): 0.478 (0.001)] l_g_pix: 3.7872e-02 l_g_percep: 9.1787e-01 l_g_gan: 6.5301e-02 l_d_real: 6.4757e-01 out_d_real: 9.4399e-02 l_d_fake: 7.3601e-01 out_d_fake: 8.2998e-02 
+2023-05-03 16:40:45,206 INFO: [1xuns..][epoch:  3, iter:     800, lr:(1.000e-04,)] [eta: 13:50:38, time (data): 0.481 (0.004)] l_g_pix: 5.4908e-02 l_g_percep: 9.5770e-01 l_g_gan: 8.4563e-02 l_d_real: 6.1596e-01 out_d_real: 1.6186e-01 l_d_fake: 7.1644e-01 out_d_fake: -1.2918e-01 
+2023-05-03 16:41:33,055 INFO: [1xuns..][epoch:  3, iter:     900, lr:(1.000e-04,)] [eta: 13:45:25, time (data): 0.478 (0.001)] l_g_pix: 1.5794e-01 l_g_percep: 1.2925e+00 l_g_gan: 3.7828e-01 l_d_real: 6.4046e-01 out_d_real: 1.1063e-01 l_d_fake: 5.1921e-01 out_d_fake: -3.2635e+00 
+2023-05-03 16:42:20,919 INFO: [1xuns..][epoch:  3, iter:   1,000, lr:(1.000e-04,)] [eta: 13:41:06, time (data): 0.478 (0.001)] l_g_pix: 7.7617e-02 l_g_percep: 1.2744e+00 l_g_gan: 2.6174e-01 l_d_real: 6.3678e-01 out_d_real: 1.2553e-01 l_d_fake: 5.5175e-01 out_d_fake: -2.0656e+00 
+2023-05-03 16:42:20,919 INFO: Saving models and training states.
+2023-05-03 16:43:10,048 INFO: [1xuns..][epoch:  4, iter:   1,100, lr:(1.000e-04,)] [eta: 13:39:19, time (data): 0.483 (0.006)] l_g_pix: 6.3363e-02 l_g_percep: 1.0223e+00 l_g_gan: 8.6797e-02 l_d_real: 6.0383e-01 out_d_real: 2.0343e-01 l_d_fake: 7.1289e-01 out_d_fake: -1.5507e-01 
+2023-05-03 16:43:57,920 INFO: [1xuns..][epoch:  4, iter:   1,200, lr:(1.000e-04,)] [eta: 13:35:59, time (data): 0.481 (0.004)] l_g_pix: 5.5671e-02 l_g_percep: 9.3088e-01 l_g_gan: 1.9384e-01 l_d_real: 7.1503e-01 out_d_real: 1.6693e-02 l_d_fake: 5.8478e-01 out_d_fake: -1.3536e+00 
+2023-05-03 16:44:46,258 INFO: [1xuns..][epoch:  5, iter:   1,300, lr:(1.000e-04,)] [eta: 13:33:37, time (data): 0.483 (0.006)] l_g_pix: 6.6896e-02 l_g_percep: 1.0821e+00 l_g_gan: 1.0650e-01 l_d_real: 4.7810e-01 out_d_real: 7.6665e-01 l_d_fake: 6.0843e-01 out_d_fake: -4.5658e-01 
+2023-05-03 16:45:34,148 INFO: [1xuns..][epoch:  5, iter:   1,400, lr:(1.000e-04,)] [eta: 13:30:57, time (data): 0.481 (0.004)] l_g_pix: 4.0618e-02 l_g_percep: 9.7981e-01 l_g_gan: 8.5822e-02 l_d_real: 5.5403e-01 out_d_real: 4.1134e-01 l_d_fake: 7.1892e-01 out_d_fake: -1.3930e-01 
+2023-05-03 16:46:22,021 INFO: [1xuns..][epoch:  5, iter:   1,500, lr:(1.000e-04,)] [eta: 13:28:31, time (data): 0.478 (0.001)] l_g_pix: 9.6055e-02 l_g_percep: 1.2771e+00 l_g_gan: 3.6578e-01 l_d_real: 5.1441e-01 out_d_real: 4.6673e-01 l_d_fake: 5.2250e-01 out_d_fake: -3.1352e+00 
+2023-05-03 16:47:10,367 INFO: [1xuns..][epoch:  6, iter:   1,600, lr:(1.000e-04,)] [eta: 13:26:46, time (data): 0.481 (0.004)] l_g_pix: 5.2336e-02 l_g_percep: 1.0961e+00 l_g_gan: 8.6042e-02 l_d_real: 6.5293e-01 out_d_real: 2.1676e-01 l_d_fake: 6.5359e-01 out_d_fake: -2.0681e-01 
+2023-05-03 16:47:58,245 INFO: [1xuns..][epoch:  6, iter:   1,700, lr:(1.000e-04,)] [eta: 13:24:41, time (data): 0.478 (0.001)] l_g_pix: 6.8163e-02 l_g_percep: 1.1396e+00 l_g_gan: 1.3053e-01 l_d_real: 4.1139e-01 out_d_real: 7.9233e-01 l_d_fake: 8.8771e-01 out_d_fake: -4.1754e-01 
+2023-05-03 16:48:46,602 INFO: [1xuns..][epoch:  7, iter:   1,800, lr:(1.000e-04,)] [eta: 13:23:10, time (data): 0.481 (0.004)] l_g_pix: 7.1391e-02 l_g_percep: 1.1608e+00 l_g_gan: 4.7435e-01 l_d_real: 6.9298e-01 out_d_real: 2.1482e-01 l_d_fake: 3.9721e-01 out_d_fake: -4.3460e+00 
+2023-05-03 16:49:34,471 INFO: [1xuns..][epoch:  7, iter:   1,900, lr:(1.000e-04,)] [eta: 13:21:19, time (data): 0.478 (0.001)] l_g_pix: 8.0291e-02 l_g_percep: 1.1195e+00 l_g_gan: 2.5116e-01 l_d_real: 4.9437e-01 out_d_real: 4.9954e-01 l_d_fake: 5.8472e-01 out_d_fake: -1.9269e+00 
+2023-05-03 16:50:22,359 INFO: [1xuns..][epoch:  7, iter:   2,000, lr:(1.000e-04,)] [eta: 13:19:35, time (data): 0.478 (0.001)] l_g_pix: 3.8492e-02 l_g_percep: 8.3658e-01 l_g_gan: 9.2618e-02 l_d_real: 7.0984e-01 out_d_real: 8.5712e-02 l_d_fake: 6.1689e-01 out_d_fake: -3.0933e-01 
+2023-05-03 16:50:22,359 INFO: Saving models and training states.
+2023-05-03 16:51:11,529 INFO: [1xuns..][epoch:  8, iter:   2,100, lr:(1.000e-04,)] [eta: 13:18:56, time (data): 0.483 (0.006)] l_g_pix: 3.5462e-02 l_g_percep: 7.8128e-01 l_g_gan: 2.5468e-01 l_d_real: 6.5902e-01 out_d_real: 1.7573e-01 l_d_fake: 5.8926e-01 out_d_fake: -1.9576e+00 
+2023-05-03 16:51:59,419 INFO: [1xuns..][epoch:  8, iter:   2,200, lr:(1.000e-04,)] [eta: 13:17:19, time (data): 0.481 (0.004)] l_g_pix: 2.9058e-02 l_g_percep: 8.0874e-01 l_g_gan: 8.6044e-02 l_d_real: 9.0201e-01 out_d_real: -1.6772e-01 l_d_fake: 7.6693e-01 out_d_fake: -9.3491e-02 
+2023-05-03 16:52:47,316 INFO: [1xuns..][epoch:  8, iter:   2,300, lr:(1.000e-04,)] [eta: 13:15:47, time (data): 0.478 (0.001)] l_g_pix: 3.7953e-02 l_g_percep: 9.5111e-01 l_g_gan: 7.2300e-02 l_d_real: 5.1285e-01 out_d_real: 4.6157e-01 l_d_fake: 7.4935e-01 out_d_fake: 2.6299e-02 
+2023-05-03 16:53:35,642 INFO: [1xuns..][epoch:  9, iter:   2,400, lr:(1.000e-04,)] [eta: 13:14:36, time (data): 0.481 (0.004)] l_g_pix: 9.6999e-02 l_g_percep: 1.1940e+00 l_g_gan: 3.9939e-01 l_d_real: 4.7271e-01 out_d_real: 5.7192e-01 l_d_fake: 4.5952e-01 out_d_fake: -3.5339e+00 
+2023-05-03 16:54:23,531 INFO: [1xuns..][epoch:  9, iter:   2,500, lr:(1.000e-04,)] [eta: 13:13:10, time (data): 0.478 (0.001)] l_g_pix: 3.0240e-02 l_g_percep: 9.5784e-01 l_g_gan: 9.4508e-02 l_d_real: 5.2791e-01 out_d_real: 5.4514e-01 l_d_fake: 6.8052e-01 out_d_fake: -2.6451e-01 
+2023-05-03 16:55:11,866 INFO: [1xuns..][epoch: 10, iter:   2,600, lr:(1.000e-04,)] [eta: 13:12:03, time (data): 0.481 (0.004)] l_g_pix: 3.6624e-02 l_g_percep: 9.3478e-01 l_g_gan: 9.3578e-02 l_d_real: 5.7851e-01 out_d_real: 4.4368e-01 l_d_fake: 6.1177e-01 out_d_fake: -3.2402e-01 
+2023-05-03 16:55:59,747 INFO: [1xuns..][epoch: 10, iter:   2,700, lr:(1.000e-04,)] [eta: 13:10:41, time (data): 0.478 (0.001)] l_g_pix: 4.8195e-02 l_g_percep: 9.5401e-01 l_g_gan: 1.9837e-01 l_d_real: 5.3113e-01 out_d_real: 5.3752e-01 l_d_fake: 6.3101e-01 out_d_fake: -1.3525e+00 
+2023-05-03 16:56:47,634 INFO: [1xuns..][epoch: 10, iter:   2,800, lr:(1.000e-04,)] [eta: 13:09:22, time (data): 0.478 (0.001)] l_g_pix: 4.4021e-02 l_g_percep: 8.6761e-01 l_g_gan: 1.4939e-01 l_d_real: 6.4169e-01 out_d_real: 2.1556e-01 l_d_fake: 5.2684e-01 out_d_fake: -9.6697e-01 
+2023-05-03 16:57:35,976 INFO: [1xuns..][epoch: 11, iter:   2,900, lr:(1.000e-04,)] [eta: 13:08:21, time (data): 0.483 (0.007)] l_g_pix: 7.3361e-02 l_g_percep: 1.1073e+00 l_g_gan: 1.4997e-01 l_d_real: 5.5013e-01 out_d_real: 4.3675e-01 l_d_fake: 6.7250e-01 out_d_fake: -8.2710e-01 
+2023-05-03 16:58:24,295 INFO: [1xuns..][epoch: 11, iter:   3,000, lr:(1.000e-04,)] [eta: 13:07:19, time (data): 0.483 (0.004)] l_g_pix: 6.3255e-02 l_g_percep: 9.8496e-01 l_g_gan: 3.6416e-01 l_d_real: 4.6780e-01 out_d_real: 6.0328e-01 l_d_fake: 6.2790e-01 out_d_fake: -3.0118e+00 
+2023-05-03 16:58:24,295 INFO: Saving models and training states.
+2023-05-03 16:59:16,158 INFO: [1xuns..][epoch: 12, iter:   3,100, lr:(1.000e-04,)] [eta: 13:08:09, time (data): 0.517 (0.012)] l_g_pix: 9.2376e-02 l_g_percep: 1.1262e+00 l_g_gan: 5.5194e-01 l_d_real: 4.8102e-01 out_d_real: 5.5243e-01 l_d_fake: 5.2235e-01 out_d_fake: -4.9965e+00 
+2023-05-03 17:00:06,436 INFO: [1xuns..][epoch: 12, iter:   3,200, lr:(1.000e-04,)] [eta: 13:08:05, time (data): 0.509 (0.006)] l_g_pix: 5.9617e-02 l_g_percep: 1.0695e+00 l_g_gan: 1.9227e-01 l_d_real: 5.8729e-01 out_d_real: 3.4152e-01 l_d_fake: 5.1207e-01 out_d_fake: -1.4102e+00 
+2023-05-03 17:00:55,696 INFO: [1xuns..][epoch: 12, iter:   3,300, lr:(1.000e-04,)] [eta: 13:07:28, time (data): 0.493 (0.001)] l_g_pix: 3.8332e-02 l_g_percep: 9.6283e-01 l_g_gan: 1.0307e-01 l_d_real: 4.5767e-01 out_d_real: 7.1278e-01 l_d_fake: 6.0369e-01 out_d_fake: -4.2740e-01 
+2023-05-03 17:01:45,041 INFO: [1xuns..][epoch: 13, iter:   3,400, lr:(1.000e-04,)] [eta: 13:06:53, time (data): 0.493 (0.004)] l_g_pix: 2.6751e-02 l_g_percep: 8.7704e-01 l_g_gan: 1.0135e-01 l_d_real: 6.3408e-01 out_d_real: 3.1515e-01 l_d_fake: 5.5638e-01 out_d_fake: -4.5724e-01 
+2023-05-03 17:02:32,837 INFO: [1xuns..][epoch: 13, iter:   3,500, lr:(1.000e-04,)] [eta: 13:05:34, time (data): 0.478 (0.001)] l_g_pix: 3.7396e-02 l_g_percep: 8.9342e-01 l_g_gan: 9.6779e-02 l_d_real: 6.1765e-01 out_d_real: 2.5856e-01 l_d_fake: 6.0825e-01 out_d_fake: -3.5967e-01 
+2023-05-03 17:03:21,114 INFO: [1xuns..][epoch: 14, iter:   3,600, lr:(1.000e-04,)] [eta: 13:04:30, time (data): 0.481 (0.004)] l_g_pix: 7.9974e-02 l_g_percep: 1.2732e+00 l_g_gan: 3.4407e-01 l_d_real: 3.9177e-01 out_d_real: 8.9734e-01 l_d_fake: 6.2380e-01 out_d_fake: -2.8149e+00 
+2023-05-03 17:04:09,011 INFO: [1xuns..][epoch: 14, iter:   3,700, lr:(1.000e-04,)] [eta: 13:03:17, time (data): 0.479 (0.001)] l_g_pix: 6.8611e-02 l_g_percep: 1.0709e+00 l_g_gan: 6.9254e-02 l_d_real: 4.9673e-01 out_d_real: 5.0201e-01 l_d_fake: 7.9512e-01 out_d_fake: 1.0247e-01 
+2023-05-03 17:04:58,338 INFO: [1xuns..][epoch: 14, iter:   3,800, lr:(1.000e-04,)] [eta: 13:02:42, time (data): 0.487 (0.001)] l_g_pix: 3.9982e-02 l_g_percep: 1.0750e+00 l_g_gan: 9.1771e-02 l_d_real: 4.9329e-01 out_d_real: 6.3883e-01 l_d_fake: 5.8597e-01 out_d_fake: -3.3183e-01 
+2023-05-03 17:05:48,063 INFO: [1xuns..][epoch: 15, iter:   3,900, lr:(1.000e-04,)] [eta: 13:02:15, time (data): 0.498 (0.008)] l_g_pix: 4.3768e-02 l_g_percep: 1.0474e+00 l_g_gan: 1.5860e-01 l_d_real: 5.3709e-01 out_d_real: 5.9186e-01 l_d_fake: 4.3788e-01 out_d_fake: -1.1481e+00 
+2023-05-03 17:06:37,289 INFO: [1xuns..][epoch: 15, iter:   4,000, lr:(1.000e-04,)] [eta: 13:01:36, time (data): 0.495 (0.004)] l_g_pix: 7.7898e-02 l_g_percep: 9.8743e-01 l_g_gan: 4.3235e-01 l_d_real: 5.8993e-01 out_d_real: 3.5482e-01 l_d_fake: 5.2458e-01 out_d_fake: -3.7962e+00 
+2023-05-03 17:06:37,290 INFO: Saving models and training states.
+2023-05-03 17:07:27,873 INFO: [1xuns..][epoch: 16, iter:   4,100, lr:(1.000e-04,)] [eta: 13:01:27, time (data): 0.498 (0.007)] l_g_pix: 4.7552e-02 l_g_percep: 1.1303e+00 l_g_gan: 1.1167e-01 l_d_real: 4.4911e-01 out_d_real: 7.5513e-01 l_d_fake: 4.5510e-01 out_d_fake: -6.6177e-01 
+2023-05-03 17:08:17,105 INFO: [1xuns..][epoch: 16, iter:   4,200, lr:(1.000e-04,)] [eta: 13:00:46, time (data): 0.495 (0.004)] l_g_pix: 7.1520e-02 l_g_percep: 1.0819e+00 l_g_gan: 4.1473e-01 l_d_real: 5.8257e-01 out_d_real: 4.1281e-01 l_d_fake: 4.6786e-01 out_d_fake: -3.6787e+00 
+2023-05-03 17:09:06,351 INFO: [1xuns..][epoch: 16, iter:   4,300, lr:(1.000e-04,)] [eta: 13:00:05, time (data): 0.492 (0.001)] l_g_pix: 3.9196e-02 l_g_percep: 1.0114e+00 l_g_gan: 1.1229e-01 l_d_real: 6.4573e-01 out_d_real: 2.8752e-01 l_d_fake: 4.6097e-01 out_d_fake: -6.6238e-01 
+2023-05-03 17:09:56,084 INFO: [1xuns..][epoch: 17, iter:   4,400, lr:(1.000e-04,)] [eta: 12:59:34, time (data): 0.495 (0.004)] l_g_pix: 1.0363e-01 l_g_percep: 1.1614e+00 l_g_gan: 3.4333e-01 l_d_real: 6.5971e-01 out_d_real: 2.4886e-01 l_d_fake: 5.5365e-01 out_d_fake: -2.8767e+00 
+2023-05-03 17:10:44,757 INFO: [1xuns..][epoch: 17, iter:   4,500, lr:(1.000e-04,)] [eta: 12:58:40, time (data): 0.485 (0.001)] l_g_pix: 8.8151e-02 l_g_percep: 9.8810e-01 l_g_gan: 4.0257e-01 l_d_real: 5.3584e-01 out_d_real: 4.4853e-01 l_d_fake: 4.2456e-01 out_d_fake: -3.5947e+00 
+2023-05-03 17:11:32,665 INFO: [1xuns..][epoch: 17, iter:   4,600, lr:(1.000e-04,)] [eta: 12:57:30, time (data): 0.482 (0.001)] l_g_pix: 1.3035e-01 l_g_percep: 1.2226e+00 l_g_gan: 4.3672e-01 l_d_real: 6.3328e-01 out_d_real: 5.4286e-01 l_d_fake: 4.7912e-01 out_d_fake: -3.8841e+00 
+2023-05-03 17:12:21,035 INFO: [1xuns..][epoch: 18, iter:   4,700, lr:(1.000e-04,)] [eta: 12:56:30, time (data): 0.478 (0.001)] l_g_pix: 8.7102e-02 l_g_percep: 1.1533e+00 l_g_gan: 2.0058e-01 l_d_real: 5.0754e-01 out_d_real: 5.8068e-01 l_d_fake: 4.1790e-01 out_d_fake: -1.5874e+00 
+2023-05-03 17:13:08,931 INFO: [1xuns..][epoch: 18, iter:   4,800, lr:(1.000e-04,)] [eta: 12:55:21, time (data): 0.479 (0.001)] l_g_pix: 7.7948e-02 l_g_percep: 1.0505e+00 l_g_gan: 3.0471e-01 l_d_real: 7.4360e-01 out_d_real: 9.1138e-02 l_d_fake: 2.7615e-01 out_d_fake: -2.7677e+00 
+2023-05-03 17:13:57,308 INFO: [1xuns..][epoch: 19, iter:   4,900, lr:(1.000e-04,)] [eta: 12:54:23, time (data): 0.484 (0.008)] l_g_pix: 8.3047e-02 l_g_percep: 1.1675e+00 l_g_gan: 2.6561e-01 l_d_real: 5.3672e-01 out_d_real: 5.0773e-01 l_d_fake: 4.6828e-01 out_d_fake: -2.1870e+00 
+2023-05-03 17:14:45,210 INFO: [1xuns..][epoch: 19, iter:   5,000, lr:(1.000e-04,)] [eta: 12:53:16, time (data): 0.481 (0.004)] l_g_pix: 5.2876e-02 l_g_percep: 1.2675e+00 l_g_gan: 2.6709e-01 l_d_real: 5.5783e-01 out_d_real: 6.1274e-01 l_d_fake: 4.3778e-01 out_d_fake: -2.2316e+00 
+2023-05-03 17:14:45,210 INFO: Saving models and training states.
+2023-05-03 17:15:33,438 INFO: [1xuns..][epoch: 19, iter:   5,100, lr:(1.000e-04,)] [eta: 12:52:16, time (data): 0.478 (0.001)] l_g_pix: 4.9048e-02 l_g_percep: 9.9050e-01 l_g_gan: 1.3725e-01 l_d_real: 5.7724e-01 out_d_real: 5.0361e-01 l_d_fake: 6.6085e-01 out_d_fake: -7.1071e-01 
+2023-05-03 17:16:21,816 INFO: [1xuns..][epoch: 20, iter:   5,200, lr:(1.000e-04,)] [eta: 12:51:19, time (data): 0.481 (0.004)] l_g_pix: 3.0126e-02 l_g_percep: 8.8702e-01 l_g_gan: 8.4885e-02 l_d_real: 4.1570e-01 out_d_real: 9.7839e-01 l_d_fake: 8.2463e-01 out_d_fake: -2.4314e-02 
+2023-05-03 17:17:09,718 INFO: [1xuns..][epoch: 20, iter:   5,300, lr:(1.000e-04,)] [eta: 12:50:14, time (data): 0.478 (0.001)] l_g_pix: 3.0810e-02 l_g_percep: 7.3978e-01 l_g_gan: 1.6740e-01 l_d_real: 5.9054e-01 out_d_real: 3.3514e-01 l_d_fake: 5.7347e-01 out_d_fake: -1.1003e+00 
+2023-05-03 17:17:58,112 INFO: [1xuns..][epoch: 21, iter:   5,400, lr:(1.000e-04,)] [eta: 12:49:18, time (data): 0.481 (0.004)] l_g_pix: 5.4597e-02 l_g_percep: 9.6410e-01 l_g_gan: 2.0566e-01 l_d_real: 5.7727e-01 out_d_real: 4.4727e-01 l_d_fake: 5.7576e-01 out_d_fake: -1.4804e+00 
+2023-05-03 17:18:46,021 INFO: [1xuns..][epoch: 21, iter:   5,500, lr:(1.000e-04,)] [eta: 12:48:14, time (data): 0.478 (0.001)] l_g_pix: 2.4114e-02 l_g_percep: 7.7397e-01 l_g_gan: 8.7516e-02 l_d_real: 5.4817e-01 out_d_real: 4.7567e-01 l_d_fake: 6.3583e-01 out_d_fake: -2.3936e-01 
+2023-05-03 17:19:33,943 INFO: [1xuns..][epoch: 21, iter:   5,600, lr:(1.000e-04,)] [eta: 12:47:11, time (data): 0.479 (0.001)] l_g_pix: 6.2835e-02 l_g_percep: 1.1528e+00 l_g_gan: 2.1789e-01 l_d_real: 4.3096e-01 out_d_real: 7.8322e-01 l_d_fake: 4.7143e-01 out_d_fake: -1.7069e+00 
+2023-05-03 17:20:22,339 INFO: [1xuns..][epoch: 22, iter:   5,700, lr:(1.000e-04,)] [eta: 12:46:16, time (data): 0.485 (0.008)] l_g_pix: 3.3144e-02 l_g_percep: 8.9105e-01 l_g_gan: 1.1092e-01 l_d_real: 5.9161e-01 out_d_real: 3.8416e-01 l_d_fake: 4.5001e-01 out_d_fake: -6.5922e-01 
+2023-05-03 17:21:10,259 INFO: [1xuns..][epoch: 22, iter:   5,800, lr:(1.000e-04,)] [eta: 12:45:13, time (data): 0.481 (0.004)] l_g_pix: 9.3424e-02 l_g_percep: 1.0663e+00 l_g_gan: 4.6683e-01 l_d_real: 6.8843e-01 out_d_real: 1.6511e-01 l_d_fake: 4.2552e-01 out_d_fake: -4.2396e+00 
+2023-05-03 17:21:58,664 INFO: [1xuns..][epoch: 23, iter:   5,900, lr:(1.000e-04,)] [eta: 12:44:19, time (data): 0.485 (0.008)] l_g_pix: 3.7371e-02 l_g_percep: 9.2701e-01 l_g_gan: 7.5940e-02 l_d_real: 3.6719e-01 out_d_real: 1.2453e+00 l_d_fake: 9.1657e-01 out_d_fake: 1.5710e-01 
+2023-05-03 17:22:46,563 INFO: [1xuns..][epoch: 23, iter:   6,000, lr:(1.000e-04,)] [eta: 12:43:17, time (data): 0.481 (0.004)] l_g_pix: 4.8180e-02 l_g_percep: 1.0048e+00 l_g_gan: 1.3860e-01 l_d_real: 4.1846e-01 out_d_real: 8.3664e-01 l_d_fake: 5.8762e-01 out_d_fake: -7.9830e-01 
+2023-05-03 17:22:46,564 INFO: Saving models and training states.
+2023-05-03 17:23:35,361 INFO: [1xuns..][epoch: 23, iter:   6,100, lr:(1.000e-04,)] [eta: 12:42:30, time (data): 0.478 (0.001)] l_g_pix: 5.7287e-02 l_g_percep: 1.0590e+00 l_g_gan: 1.2470e-01 l_d_real: 5.6580e-01 out_d_real: 5.7216e-01 l_d_fake: 4.6493e-01 out_d_fake: -7.8202e-01 
+2023-05-03 17:24:23,730 INFO: [1xuns..][epoch: 24, iter:   6,200, lr:(1.000e-04,)] [eta: 12:41:36, time (data): 0.481 (0.004)] l_g_pix: 5.7730e-02 l_g_percep: 1.1110e+00 l_g_gan: 2.0301e-01 l_d_real: 5.6053e-01 out_d_real: 5.4701e-01 l_d_fake: 4.2648e-01 out_d_fake: -1.6030e+00 
+2023-05-03 17:25:11,652 INFO: [1xuns..][epoch: 24, iter:   6,300, lr:(1.000e-04,)] [eta: 12:40:35, time (data): 0.478 (0.001)] l_g_pix: 5.9748e-02 l_g_percep: 1.1071e+00 l_g_gan: 1.9669e-01 l_d_real: 6.7566e-01 out_d_real: 1.9550e-01 l_d_fake: 4.3237e-01 out_d_fake: -1.5338e+00 
+2023-05-03 17:25:59,580 INFO: [1xuns..][epoch: 24, iter:   6,400, lr:(1.000e-04,)] [eta: 12:39:35, time (data): 0.479 (0.001)] l_g_pix: 4.9748e-02 l_g_percep: 9.9434e-01 l_g_gan: 1.5159e-01 l_d_real: 5.4865e-01 out_d_real: 4.5261e-01 l_d_fake: 5.1560e-01 out_d_fake: -9.9939e-01 
+2023-05-03 17:26:47,970 INFO: [1xuns..][epoch: 25, iter:   6,500, lr:(1.000e-04,)] [eta: 12:38:42, time (data): 0.478 (0.001)] l_g_pix: 6.7207e-02 l_g_percep: 9.9213e-01 l_g_gan: 3.1560e-01 l_d_real: 6.8182e-01 out_d_real: 2.6907e-01 l_d_fake: 4.7040e-01 out_d_fake: -2.6835e+00 
+2023-05-03 17:27:35,888 INFO: [1xuns..][epoch: 25, iter:   6,600, lr:(1.000e-04,)] [eta: 12:37:43, time (data): 0.479 (0.001)] l_g_pix: 3.2900e-02 l_g_percep: 8.3976e-01 l_g_gan: 1.2182e-01 l_d_real: 5.0228e-01 out_d_real: 4.9650e-01 l_d_fake: 6.5760e-01 out_d_fake: -5.6021e-01 
+2023-05-03 17:28:24,318 INFO: [1xuns..][epoch: 26, iter:   6,700, lr:(1.000e-04,)] [eta: 12:36:50, time (data): 0.486 (0.009)] l_g_pix: 4.2185e-02 l_g_percep: 7.6270e-01 l_g_gan: 1.7078e-01 l_d_real: 5.1728e-01 out_d_real: 6.9342e-01 l_d_fake: 7.5194e-01 out_d_fake: -9.5565e-01 
+2023-05-03 17:29:12,271 INFO: [1xuns..][epoch: 26, iter:   6,800, lr:(1.000e-04,)] [eta: 12:35:52, time (data): 0.482 (0.004)] l_g_pix: 2.8713e-02 l_g_percep: 8.3505e-01 l_g_gan: 1.0582e-01 l_d_real: 5.8463e-01 out_d_real: 4.4017e-01 l_d_fake: 5.5495e-01 out_d_fake: -5.0326e-01 
+2023-05-03 17:30:00,225 INFO: [1xuns..][epoch: 26, iter:   6,900, lr:(1.000e-04,)] [eta: 12:34:54, time (data): 0.478 (0.001)] l_g_pix: 2.7042e-02 l_g_percep: 9.3263e-01 l_g_gan: 1.1009e-01 l_d_real: 5.2923e-01 out_d_real: 6.4670e-01 l_d_fake: 4.5951e-01 out_d_fake: -6.4132e-01 
+2023-05-03 17:30:48,623 INFO: [1xuns..][epoch: 27, iter:   7,000, lr:(1.000e-04,)] [eta: 12:34:02, time (data): 0.482 (0.004)] l_g_pix: 4.5402e-02 l_g_percep: 8.3888e-01 l_g_gan: 1.1187e-01 l_d_real: 5.9549e-01 out_d_real: 3.7986e-01 l_d_fake: 7.1680e-01 out_d_fake: -4.0177e-01 
+2023-05-03 17:30:48,623 INFO: Saving models and training states.
+2023-05-03 17:31:37,407 INFO: [1xuns..][epoch: 27, iter:   7,100, lr:(1.000e-04,)] [eta: 12:33:15, time (data): 0.478 (0.001)] l_g_pix: 4.3960e-02 l_g_percep: 1.0513e+00 l_g_gan: 1.0516e-01 l_d_real: 5.4537e-01 out_d_real: 7.3499e-01 l_d_fake: 5.8621e-01 out_d_fake: -4.6536e-01 
+2023-05-03 17:32:25,795 INFO: [1xuns..][epoch: 28, iter:   7,200, lr:(1.000e-04,)] [eta: 12:32:23, time (data): 0.482 (0.004)] l_g_pix: 5.7984e-02 l_g_percep: 9.9743e-01 l_g_gan: 1.7971e-01 l_d_real: 4.5362e-01 out_d_real: 8.0546e-01 l_d_fake: 5.9418e-01 out_d_fake: -1.2022e+00 
+2023-05-03 17:33:13,727 INFO: [1xuns..][epoch: 28, iter:   7,300, lr:(1.000e-04,)] [eta: 12:31:25, time (data): 0.478 (0.001)] l_g_pix: 4.9226e-02 l_g_percep: 9.8170e-01 l_g_gan: 1.6718e-01 l_d_real: 4.4128e-01 out_d_real: 1.0433e+00 l_d_fake: 4.7614e-01 out_d_fake: -1.1943e+00 
+2023-05-03 17:34:01,647 INFO: [1xuns..][epoch: 28, iter:   7,400, lr:(1.000e-04,)] [eta: 12:30:28, time (data): 0.479 (0.001)] l_g_pix: 4.8545e-02 l_g_percep: 1.0466e+00 l_g_gan: 1.1804e-01 l_d_real: 6.3135e-01 out_d_real: 5.0078e-01 l_d_fake: 5.4219e-01 out_d_fake: -6.3802e-01 
+2023-05-03 17:34:50,034 INFO: [1xuns..][epoch: 29, iter:   7,500, lr:(1.000e-04,)] [eta: 12:29:36, time (data): 0.478 (0.001)] l_g_pix: 5.4373e-02 l_g_percep: 1.0170e+00 l_g_gan: 2.9106e-01 l_d_real: 4.2742e-01 out_d_real: 8.3071e-01 l_d_fake: 4.0820e-01 out_d_fake: -2.5003e+00 
+2023-05-03 17:35:37,954 INFO: [1xuns..][epoch: 29, iter:   7,600, lr:(1.000e-04,)] [eta: 12:28:39, time (data): 0.479 (0.001)] l_g_pix: 4.5902e-02 l_g_percep: 1.1300e+00 l_g_gan: 1.2031e-01 l_d_real: 4.0546e-01 out_d_real: 1.1991e+00 l_d_fake: 5.6295e-01 out_d_fake: -6.3977e-01 
+2023-05-03 17:36:26,348 INFO: [1xuns..][epoch: 30, iter:   7,700, lr:(1.000e-04,)] [eta: 12:27:47, time (data): 0.486 (0.009)] l_g_pix: 6.7937e-02 l_g_percep: 1.0609e+00 l_g_gan: 2.6470e-01 l_d_real: 3.8699e-01 out_d_real: 9.4573e-01 l_d_fake: 6.1032e-01 out_d_fake: -2.0356e+00 
+2023-05-03 17:37:14,278 INFO: [1xuns..][epoch: 30, iter:   7,800, lr:(1.000e-04,)] [eta: 12:26:51, time (data): 0.482 (0.004)] l_g_pix: 6.4793e-02 l_g_percep: 9.9523e-01 l_g_gan: 2.5054e-01 l_d_real: 6.6044e-01 out_d_real: 2.9447e-01 l_d_fake: 4.3505e-01 out_d_fake: -2.0644e+00 
+2023-05-03 17:38:02,202 INFO: [1xuns..][epoch: 30, iter:   7,900, lr:(1.000e-04,)] [eta: 12:25:54, time (data): 0.478 (0.001)] l_g_pix: 5.5421e-02 l_g_percep: 9.3826e-01 l_g_gan: 1.5007e-01 l_d_real: 5.9245e-01 out_d_real: 5.3874e-01 l_d_fake: 3.8748e-01 out_d_fake: -1.1128e+00 
+2023-05-03 17:38:50,596 INFO: [1xuns..][epoch: 31, iter:   8,000, lr:(1.000e-04,)] [eta: 12:25:03, time (data): 0.482 (0.004)] l_g_pix: 4.1114e-02 l_g_percep: 9.5909e-01 l_g_gan: 1.1630e-01 l_d_real: 7.1682e-01 out_d_real: 1.4320e-01 l_d_fake: 4.6442e-01 out_d_fake: -6.9858e-01 
+2023-05-03 17:38:50,596 INFO: Saving models and training states.
+2023-05-03 17:39:39,398 INFO: [1xuns..][epoch: 31, iter:   8,100, lr:(1.000e-04,)] [eta: 12:24:17, time (data): 0.478 (0.001)] l_g_pix: 3.8410e-02 l_g_percep: 9.0810e-01 l_g_gan: 1.9003e-01 l_d_real: 5.2630e-01 out_d_real: 8.0663e-01 l_d_fake: 5.7703e-01 out_d_fake: -1.3224e+00 
+2023-05-03 17:40:27,807 INFO: [1xuns..][epoch: 32, iter:   8,200, lr:(1.000e-04,)] [eta: 12:23:27, time (data): 0.482 (0.004)] l_g_pix: 6.3181e-02 l_g_percep: 1.1643e+00 l_g_gan: 2.6975e-01 l_d_real: 3.7525e-01 out_d_real: 1.0835e+00 l_d_fake: 5.1113e-01 out_d_fake: -2.1853e+00 
+2023-05-03 17:41:15,745 INFO: [1xuns..][epoch: 32, iter:   8,300, lr:(1.000e-04,)] [eta: 12:22:31, time (data): 0.478 (0.001)] l_g_pix: 2.4119e-02 l_g_percep: 9.0587e-01 l_g_gan: 1.1944e-01 l_d_real: 5.6786e-01 out_d_real: 6.1695e-01 l_d_fake: 4.9241e-01 out_d_fake: -7.0206e-01 
+2023-05-03 17:42:03,673 INFO: [1xuns..][epoch: 32, iter:   8,400, lr:(1.000e-04,)] [eta: 12:21:35, time (data): 0.479 (0.001)] l_g_pix: 4.2661e-02 l_g_percep: 9.3078e-01 l_g_gan: 1.3279e-01 l_d_real: 4.7456e-01 out_d_real: 1.0125e+00 l_d_fake: 5.5247e-01 out_d_fake: -7.7537e-01 
+2023-05-03 17:42:52,076 INFO: [1xuns..][epoch: 33, iter:   8,500, lr:(1.000e-04,)] [eta: 12:20:45, time (data): 0.486 (0.009)] l_g_pix: 3.1185e-02 l_g_percep: 8.3905e-01 l_g_gan: 1.1540e-01 l_d_real: 7.2189e-01 out_d_real: 8.5291e-02 l_d_fake: 5.8429e-01 out_d_fake: -5.6964e-01 
+2023-05-03 17:43:40,005 INFO: [1xuns..][epoch: 33, iter:   8,600, lr:(1.000e-04,)] [eta: 12:19:49, time (data): 0.482 (0.004)] l_g_pix: 4.5522e-02 l_g_percep: 1.1392e+00 l_g_gan: 9.6263e-02 l_d_real: 4.8304e-01 out_d_real: 9.5642e-01 l_d_fake: 5.9205e-01 out_d_fake: -3.7081e-01 
+2023-05-03 17:44:27,935 INFO: [1xuns..][epoch: 33, iter:   8,700, lr:(1.000e-04,)] [eta: 12:18:54, time (data): 0.478 (0.001)] l_g_pix: 2.7295e-02 l_g_percep: 8.0446e-01 l_g_gan: 9.5339e-02 l_d_real: 5.4956e-01 out_d_real: 8.4578e-01 l_d_fake: 7.2269e-01 out_d_fake: -2.3093e-01 
+2023-05-03 17:45:16,340 INFO: [1xuns..][epoch: 34, iter:   8,800, lr:(1.000e-04,)] [eta: 12:18:04, time (data): 0.482 (0.004)] l_g_pix: 7.6829e-02 l_g_percep: 1.0422e+00 l_g_gan: 3.9325e-01 l_d_real: 5.8255e-01 out_d_real: 4.5937e-01 l_d_fake: 4.2445e-01 out_d_fake: -3.5053e+00 
+2023-05-03 17:46:04,272 INFO: [1xuns..][epoch: 34, iter:   8,900, lr:(1.000e-04,)] [eta: 12:17:09, time (data): 0.478 (0.001)] l_g_pix: 5.0682e-02 l_g_percep: 9.2697e-01 l_g_gan: 3.0762e-01 l_d_real: 4.8830e-01 out_d_real: 8.2477e-01 l_d_fake: 5.5967e-01 out_d_fake: -2.5158e+00 
+2023-05-03 17:46:52,685 INFO: [1xuns..][epoch: 35, iter:   9,000, lr:(1.000e-04,)] [eta: 12:16:19, time (data): 0.482 (0.004)] l_g_pix: 2.9989e-02 l_g_percep: 9.4817e-01 l_g_gan: 9.2103e-02 l_d_real: 4.6402e-01 out_d_real: 9.2396e-01 l_d_fake: 6.4834e-01 out_d_fake: -2.7310e-01 
+2023-05-03 17:46:52,685 INFO: Saving models and training states.
+2023-05-03 17:47:41,502 INFO: [1xuns..][epoch: 35, iter:   9,100, lr:(1.000e-04,)] [eta: 12:15:33, time (data): 0.478 (0.001)] l_g_pix: 2.2898e-02 l_g_percep: 8.0687e-01 l_g_gan: 7.5458e-02 l_d_real: 4.9631e-01 out_d_real: 8.5445e-01 l_d_fake: 7.8159e-01 out_d_fake: 2.6718e-02 
+2023-05-03 17:48:29,430 INFO: [1xuns..][epoch: 35, iter:   9,200, lr:(1.000e-04,)] [eta: 12:14:38, time (data): 0.479 (0.001)] l_g_pix: 5.4860e-02 l_g_percep: 9.1785e-01 l_g_gan: 2.1811e-01 l_d_real: 6.0451e-01 out_d_real: 6.2688e-01 l_d_fake: 6.1945e-01 out_d_fake: -1.5603e+00 
+2023-05-03 17:49:17,835 INFO: [1xuns..][epoch: 36, iter:   9,300, lr:(1.000e-04,)] [eta: 12:13:48, time (data): 0.478 (0.001)] l_g_pix: 4.1964e-02 l_g_percep: 1.0047e+00 l_g_gan: 1.2093e-01 l_d_real: 5.0528e-01 out_d_real: 8.0980e-01 l_d_fake: 5.3241e-01 out_d_fake: -6.7691e-01 
+2023-05-03 17:50:05,765 INFO: [1xuns..][epoch: 36, iter:   9,400, lr:(1.000e-04,)] [eta: 12:12:54, time (data): 0.479 (0.001)] l_g_pix: 5.6909e-02 l_g_percep: 1.0691e+00 l_g_gan: 2.5459e-01 l_d_real: 5.2253e-01 out_d_real: 7.4917e-01 l_d_fake: 3.1073e-01 out_d_fake: -2.2347e+00 
+2023-05-03 17:50:54,202 INFO: [1xuns..][epoch: 37, iter:   9,500, lr:(1.000e-04,)] [eta: 12:12:04, time (data): 0.488 (0.011)] l_g_pix: 5.7981e-02 l_g_percep: 9.9644e-01 l_g_gan: 2.0489e-01 l_d_real: 5.4672e-01 out_d_real: 6.9646e-01 l_d_fake: 5.0219e-01 out_d_fake: -1.5461e+00 
+2023-05-03 17:51:42,135 INFO: [1xuns..][epoch: 37, iter:   9,600, lr:(1.000e-04,)] [eta: 12:11:10, time (data): 0.482 (0.004)] l_g_pix: 4.8650e-02 l_g_percep: 9.6475e-01 l_g_gan: 2.2053e-01 l_d_real: 6.3608e-01 out_d_real: 5.4603e-01 l_d_fake: 3.0242e-01 out_d_fake: -1.9014e+00 
+2023-05-03 17:52:30,067 INFO: [1xuns..][epoch: 37, iter:   9,700, lr:(1.000e-04,)] [eta: 12:10:16, time (data): 0.478 (0.001)] l_g_pix: 8.8595e-02 l_g_percep: 1.1281e+00 l_g_gan: 1.6116e-01 l_d_real: 5.7086e-01 out_d_real: 4.5718e-01 l_d_fake: 4.4047e-01 out_d_fake: -1.1703e+00 
+2023-05-03 17:53:18,451 INFO: [1xuns..][epoch: 38, iter:   9,800, lr:(1.000e-04,)] [eta: 12:09:26, time (data): 0.482 (0.004)] l_g_pix: 5.5191e-02 l_g_percep: 1.0561e+00 l_g_gan: 3.1355e-01 l_d_real: 5.3286e-01 out_d_real: 5.0038e-01 l_d_fake: 5.1847e-01 out_d_fake: -2.6168e+00 
+2023-05-03 17:54:06,389 INFO: [1xuns..][epoch: 38, iter:   9,900, lr:(1.000e-04,)] [eta: 12:08:32, time (data): 0.478 (0.001)] l_g_pix: 4.8464e-02 l_g_percep: 9.1222e-01 l_g_gan: 1.6874e-01 l_d_real: 6.2465e-01 out_d_real: 4.2288e-01 l_d_fake: 4.1550e-01 out_d_fake: -1.2716e+00 
+2023-05-03 17:54:54,793 INFO: [1xuns..][epoch: 39, iter:  10,000, lr:(1.000e-04,)] [eta: 12:07:43, time (data): 0.482 (0.004)] l_g_pix: 2.6937e-02 l_g_percep: 8.7003e-01 l_g_gan: 1.1645e-01 l_d_real: 7.5539e-01 out_d_real: 5.4820e-01 l_d_fake: 6.1484e-01 out_d_fake: -5.4992e-01 
+2023-05-03 17:54:54,794 INFO: Saving models and training states.
+2023-05-03 17:55:43,030 INFO: [1xuns..][epoch: 39, iter:  10,100, lr:(1.000e-04,)] [eta: 12:06:52, time (data): 0.478 (0.001)] l_g_pix: 3.2286e-02 l_g_percep: 9.1638e-01 l_g_gan: 1.5983e-01 l_d_real: 6.2466e-01 out_d_real: 5.3172e-01 l_d_fake: 4.6030e-01 out_d_fake: -1.1379e+00 
+2023-05-03 17:56:30,956 INFO: [1xuns..][epoch: 39, iter:  10,200, lr:(1.000e-04,)] [eta: 12:05:58, time (data): 0.479 (0.001)] l_g_pix: 3.1112e-02 l_g_percep: 7.7730e-01 l_g_gan: 1.1146e-01 l_d_real: 5.8176e-01 out_d_real: 3.6428e-01 l_d_fake: 5.6479e-01 out_d_fake: -5.4974e-01 
+2023-05-03 17:57:19,364 INFO: [1xuns..][epoch: 40, iter:  10,300, lr:(1.000e-04,)] [eta: 12:05:09, time (data): 0.478 (0.001)] l_g_pix: 3.3902e-02 l_g_percep: 8.7356e-01 l_g_gan: 1.5988e-01 l_d_real: 6.3255e-01 out_d_real: 4.9854e-01 l_d_fake: 4.4594e-01 out_d_fake: -1.1526e+00 
+2023-05-03 17:58:07,299 INFO: [1xuns..][epoch: 40, iter:  10,400, lr:(1.000e-04,)] [eta: 12:04:15, time (data): 0.479 (0.001)] l_g_pix: 4.2923e-02 l_g_percep: 8.9068e-01 l_g_gan: 1.0238e-01 l_d_real: 5.5600e-01 out_d_real: 9.9161e-01 l_d_fake: 6.6348e-01 out_d_fake: -3.6050e-01 
+2023-05-03 17:58:55,682 INFO: [1xuns..][epoch: 41, iter:  10,500, lr:(1.000e-04,)] [eta: 12:03:26, time (data): 0.488 (0.011)] l_g_pix: 4.2371e-02 l_g_percep: 9.9680e-01 l_g_gan: 1.3079e-01 l_d_real: 4.8368e-01 out_d_real: 1.0304e+00 l_d_fake: 5.7199e-01 out_d_fake: -7.3575e-01 
+2023-05-03 17:59:43,621 INFO: [1xuns..][epoch: 41, iter:  10,600, lr:(1.000e-04,)] [eta: 12:02:33, time (data): 0.482 (0.004)] l_g_pix: 4.6791e-02 l_g_percep: 1.0628e+00 l_g_gan: 1.3568e-01 l_d_real: 6.3375e-01 out_d_real: 3.9673e-01 l_d_fake: 4.3701e-01 out_d_fake: -9.1961e-01 
+2023-05-03 18:00:31,561 INFO: [1xuns..][epoch: 41, iter:  10,700, lr:(1.000e-04,)] [eta: 12:01:40, time (data): 0.478 (0.001)] l_g_pix: 4.4656e-02 l_g_percep: 8.7038e-01 l_g_gan: 1.3351e-01 l_d_real: 6.0366e-01 out_d_real: 3.9808e-01 l_d_fake: 6.6158e-01 out_d_fake: -6.7329e-01 
+2023-05-03 18:01:19,952 INFO: [1xuns..][epoch: 42, iter:  10,800, lr:(1.000e-04,)] [eta: 12:00:50, time (data): 0.482 (0.004)] l_g_pix: 3.7508e-02 l_g_percep: 9.2746e-01 l_g_gan: 1.3359e-01 l_d_real: 5.6156e-01 out_d_real: 5.9619e-01 l_d_fake: 5.1808e-01 out_d_fake: -8.1775e-01 
+2023-05-03 18:02:07,872 INFO: [1xuns..][epoch: 42, iter:  10,900, lr:(1.000e-04,)] [eta: 11:59:57, time (data): 0.478 (0.001)] l_g_pix: 7.3911e-02 l_g_percep: 1.1333e+00 l_g_gan: 1.6086e-01 l_d_real: 4.2902e-01 out_d_real: 9.1899e-01 l_d_fake: 5.0502e-01 out_d_fake: -1.1031e+00 
+2023-05-03 18:02:55,802 INFO: [1xuns..][epoch: 42, iter:  11,000, lr:(1.000e-04,)] [eta: 11:59:04, time (data): 0.479 (0.001)] l_g_pix: 3.5311e-02 l_g_percep: 8.6401e-01 l_g_gan: 9.7863e-02 l_d_real: 3.9124e-01 out_d_real: 1.1205e+00 l_d_fake: 7.7265e-01 out_d_fake: -2.0598e-01 
+2023-05-03 18:02:55,802 INFO: Saving models and training states.
+2023-05-03 18:03:45,045 INFO: [1xuns..][epoch: 43, iter:  11,100, lr:(1.000e-04,)] [eta: 11:58:22, time (data): 0.478 (0.001)] l_g_pix: 3.4036e-02 l_g_percep: 9.4453e-01 l_g_gan: 1.2799e-01 l_d_real: 4.1232e-01 out_d_real: 1.1357e+00 l_d_fake: 4.8819e-01 out_d_fake: -7.9182e-01 
+2023-05-03 18:04:32,979 INFO: [1xuns..][epoch: 43, iter:  11,200, lr:(1.000e-04,)] [eta: 11:57:29, time (data): 0.479 (0.001)] l_g_pix: 4.6462e-02 l_g_percep: 8.6227e-01 l_g_gan: 1.3707e-01 l_d_real: 5.8248e-01 out_d_real: 5.7880e-01 l_d_fake: 5.1716e-01 out_d_fake: -8.5328e-01 
+2023-05-03 18:05:21,387 INFO: [1xuns..][epoch: 44, iter:  11,300, lr:(1.000e-04,)] [eta: 11:56:40, time (data): 0.489 (0.012)] l_g_pix: 2.8184e-02 l_g_percep: 8.5147e-01 l_g_gan: 1.1912e-01 l_d_real: 6.9338e-01 out_d_real: 3.6597e-01 l_d_fake: 6.1350e-01 out_d_fake: -5.7775e-01 
+2023-05-03 18:06:09,335 INFO: [1xuns..][epoch: 44, iter:  11,400, lr:(1.000e-04,)] [eta: 11:55:47, time (data): 0.482 (0.005)] l_g_pix: 4.2914e-02 l_g_percep: 9.2990e-01 l_g_gan: 1.5048e-01 l_d_real: 5.1519e-01 out_d_real: 8.8985e-01 l_d_fake: 6.0630e-01 out_d_fake: -8.9794e-01 
+2023-05-03 18:06:57,295 INFO: [1xuns..][epoch: 44, iter:  11,500, lr:(1.000e-04,)] [eta: 11:54:55, time (data): 0.479 (0.001)] l_g_pix: 4.8909e-02 l_g_percep: 8.5520e-01 l_g_gan: 2.1450e-01 l_d_real: 6.2656e-01 out_d_real: 7.7281e-01 l_d_fake: 5.9588e-01 out_d_fake: -1.5477e+00 
+2023-05-03 18:07:45,700 INFO: [1xuns..][epoch: 45, iter:  11,600, lr:(1.000e-04,)] [eta: 11:54:06, time (data): 0.482 (0.004)] l_g_pix: 5.3588e-02 l_g_percep: 1.0445e+00 l_g_gan: 1.4647e-01 l_d_real: 3.5580e-01 out_d_real: 1.2708e+00 l_d_fake: 5.0447e-01 out_d_fake: -9.5996e-01 
+2023-05-03 18:08:33,663 INFO: [1xuns..][epoch: 45, iter:  11,700, lr:(1.000e-04,)] [eta: 11:53:14, time (data): 0.478 (0.001)] l_g_pix: 4.9390e-02 l_g_percep: 9.8766e-01 l_g_gan: 1.0877e-01 l_d_real: 4.9755e-01 out_d_real: 8.3066e-01 l_d_fake: 6.1387e-01 out_d_fake: -4.7383e-01 
+2023-05-03 18:09:22,104 INFO: [1xuns..][epoch: 46, iter:  11,800, lr:(1.000e-04,)] [eta: 11:52:25, time (data): 0.483 (0.005)] l_g_pix: 4.9676e-02 l_g_percep: 9.2200e-01 l_g_gan: 1.1592e-01 l_d_real: 6.8809e-01 out_d_real: 3.7696e-01 l_d_fake: 6.0335e-01 out_d_fake: -5.5585e-01 
+2023-05-03 18:10:10,046 INFO: [1xuns..][epoch: 46, iter:  11,900, lr:(1.000e-04,)] [eta: 11:51:33, time (data): 0.478 (0.001)] l_g_pix: 8.6001e-02 l_g_percep: 1.0987e+00 l_g_gan: 3.4061e-01 l_d_real: 6.7583e-01 out_d_real: 3.9045e-01 l_d_fake: 2.8342e-01 out_d_fake: -3.1215e+00 
+2023-05-03 18:10:57,991 INFO: [1xuns..][epoch: 46, iter:  12,000, lr:(1.000e-04,)] [eta: 11:50:40, time (data): 0.479 (0.001)] l_g_pix: 4.6764e-02 l_g_percep: 8.8584e-01 l_g_gan: 1.0963e-01 l_d_real: 5.8328e-01 out_d_real: 5.9049e-01 l_d_fake: 5.2022e-01 out_d_fake: -5.7661e-01 
+2023-05-03 18:10:57,992 INFO: Saving models and training states.
+2023-05-03 18:11:46,764 INFO: [1xuns..][epoch: 47, iter:  12,100, lr:(1.000e-04,)] [eta: 11:49:54, time (data): 0.478 (0.001)] l_g_pix: 4.8569e-02 l_g_percep: 9.3739e-01 l_g_gan: 1.7244e-01 l_d_real: 5.8436e-01 out_d_real: 4.3655e-01 l_d_fake: 4.0856e-01 out_d_fake: -1.3156e+00 
+2023-05-03 18:12:34,699 INFO: [1xuns..][epoch: 47, iter:  12,200, lr:(1.000e-04,)] [eta: 11:49:02, time (data): 0.479 (0.001)] l_g_pix: 4.6560e-02 l_g_percep: 9.6402e-01 l_g_gan: 1.3815e-01 l_d_real: 4.2982e-01 out_d_real: 8.7971e-01 l_d_fake: 6.8923e-01 out_d_fake: -6.9204e-01 
+2023-05-03 18:13:23,097 INFO: [1xuns..][epoch: 48, iter:  12,300, lr:(1.000e-04,)] [eta: 11:48:13, time (data): 0.490 (0.013)] l_g_pix: 3.8142e-02 l_g_percep: 9.9295e-01 l_g_gan: 1.0053e-01 l_d_real: 4.3115e-01 out_d_real: 1.3489e+00 l_d_fake: 6.4229e-01 out_d_fake: -3.6317e-01 
+2023-05-03 18:14:11,027 INFO: [1xuns..][epoch: 48, iter:  12,400, lr:(1.000e-04,)] [eta: 11:47:21, time (data): 0.482 (0.005)] l_g_pix: 4.4134e-02 l_g_percep: 1.2263e+00 l_g_gan: 1.3892e-01 l_d_real: 3.4617e-01 out_d_real: 1.5764e+00 l_d_fake: 4.9004e-01 out_d_fake: -8.9903e-01 
+2023-05-03 18:14:58,951 INFO: [1xuns..][epoch: 48, iter:  12,500, lr:(1.000e-04,)] [eta: 11:46:29, time (data): 0.478 (0.001)] l_g_pix: 2.9213e-02 l_g_percep: 8.5393e-01 l_g_gan: 1.1121e-01 l_d_real: 6.0720e-01 out_d_real: 5.1924e-01 l_d_fake: 4.9485e-01 out_d_fake: -6.1729e-01 
+2023-05-03 18:15:47,357 INFO: [1xuns..][epoch: 49, iter:  12,600, lr:(1.000e-04,)] [eta: 11:45:40, time (data): 0.482 (0.005)] l_g_pix: 4.8935e-02 l_g_percep: 1.0237e+00 l_g_gan: 3.4767e-01 l_d_real: 4.2116e-01 out_d_real: 1.1662e+00 l_d_fake: 7.2859e-01 out_d_fake: -2.7467e+00 
+2023-05-03 18:16:35,300 INFO: [1xuns..][epoch: 49, iter:  12,700, lr:(1.000e-04,)] [eta: 11:44:48, time (data): 0.478 (0.001)] l_g_pix: 4.4569e-02 l_g_percep: 8.2586e-01 l_g_gan: 1.5791e-01 l_d_real: 4.4226e-01 out_d_real: 1.2190e+00 l_d_fake: 6.5897e-01 out_d_fake: -9.1986e-01 
+2023-05-03 18:17:23,240 INFO: [1xuns..][epoch: 49, iter:  12,800, lr:(1.000e-04,)] [eta: 11:43:56, time (data): 0.479 (0.001)] l_g_pix: 3.9355e-02 l_g_percep: 1.0388e+00 l_g_gan: 1.0678e-01 l_d_real: 4.6980e-01 out_d_real: 1.1734e+00 l_d_fake: 7.0793e-01 out_d_fake: -3.6002e-01 
+2023-05-03 18:18:11,624 INFO: [1xuns..][epoch: 50, iter:  12,900, lr:(1.000e-04,)] [eta: 11:43:08, time (data): 0.478 (0.001)] l_g_pix: 4.3867e-02 l_g_percep: 1.0354e+00 l_g_gan: 1.2339e-01 l_d_real: 5.9351e-01 out_d_real: 7.6316e-01 l_d_fake: 4.7311e-01 out_d_fake: -7.6069e-01 
+2023-05-03 18:18:59,549 INFO: [1xuns..][epoch: 50, iter:  13,000, lr:(1.000e-04,)] [eta: 11:42:16, time (data): 0.479 (0.001)] l_g_pix: 4.0271e-02 l_g_percep: 1.1413e+00 l_g_gan: 1.3289e-01 l_d_real: 3.7323e-01 out_d_real: 1.0746e+00 l_d_fake: 6.1943e-01 out_d_fake: -7.0948e-01 
+2023-05-03 18:18:59,549 INFO: Saving models and training states.
+2023-05-03 18:19:48,285 INFO: [1xuns..][epoch: 51, iter:  13,100, lr:(1.000e-04,)] [eta: 11:41:29, time (data): 0.478 (0.001)] l_g_pix: 5.3317e-02 l_g_percep: 1.0984e+00 l_g_gan: 2.7450e-01 l_d_real: 5.9471e-01 out_d_real: 6.8670e-01 l_d_fake: 3.2719e-01 out_d_fake: -2.4150e+00 
+2023-05-03 18:20:36,209 INFO: [1xuns..][epoch: 51, iter:  13,200, lr:(1.000e-04,)] [eta: 11:40:38, time (data): 0.479 (0.001)] l_g_pix: 3.8796e-02 l_g_percep: 9.9722e-01 l_g_gan: 1.2547e-01 l_d_real: 6.2857e-01 out_d_real: 5.1495e-01 l_d_fake: 4.4699e-01 out_d_fake: -8.0764e-01 
+2023-05-03 18:21:24,133 INFO: [1xuns..][epoch: 51, iter:  13,300, lr:(1.000e-04,)] [eta: 11:39:46, time (data): 0.478 (0.001)] l_g_pix: 4.8656e-02 l_g_percep: 1.0797e+00 l_g_gan: 2.9102e-01 l_d_real: 4.3990e-01 out_d_real: 1.1264e+00 l_d_fake: 4.2345e-01 out_d_fake: -2.4853e+00 
+2023-05-03 18:22:12,514 INFO: [1xuns..][epoch: 52, iter:  13,400, lr:(1.000e-04,)] [eta: 11:38:57, time (data): 0.482 (0.005)] l_g_pix: 3.3777e-02 l_g_percep: 9.2078e-01 l_g_gan: 1.3176e-01 l_d_real: 7.4473e-01 out_d_real: 3.8814e-01 l_d_fake: 5.1405e-01 out_d_fake: -8.0329e-01 
+2023-05-03 18:23:00,434 INFO: [1xuns..][epoch: 52, iter:  13,500, lr:(1.000e-04,)] [eta: 11:38:05, time (data): 0.478 (0.001)] l_g_pix: 5.8927e-02 l_g_percep: 9.8489e-01 l_g_gan: 2.5060e-01 l_d_real: 3.9271e-01 out_d_real: 1.3862e+00 l_d_fake: 3.9055e-01 out_d_fake: -2.1143e+00 
+2023-05-03 18:23:48,888 INFO: [1xuns..][epoch: 53, iter:  13,600, lr:(1.000e-04,)] [eta: 11:37:17, time (data): 0.483 (0.005)] l_g_pix: 4.3761e-02 l_g_percep: 9.8214e-01 l_g_gan: 1.0331e-01 l_d_real: 4.3253e-01 out_d_real: 9.4309e-01 l_d_fake: 6.8750e-01 out_d_fake: -3.4576e-01 
+2023-05-03 18:24:36,835 INFO: [1xuns..][epoch: 53, iter:  13,700, lr:(1.000e-04,)] [eta: 11:36:26, time (data): 0.478 (0.001)] l_g_pix: 4.4906e-02 l_g_percep: 8.2156e-01 l_g_gan: 2.1505e-01 l_d_real: 6.0550e-01 out_d_real: 5.1748e-01 l_d_fake: 5.8737e-01 out_d_fake: -1.5629e+00 
+2023-05-03 18:25:24,779 INFO: [1xuns..][epoch: 53, iter:  13,800, lr:(1.000e-04,)] [eta: 11:35:34, time (data): 0.479 (0.001)] l_g_pix: 7.2193e-02 l_g_percep: 1.1939e+00 l_g_gan: 4.6035e-01 l_d_real: 7.5426e-01 out_d_real: 3.8855e-01 l_d_fake: 2.1742e-01 out_d_fake: -4.3822e+00 
+2023-05-03 18:26:13,182 INFO: [1xuns..][epoch: 54, iter:  13,900, lr:(1.000e-04,)] [eta: 11:34:46, time (data): 0.478 (0.001)] l_g_pix: 4.3037e-02 l_g_percep: 8.7796e-01 l_g_gan: 1.0638e-01 l_d_real: 3.6570e-01 out_d_real: 1.3933e+00 l_d_fake: 8.1773e-01 out_d_fake: -2.4605e-01 
+2023-05-03 18:27:01,108 INFO: [1xuns..][epoch: 54, iter:  14,000, lr:(1.000e-04,)] [eta: 11:33:54, time (data): 0.479 (0.001)] l_g_pix: 5.2802e-02 l_g_percep: 1.0630e+00 l_g_gan: 2.1909e-01 l_d_real: 5.4387e-01 out_d_real: 5.8992e-01 l_d_fake: 5.0314e-01 out_d_fake: -1.6874e+00 
+2023-05-03 18:27:01,109 INFO: Saving models and training states.
+2023-05-03 18:27:49,897 INFO: [1xuns..][epoch: 55, iter:  14,100, lr:(1.000e-04,)] [eta: 11:33:08, time (data): 0.494 (0.017)] l_g_pix: 4.6867e-02 l_g_percep: 9.0700e-01 l_g_gan: 1.7725e-01 l_d_real: 4.9102e-01 out_d_real: 1.0051e+00 l_d_fake: 5.1216e-01 out_d_fake: -1.2600e+00 
+2023-05-03 18:28:37,835 INFO: [1xuns..][epoch: 55, iter:  14,200, lr:(1.000e-04,)] [eta: 11:32:17, time (data): 0.483 (0.005)] l_g_pix: 3.4200e-02 l_g_percep: 8.6942e-01 l_g_gan: 1.3455e-01 l_d_real: 5.5652e-01 out_d_real: 6.2893e-01 l_d_fake: 5.9280e-01 out_d_fake: -7.5210e-01 
+2023-05-03 18:29:25,766 INFO: [1xuns..][epoch: 55, iter:  14,300, lr:(1.000e-04,)] [eta: 11:31:26, time (data): 0.478 (0.001)] l_g_pix: 3.9030e-02 l_g_percep: 1.0066e+00 l_g_gan: 1.6184e-01 l_d_real: 4.5264e-01 out_d_real: 1.3409e+00 l_d_fake: 3.9206e-01 out_d_fake: -1.2261e+00 
+2023-05-03 18:30:14,160 INFO: [1xuns..][epoch: 56, iter:  14,400, lr:(1.000e-04,)] [eta: 11:30:37, time (data): 0.483 (0.005)] l_g_pix: 3.1286e-02 l_g_percep: 8.1050e-01 l_g_gan: 1.6415e-01 l_d_real: 6.4600e-01 out_d_real: 3.5889e-01 l_d_fake: 3.8172e-01 out_d_fake: -1.2597e+00 
+2023-05-03 18:31:02,088 INFO: [1xuns..][epoch: 56, iter:  14,500, lr:(1.000e-04,)] [eta: 11:29:46, time (data): 0.478 (0.001)] l_g_pix: 2.9262e-02 l_g_percep: 7.2998e-01 l_g_gan: 1.2076e-01 l_d_real: 6.4566e-01 out_d_real: 7.1620e-01 l_d_fake: 4.9173e-01 out_d_fake: -7.1576e-01 
+2023-05-03 18:31:50,495 INFO: [1xuns..][epoch: 57, iter:  14,600, lr:(1.000e-04,)] [eta: 11:28:58, time (data): 0.483 (0.005)] l_g_pix: 5.6477e-02 l_g_percep: 9.8312e-01 l_g_gan: 2.0469e-01 l_d_real: 5.3984e-01 out_d_real: 9.9612e-01 l_d_fake: 4.9030e-01 out_d_fake: -1.5562e+00 
+2023-05-03 18:32:38,420 INFO: [1xuns..][epoch: 57, iter:  14,700, lr:(1.000e-04,)] [eta: 11:28:06, time (data): 0.478 (0.001)] l_g_pix: 4.7281e-02 l_g_percep: 9.2963e-01 l_g_gan: 2.0116e-01 l_d_real: 5.1978e-01 out_d_real: 9.7776e-01 l_d_fake: 4.8771e-01 out_d_fake: -1.5224e+00 
+2023-05-03 18:33:26,349 INFO: [1xuns..][epoch: 57, iter:  14,800, lr:(1.000e-04,)] [eta: 11:27:15, time (data): 0.479 (0.001)] l_g_pix: 3.9939e-02 l_g_percep: 1.1135e+00 l_g_gan: 1.6750e-01 l_d_real: 3.2624e-01 out_d_real: 1.6028e+00 l_d_fake: 4.7862e-01 out_d_fake: -1.1963e+00 
+2023-05-03 18:34:14,784 INFO: [1xuns..][epoch: 58, iter:  14,900, lr:(1.000e-04,)] [eta: 11:26:27, time (data): 0.478 (0.001)] l_g_pix: 6.4999e-02 l_g_percep: 1.1869e+00 l_g_gan: 1.4910e-01 l_d_real: 4.5375e-01 out_d_real: 1.1977e+00 l_d_fake: 3.9982e-01 out_d_fake: -1.0910e+00 
+2023-05-03 18:35:02,710 INFO: [1xuns..][epoch: 58, iter:  15,000, lr:(1.000e-04,)] [eta: 11:25:36, time (data): 0.479 (0.001)] l_g_pix: 3.3252e-02 l_g_percep: 9.0706e-01 l_g_gan: 1.4098e-01 l_d_real: 3.7655e-01 out_d_real: 1.4636e+00 l_d_fake: 5.8049e-01 out_d_fake: -8.2923e-01 
+2023-05-03 18:35:02,710 INFO: Saving models and training states.
+2023-05-03 18:35:50,998 INFO: [1xuns..][epoch: 58, iter:  15,100, lr:(1.000e-04,)] [eta: 11:24:47, time (data): 0.478 (0.001)] l_g_pix: 2.7508e-02 l_g_percep: 8.2633e-01 l_g_gan: 2.2880e-01 l_d_real: 5.5849e-01 out_d_real: 8.6409e-01 l_d_fake: 6.0622e-01 out_d_fake: -1.6803e+00 
+2023-05-03 18:36:39,392 INFO: [1xuns..][epoch: 59, iter:  15,200, lr:(1.000e-04,)] [eta: 11:23:59, time (data): 0.483 (0.005)] l_g_pix: 4.5503e-02 l_g_percep: 1.0820e+00 l_g_gan: 2.2882e-01 l_d_real: 6.4262e-01 out_d_real: 6.3542e-01 l_d_fake: 3.6523e-01 out_d_fake: -1.9219e+00 
+2023-05-03 18:37:27,321 INFO: [1xuns..][epoch: 59, iter:  15,300, lr:(1.000e-04,)] [eta: 11:23:08, time (data): 0.478 (0.001)] l_g_pix: 3.9519e-02 l_g_percep: 8.0454e-01 l_g_gan: 1.2771e-01 l_d_real: 7.4570e-01 out_d_real: 4.5036e-01 l_d_fake: 4.6574e-01 out_d_fake: -8.1196e-01 
+2023-05-03 18:38:15,733 INFO: [1xuns..][epoch: 60, iter:  15,400, lr:(1.000e-04,)] [eta: 11:22:19, time (data): 0.483 (0.005)] l_g_pix: 4.4531e-02 l_g_percep: 9.5243e-01 l_g_gan: 2.3840e-01 l_d_real: 3.4694e-01 out_d_real: 1.4497e+00 l_d_fake: 7.0601e-01 out_d_fake: -1.6766e+00 
+2023-05-03 18:39:03,654 INFO: [1xuns..][epoch: 60, iter:  15,500, lr:(1.000e-04,)] [eta: 11:21:28, time (data): 0.478 (0.001)] l_g_pix: 4.4948e-02 l_g_percep: 9.0119e-01 l_g_gan: 1.0456e-01 l_d_real: 4.6213e-01 out_d_real: 1.1997e+00 l_d_fake: 6.6704e-01 out_d_fake: -3.7875e-01 
+2023-05-03 18:39:51,581 INFO: [1xuns..][epoch: 60, iter:  15,600, lr:(1.000e-04,)] [eta: 11:20:37, time (data): 0.479 (0.001)] l_g_pix: 3.7667e-02 l_g_percep: 9.5864e-01 l_g_gan: 1.3786e-01 l_d_real: 4.1870e-01 out_d_real: 1.0413e+00 l_d_fake: 5.4738e-01 out_d_fake: -8.3129e-01 
+2023-05-03 18:40:39,986 INFO: [1xuns..][epoch: 61, iter:  15,700, lr:(1.000e-04,)] [eta: 11:19:49, time (data): 0.478 (0.001)] l_g_pix: 4.2446e-02 l_g_percep: 1.0650e+00 l_g_gan: 1.4275e-01 l_d_real: 4.2931e-01 out_d_real: 1.0832e+00 l_d_fake: 4.9061e-01 out_d_fake: -9.3647e-01 
+2023-05-03 18:41:27,915 INFO: [1xuns..][epoch: 61, iter:  15,800, lr:(1.000e-04,)] [eta: 11:18:58, time (data): 0.479 (0.001)] l_g_pix: 4.9312e-02 l_g_percep: 1.0002e+00 l_g_gan: 2.0457e-01 l_d_real: 4.2626e-01 out_d_real: 1.1399e+00 l_d_fake: 5.1487e-01 out_d_fake: -1.5306e+00 
+2023-05-03 18:42:16,319 INFO: [1xuns..][epoch: 62, iter:  15,900, lr:(1.000e-04,)] [eta: 11:18:10, time (data): 0.478 (0.001)] l_g_pix: 4.3336e-02 l_g_percep: 9.0481e-01 l_g_gan: 1.0488e-01 l_d_real: 5.2085e-01 out_d_real: 1.2173e+00 l_d_fake: 6.3949e-01 out_d_fake: -4.0968e-01 
+2023-05-03 18:43:04,249 INFO: [1xuns..][epoch: 62, iter:  16,000, lr:(1.000e-04,)] [eta: 11:17:19, time (data): 0.479 (0.001)] l_g_pix: 4.7246e-02 l_g_percep: 1.0094e+00 l_g_gan: 1.9933e-01 l_d_real: 5.2568e-01 out_d_real: 8.8244e-01 l_d_fake: 3.7392e-01 out_d_fake: -1.6187e+00 
+2023-05-03 18:43:04,249 INFO: Saving models and training states.
+2023-05-03 18:43:52,498 INFO: [1xuns..][epoch: 62, iter:  16,100, lr:(1.000e-04,)] [eta: 11:16:30, time (data): 0.478 (0.001)] l_g_pix: 5.2599e-02 l_g_percep: 9.9712e-01 l_g_gan: 9.7160e-02 l_d_real: 3.6177e-01 out_d_real: 1.2907e+00 l_d_fake: 7.0136e-01 out_d_fake: -2.7035e-01 
+2023-05-03 18:44:40,921 INFO: [1xuns..][epoch: 63, iter:  16,200, lr:(1.000e-04,)] [eta: 11:15:42, time (data): 0.483 (0.005)] l_g_pix: 4.4962e-02 l_g_percep: 8.6595e-01 l_g_gan: 2.9274e-01 l_d_real: 6.4555e-01 out_d_real: 4.8688e-01 l_d_fake: 4.6023e-01 out_d_fake: -2.4662e+00 
+2023-05-03 18:45:28,841 INFO: [1xuns..][epoch: 63, iter:  16,300, lr:(1.000e-04,)] [eta: 11:14:51, time (data): 0.478 (0.001)] l_g_pix: 5.7200e-02 l_g_percep: 9.1218e-01 l_g_gan: 1.7649e-01 l_d_real: 6.3878e-01 out_d_real: 3.9836e-01 l_d_fake: 3.6788e-01 out_d_fake: -1.3964e+00 
+2023-05-03 18:46:17,238 INFO: [1xuns..][epoch: 64, iter:  16,400, lr:(1.000e-04,)] [eta: 11:14:03, time (data): 0.483 (0.005)] l_g_pix: 3.6155e-02 l_g_percep: 8.4514e-01 l_g_gan: 9.5296e-02 l_d_real: 4.3298e-01 out_d_real: 1.4722e+00 l_d_fake: 8.0926e-01 out_d_fake: -1.4384e-01 
+2023-05-03 18:47:05,160 INFO: [1xuns..][epoch: 64, iter:  16,500, lr:(1.000e-04,)] [eta: 11:13:12, time (data): 0.478 (0.001)] l_g_pix: 4.1505e-02 l_g_percep: 9.4644e-01 l_g_gan: 1.0214e-01 l_d_real: 3.1749e-01 out_d_real: 1.8473e+00 l_d_fake: 7.8538e-01 out_d_fake: -2.3643e-01 
+2023-05-03 18:47:53,073 INFO: [1xuns..][epoch: 64, iter:  16,600, lr:(1.000e-04,)] [eta: 11:12:22, time (data): 0.479 (0.001)] l_g_pix: 5.7756e-02 l_g_percep: 9.3899e-01 l_g_gan: 2.6327e-01 l_d_real: 6.1995e-01 out_d_real: 4.0619e-01 l_d_fake: 4.9334e-01 out_d_fake: -2.1384e+00 
+2023-05-03 18:48:41,468 INFO: [1xuns..][epoch: 65, iter:  16,700, lr:(1.000e-04,)] [eta: 11:11:33, time (data): 0.478 (0.001)] l_g_pix: 8.5254e-02 l_g_percep: 1.1726e+00 l_g_gan: 3.9248e-01 l_d_real: 5.3159e-01 out_d_real: 6.8442e-01 l_d_fake: 2.2801e-01 out_d_fake: -3.6951e+00 
+2023-05-03 18:49:29,378 INFO: [1xuns..][epoch: 65, iter:  16,800, lr:(1.000e-04,)] [eta: 11:10:43, time (data): 0.479 (0.001)] l_g_pix: 3.0994e-02 l_g_percep: 9.9111e-01 l_g_gan: 1.4138e-01 l_d_real: 4.5024e-01 out_d_real: 1.3191e+00 l_d_fake: 5.9346e-01 out_d_fake: -8.2033e-01 
+2023-05-03 18:50:17,777 INFO: [1xuns..][epoch: 66, iter:  16,900, lr:(1.000e-04,)] [eta: 11:09:54, time (data): 0.507 (0.030)] l_g_pix: 4.3664e-02 l_g_percep: 1.0344e+00 l_g_gan: 1.6244e-01 l_d_real: 4.7569e-01 out_d_real: 9.3542e-01 l_d_fake: 4.3752e-01 out_d_fake: -1.1867e+00 
+2023-05-03 18:51:05,697 INFO: [1xuns..][epoch: 66, iter:  17,000, lr:(1.000e-04,)] [eta: 11:09:04, time (data): 0.483 (0.005)] l_g_pix: 4.7477e-02 l_g_percep: 8.8210e-01 l_g_gan: 1.7597e-01 l_d_real: 4.1008e-01 out_d_real: 1.0618e+00 l_d_fake: 5.3877e-01 out_d_fake: -1.2208e+00 
+2023-05-03 18:51:05,698 INFO: Saving models and training states.
+2023-05-03 18:51:53,932 INFO: [1xuns..][epoch: 66, iter:  17,100, lr:(1.000e-04,)] [eta: 11:08:15, time (data): 0.478 (0.001)] l_g_pix: 3.6813e-02 l_g_percep: 9.6511e-01 l_g_gan: 2.1735e-01 l_d_real: 4.2927e-01 out_d_real: 1.4002e+00 l_d_fake: 5.0103e-01 out_d_fake: -1.6716e+00 
+2023-05-03 18:52:42,340 INFO: [1xuns..][epoch: 67, iter:  17,200, lr:(1.000e-04,)] [eta: 11:07:27, time (data): 0.483 (0.006)] l_g_pix: 3.1683e-02 l_g_percep: 8.0527e-01 l_g_gan: 1.2269e-01 l_d_real: 8.0998e-01 out_d_real: 6.1061e-02 l_d_fake: 6.7065e-01 out_d_fake: -5.5621e-01 
+2023-05-03 18:53:30,261 INFO: [1xuns..][epoch: 67, iter:  17,300, lr:(1.000e-04,)] [eta: 11:06:36, time (data): 0.478 (0.001)] l_g_pix: 5.3450e-02 l_g_percep: 1.1269e+00 l_g_gan: 1.5915e-01 l_d_real: 4.5022e-01 out_d_real: 1.0291e+00 l_d_fake: 6.4351e-01 out_d_fake: -9.4782e-01 
+2023-05-03 18:54:18,193 INFO: [1xuns..][epoch: 67, iter:  17,400, lr:(1.000e-04,)] [eta: 11:05:46, time (data): 0.479 (0.001)] l_g_pix: 2.4708e-02 l_g_percep: 6.6526e-01 l_g_gan: 1.2903e-01 l_d_real: 7.1112e-01 out_d_real: 4.2908e-01 l_d_fake: 4.0541e-01 out_d_fake: -8.8489e-01 
+2023-05-03 18:55:06,578 INFO: [1xuns..][epoch: 68, iter:  17,500, lr:(1.000e-04,)] [eta: 11:04:58, time (data): 0.478 (0.001)] l_g_pix: 5.5065e-02 l_g_percep: 1.0390e+00 l_g_gan: 1.8102e-01 l_d_real: 4.7806e-01 out_d_real: 1.1189e+00 l_d_fake: 6.6268e-01 out_d_fake: -1.1473e+00 
+2023-05-03 18:55:54,501 INFO: [1xuns..][epoch: 68, iter:  17,600, lr:(1.000e-04,)] [eta: 11:04:07, time (data): 0.479 (0.001)] l_g_pix: 2.5110e-02 l_g_percep: 8.1943e-01 l_g_gan: 9.7131e-02 l_d_real: 3.8283e-01 out_d_real: 1.4415e+00 l_d_fake: 7.2455e-01 out_d_fake: -2.4696e-01 
+2023-05-03 18:56:42,908 INFO: [1xuns..][epoch: 69, iter:  17,700, lr:(1.000e-04,)] [eta: 11:03:19, time (data): 0.478 (0.001)] l_g_pix: 4.8582e-02 l_g_percep: 1.1308e+00 l_g_gan: 1.8346e-01 l_d_real: 3.7910e-01 out_d_real: 1.2280e+00 l_d_fake: 3.8437e-01 out_d_fake: -1.4499e+00 
+2023-05-03 18:57:30,819 INFO: [1xuns..][epoch: 69, iter:  17,800, lr:(1.000e-04,)] [eta: 11:02:29, time (data): 0.479 (0.001)] l_g_pix: 5.1403e-02 l_g_percep: 1.0148e+00 l_g_gan: 7.8610e-02 l_d_real: 2.6438e-01 out_d_real: 2.1318e+00 l_d_fake: 9.6526e-01 out_d_fake: 1.7856e-01 
+2023-05-03 18:58:18,746 INFO: [1xuns..][epoch: 69, iter:  17,900, lr:(1.000e-04,)] [eta: 11:01:38, time (data): 0.478 (0.001)] l_g_pix: 4.6090e-02 l_g_percep: 1.1167e+00 l_g_gan: 1.3627e-01 l_d_real: 3.5250e-01 out_d_real: 1.4140e+00 l_d_fake: 4.4392e-01 out_d_fake: -9.1888e-01 
+2023-05-03 18:59:07,151 INFO: [1xuns..][epoch: 70, iter:  18,000, lr:(1.000e-04,)] [eta: 11:00:50, time (data): 0.483 (0.005)] l_g_pix: 6.3168e-02 l_g_percep: 1.1459e+00 l_g_gan: 2.5599e-01 l_d_real: 7.1351e-01 out_d_real: 5.3836e-01 l_d_fake: 4.1551e-01 out_d_fake: -2.1439e+00 
+2023-05-03 18:59:07,152 INFO: Saving models and training states.
+2023-05-03 18:59:55,958 INFO: [1xuns..][epoch: 70, iter:  18,100, lr:(1.000e-04,)] [eta: 11:00:04, time (data): 0.478 (0.001)] l_g_pix: 5.0003e-02 l_g_percep: 1.0835e+00 l_g_gan: 2.0935e-01 l_d_real: 4.3497e-01 out_d_real: 1.3277e+00 l_d_fake: 3.4916e-01 out_d_fake: -1.7419e+00 
+2023-05-03 19:00:44,385 INFO: [1xuns..][epoch: 71, iter:  18,200, lr:(1.000e-04,)] [eta: 10:59:16, time (data): 0.484 (0.006)] l_g_pix: 4.4986e-02 l_g_percep: 9.6334e-01 l_g_gan: 1.5865e-01 l_d_real: 3.4461e-01 out_d_real: 1.2627e+00 l_d_fake: 5.0819e-01 out_d_fake: -1.0783e+00 
+2023-05-03 19:01:32,304 INFO: [1xuns..][epoch: 71, iter:  18,300, lr:(1.000e-04,)] [eta: 10:58:25, time (data): 0.478 (0.001)] l_g_pix: 3.5183e-02 l_g_percep: 7.9955e-01 l_g_gan: 1.5007e-01 l_d_real: 3.5269e-01 out_d_real: 1.3180e+00 l_d_fake: 8.6498e-01 out_d_fake: -6.3553e-01 
+2023-05-03 19:02:20,218 INFO: [1xuns..][epoch: 71, iter:  18,400, lr:(1.000e-04,)] [eta: 10:57:35, time (data): 0.479 (0.001)] l_g_pix: 4.9407e-02 l_g_percep: 9.8754e-01 l_g_gan: 3.0190e-01 l_d_real: 6.6640e-01 out_d_real: 3.7295e-01 l_d_fake: 3.2533e-01 out_d_fake: -2.6928e+00 
+2023-05-03 19:03:08,615 INFO: [1xuns..][epoch: 72, iter:  18,500, lr:(1.000e-04,)] [eta: 10:56:47, time (data): 0.478 (0.001)] l_g_pix: 3.6990e-02 l_g_percep: 9.3581e-01 l_g_gan: 9.4897e-02 l_d_real: 3.9623e-01 out_d_real: 1.1906e+00 l_d_fake: 6.5775e-01 out_d_fake: -2.9160e-01 
+2023-05-03 19:03:56,544 INFO: [1xuns..][epoch: 72, iter:  18,600, lr:(1.000e-04,)] [eta: 10:55:57, time (data): 0.479 (0.001)] l_g_pix: 2.8252e-02 l_g_percep: 8.4596e-01 l_g_gan: 7.8081e-02 l_d_real: 4.6623e-01 out_d_real: 8.2496e-01 l_d_fake: 8.3810e-01 out_d_fake: 5.7144e-02 
+2023-05-03 19:04:44,946 INFO: [1xuns..][epoch: 73, iter:  18,700, lr:(1.000e-04,)] [eta: 10:55:09, time (data): 0.478 (0.001)] l_g_pix: 7.6624e-02 l_g_percep: 1.1917e+00 l_g_gan: 3.2602e-01 l_d_real: 4.3691e-01 out_d_real: 9.9832e-01 l_d_fake: 3.6378e-01 out_d_fake: -2.8947e+00 
+2023-05-03 19:05:32,865 INFO: [1xuns..][epoch: 73, iter:  18,800, lr:(1.000e-04,)] [eta: 10:54:18, time (data): 0.479 (0.001)] l_g_pix: 4.8342e-02 l_g_percep: 9.9578e-01 l_g_gan: 2.0255e-01 l_d_real: 2.9482e-01 out_d_real: 1.7339e+00 l_d_fake: 7.4232e-01 out_d_fake: -1.2829e+00 
+2023-05-03 19:06:20,797 INFO: [1xuns..][epoch: 73, iter:  18,900, lr:(1.000e-04,)] [eta: 10:53:28, time (data): 0.478 (0.001)] l_g_pix: 4.4379e-02 l_g_percep: 9.2177e-01 l_g_gan: 1.1073e-01 l_d_real: 2.7912e-01 out_d_real: 1.9002e+00 l_d_fake: 6.9654e-01 out_d_fake: -4.1098e-01 
+2023-05-03 19:07:09,193 INFO: [1xuns..][epoch: 74, iter:  19,000, lr:(1.000e-04,)] [eta: 10:52:40, time (data): 0.484 (0.006)] l_g_pix: 5.3463e-02 l_g_percep: 1.0233e+00 l_g_gan: 4.1086e-01 l_d_real: 5.0983e-01 out_d_real: 1.0873e+00 l_d_fake: 4.6480e-01 out_d_fake: -3.6416e+00 
+2023-05-03 19:07:09,193 INFO: Saving models and training states.
+2023-05-03 19:07:57,966 INFO: [1xuns..][epoch: 74, iter:  19,100, lr:(1.000e-04,)] [eta: 10:51:54, time (data): 0.478 (0.001)] l_g_pix: 3.7266e-02 l_g_percep: 9.1002e-01 l_g_gan: 2.6311e-01 l_d_real: 5.0052e-01 out_d_real: 1.0968e+00 l_d_fake: 3.7895e-01 out_d_fake: -2.2511e+00 
+2023-05-03 19:08:45,886 INFO: [1xuns..][epoch: 74, iter:  19,200, lr:(1.000e-04,)] [eta: 10:51:03, time (data): 0.479 (0.001)] l_g_pix: 4.4566e-02 l_g_percep: 9.4267e-01 l_g_gan: 1.2798e-01 l_d_real: 4.0302e-01 out_d_real: 1.2247e+00 l_d_fake: 5.4515e-01 out_d_fake: -7.3470e-01 
+2023-05-03 19:09:34,284 INFO: [1xuns..][epoch: 75, iter:  19,300, lr:(1.000e-04,)] [eta: 10:50:15, time (data): 0.478 (0.001)] l_g_pix: 6.1542e-02 l_g_percep: 1.2869e+00 l_g_gan: 3.0956e-01 l_d_real: 3.5976e-01 out_d_real: 1.3309e+00 l_d_fake: 4.1961e-01 out_d_fake: -2.6744e+00 
+2023-05-03 19:10:22,205 INFO: [1xuns..][epoch: 75, iter:  19,400, lr:(1.000e-04,)] [eta: 10:49:25, time (data): 0.479 (0.001)] l_g_pix: 4.7521e-02 l_g_percep: 1.0416e+00 l_g_gan: 3.7262e-01 l_d_real: 5.1807e-01 out_d_real: 8.3364e-01 l_d_fake: 3.6311e-01 out_d_fake: -3.3618e+00 
+2023-05-03 19:11:10,585 INFO: [1xuns..][epoch: 76, iter:  19,500, lr:(1.000e-04,)] [eta: 10:48:37, time (data): 0.478 (0.001)] l_g_pix: 3.7775e-02 l_g_percep: 9.2326e-01 l_g_gan: 1.1278e-01 l_d_real: 3.5452e-01 out_d_real: 1.8766e+00 l_d_fake: 8.0983e-01 out_d_fake: -3.1829e-01 
+2023-05-03 19:11:58,507 INFO: [1xuns..][epoch: 76, iter:  19,600, lr:(1.000e-04,)] [eta: 10:47:47, time (data): 0.479 (0.001)] l_g_pix: 6.1938e-02 l_g_percep: 9.8597e-01 l_g_gan: 3.2137e-01 l_d_real: 5.7561e-01 out_d_real: 5.8028e-01 l_d_fake: 3.0651e-01 out_d_fake: -2.9067e+00 
+2023-05-03 19:12:46,435 INFO: [1xuns..][epoch: 76, iter:  19,700, lr:(1.000e-04,)] [eta: 10:46:57, time (data): 0.478 (0.001)] l_g_pix: 2.9760e-02 l_g_percep: 8.3938e-01 l_g_gan: 1.3484e-01 l_d_real: 9.5469e-01 out_d_real: -2.0456e-01 l_d_fake: 4.1453e-01 out_d_fake: -9.3361e-01 
+2023-05-03 19:13:34,819 INFO: [1xuns..][epoch: 77, iter:  19,800, lr:(1.000e-04,)] [eta: 10:46:09, time (data): 0.484 (0.006)] l_g_pix: 5.8195e-02 l_g_percep: 1.0206e+00 l_g_gan: 1.3991e-01 l_d_real: 4.1374e-01 out_d_real: 1.1018e+00 l_d_fake: 4.3427e-01 out_d_fake: -9.6491e-01 
+2023-05-03 19:14:22,744 INFO: [1xuns..][epoch: 77, iter:  19,900, lr:(1.000e-04,)] [eta: 10:45:19, time (data): 0.478 (0.001)] l_g_pix: 4.6529e-02 l_g_percep: 1.0171e+00 l_g_gan: 1.5188e-01 l_d_real: 4.5535e-01 out_d_real: 1.2789e+00 l_d_fake: 4.6125e-01 out_d_fake: -1.0574e+00 
+2023-05-03 19:15:11,129 INFO: [1xuns..][epoch: 78, iter:  20,000, lr:(1.000e-04,)] [eta: 10:44:31, time (data): 0.484 (0.006)] l_g_pix: 4.0743e-02 l_g_percep: 9.2146e-01 l_g_gan: 2.2191e-01 l_d_real: 5.1693e-01 out_d_real: 7.5556e-01 l_d_fake: 6.8712e-01 out_d_fake: -1.5317e+00 
+2023-05-03 19:15:11,129 INFO: Saving models and training states.
+2023-05-03 19:15:59,402 INFO: [1xuns..][epoch: 78, iter:  20,100, lr:(1.000e-04,)] [eta: 10:43:42, time (data): 0.481 (0.004)] l_g_pix: 4.5043e-02 l_g_percep: 1.0284e+00 l_g_gan: 2.0813e-01 l_d_real: 4.3249e-01 out_d_real: 9.8106e-01 l_d_fake: 3.5686e-01 out_d_fake: -1.7242e+00 
+2023-05-03 19:16:47,328 INFO: [1xuns..][epoch: 78, iter:  20,200, lr:(1.000e-04,)] [eta: 10:42:52, time (data): 0.479 (0.001)] l_g_pix: 3.6947e-02 l_g_percep: 9.1708e-01 l_g_gan: 3.1847e-01 l_d_real: 5.3481e-01 out_d_real: 9.3723e-01 l_d_fake: 3.2394e-01 out_d_fake: -2.8596e+00 
+2023-05-03 19:17:35,720 INFO: [1xuns..][epoch: 79, iter:  20,300, lr:(1.000e-04,)] [eta: 10:42:04, time (data): 0.482 (0.004)] l_g_pix: 3.4388e-02 l_g_percep: 9.9679e-01 l_g_gan: 2.3535e-01 l_d_real: 6.1000e-01 out_d_real: 7.7184e-01 l_d_fake: 2.9390e-01 out_d_fake: -2.0593e+00 
+2023-05-03 19:18:23,648 INFO: [1xuns..][epoch: 79, iter:  20,400, lr:(1.000e-04,)] [eta: 10:41:14, time (data): 0.479 (0.001)] l_g_pix: 3.6188e-02 l_g_percep: 9.8369e-01 l_g_gan: 2.3167e-01 l_d_real: 6.5129e-01 out_d_real: 4.1734e-01 l_d_fake: 4.2861e-01 out_d_fake: -1.8873e+00 
+2023-05-03 19:19:12,035 INFO: [1xuns..][epoch: 80, iter:  20,500, lr:(1.000e-04,)] [eta: 10:40:26, time (data): 0.481 (0.004)] l_g_pix: 5.0156e-02 l_g_percep: 9.0412e-01 l_g_gan: 1.7974e-01 l_d_real: 6.0539e-01 out_d_real: 5.0626e-01 l_d_fake: 3.0000e-01 out_d_fake: -1.4972e+00 
+2023-05-03 19:19:59,967 INFO: [1xuns..][epoch: 80, iter:  20,600, lr:(1.000e-04,)] [eta: 10:39:36, time (data): 0.479 (0.001)] l_g_pix: 3.1402e-02 l_g_percep: 8.0334e-01 l_g_gan: 9.0214e-02 l_d_real: 3.5007e-01 out_d_real: 1.4127e+00 l_d_fake: 7.9386e-01 out_d_fake: -1.0844e-01 
+2023-05-03 19:20:47,901 INFO: [1xuns..][epoch: 80, iter:  20,700, lr:(1.000e-04,)] [eta: 10:38:46, time (data): 0.479 (0.001)] l_g_pix: 4.5117e-02 l_g_percep: 9.0013e-01 l_g_gan: 2.0808e-01 l_d_real: 6.8824e-01 out_d_real: 3.6204e-01 l_d_fake: 3.7013e-01 out_d_fake: -1.7105e+00 
+2023-05-03 19:21:36,294 INFO: [1xuns..][epoch: 81, iter:  20,800, lr:(1.000e-04,)] [eta: 10:37:58, time (data): 0.484 (0.006)] l_g_pix: 5.1609e-02 l_g_percep: 9.5570e-01 l_g_gan: 1.9115e-01 l_d_real: 5.4865e-01 out_d_real: 7.6934e-01 l_d_fake: 6.7182e-01 out_d_fake: -1.2393e+00 
+2023-05-03 19:22:24,212 INFO: [1xuns..][epoch: 81, iter:  20,900, lr:(1.000e-04,)] [eta: 10:37:08, time (data): 0.481 (0.004)] l_g_pix: 5.0930e-02 l_g_percep: 8.3757e-01 l_g_gan: 1.5338e-01 l_d_real: 5.4400e-01 out_d_real: 8.9521e-01 l_d_fake: 4.0010e-01 out_d_fake: -1.1336e+00 
+2023-05-03 19:23:12,595 INFO: [1xuns..][epoch: 82, iter:  21,000, lr:(1.000e-04,)] [eta: 10:36:20, time (data): 0.483 (0.006)] l_g_pix: 3.2579e-02 l_g_percep: 8.0630e-01 l_g_gan: 1.4121e-01 l_d_real: 5.7614e-01 out_d_real: 8.0702e-01 l_d_fake: 5.0286e-01 out_d_fake: -9.0908e-01 
+2023-05-03 19:23:12,595 INFO: Saving models and training states.
+2023-05-03 19:24:01,386 INFO: [1xuns..][epoch: 82, iter:  21,100, lr:(1.000e-04,)] [eta: 10:35:33, time (data): 0.481 (0.004)] l_g_pix: 3.4376e-02 l_g_percep: 9.2491e-01 l_g_gan: 1.1220e-01 l_d_real: 5.1933e-01 out_d_real: 7.6164e-01 l_d_fake: 5.6148e-01 out_d_fake: -5.6053e-01 
+2023-05-03 19:24:49,329 INFO: [1xuns..][epoch: 82, iter:  21,200, lr:(1.000e-04,)] [eta: 10:34:43, time (data): 0.479 (0.001)] l_g_pix: 3.1417e-02 l_g_percep: 8.7731e-01 l_g_gan: 1.1907e-01 l_d_real: 6.3163e-01 out_d_real: 6.7382e-01 l_d_fake: 5.2928e-01 out_d_fake: -6.6148e-01 
+2023-05-03 19:25:37,757 INFO: [1xuns..][epoch: 83, iter:  21,300, lr:(1.000e-04,)] [eta: 10:33:56, time (data): 0.482 (0.004)] l_g_pix: 4.1115e-02 l_g_percep: 1.1417e+00 l_g_gan: 2.3087e-01 l_d_real: 4.1367e-01 out_d_real: 1.4028e+00 l_d_fake: 3.4333e-01 out_d_fake: -1.9642e+00 
+2023-05-03 19:26:25,695 INFO: [1xuns..][epoch: 83, iter:  21,400, lr:(1.000e-04,)] [eta: 10:33:06, time (data): 0.479 (0.001)] l_g_pix: 3.7950e-02 l_g_percep: 9.7895e-01 l_g_gan: 1.9080e-01 l_d_real: 5.2636e-01 out_d_real: 1.0467e+00 l_d_fake: 4.2934e-01 out_d_fake: -1.4784e+00 
+2023-05-03 19:27:13,630 INFO: [1xuns..][epoch: 83, iter:  21,500, lr:(1.000e-04,)] [eta: 10:32:16, time (data): 0.479 (0.001)] l_g_pix: 3.1256e-02 l_g_percep: 8.0100e-01 l_g_gan: 1.3181e-01 l_d_real: 7.6815e-01 out_d_real: 1.4671e-02 l_d_fake: 4.7555e-01 out_d_fake: -8.4258e-01 
+2023-05-03 19:28:02,042 INFO: [1xuns..][epoch: 84, iter:  21,600, lr:(1.000e-04,)] [eta: 10:31:28, time (data): 0.478 (0.001)] l_g_pix: 3.6436e-02 l_g_percep: 8.4123e-01 l_g_gan: 1.3731e-01 l_d_real: 5.4465e-01 out_d_real: 7.8297e-01 l_d_fake: 5.4638e-01 out_d_fake: -8.2674e-01 
+2023-05-03 19:28:49,968 INFO: [1xuns..][epoch: 84, iter:  21,700, lr:(1.000e-04,)] [eta: 10:30:38, time (data): 0.479 (0.001)] l_g_pix: 4.9596e-02 l_g_percep: 1.0016e+00 l_g_gan: 2.0070e-01 l_d_real: 5.4677e-01 out_d_real: 8.0984e-01 l_d_fake: 4.2212e-01 out_d_fake: -1.5842e+00 
+2023-05-03 19:29:38,371 INFO: [1xuns..][epoch: 85, iter:  21,800, lr:(1.000e-04,)] [eta: 10:29:50, time (data): 0.484 (0.006)] l_g_pix: 3.4587e-02 l_g_percep: 8.7894e-01 l_g_gan: 1.1469e-01 l_d_real: 4.8447e-01 out_d_real: 8.9103e-01 l_d_fake: 6.2782e-01 out_d_fake: -5.1931e-01 
+2023-05-03 19:30:26,291 INFO: [1xuns..][epoch: 85, iter:  21,900, lr:(1.000e-04,)] [eta: 10:29:00, time (data): 0.481 (0.004)] l_g_pix: 4.1099e-02 l_g_percep: 1.0328e+00 l_g_gan: 1.1338e-01 l_d_real: 2.6925e-01 out_d_real: 2.0526e+00 l_d_fake: 7.5836e-01 out_d_fake: -3.7552e-01 
+2023-05-03 19:31:14,222 INFO: [1xuns..][epoch: 85, iter:  22,000, lr:(1.000e-04,)] [eta: 10:28:11, time (data): 0.478 (0.001)] l_g_pix: 2.6371e-02 l_g_percep: 8.0012e-01 l_g_gan: 1.1584e-01 l_d_real: 6.2917e-01 out_d_real: 5.6704e-01 l_d_fake: 6.0754e-01 out_d_fake: -5.5130e-01 
+2023-05-03 19:31:14,222 INFO: Saving models and training states.
+2023-05-03 19:32:03,450 INFO: [1xuns..][epoch: 86, iter:  22,100, lr:(1.000e-04,)] [eta: 10:27:25, time (data): 0.481 (0.004)] l_g_pix: 4.0313e-02 l_g_percep: 1.0615e+00 l_g_gan: 1.4500e-01 l_d_real: 5.7696e-01 out_d_real: 7.5042e-01 l_d_fake: 4.0716e-01 out_d_fake: -1.0428e+00 
+2023-05-03 19:32:51,398 INFO: [1xuns..][epoch: 86, iter:  22,200, lr:(1.000e-04,)] [eta: 10:26:36, time (data): 0.478 (0.001)] l_g_pix: 3.2946e-02 l_g_percep: 9.6994e-01 l_g_gan: 1.2904e-01 l_d_real: 2.0486e-01 out_d_real: 1.9767e+00 l_d_fake: 5.8212e-01 out_d_fake: -7.0833e-01 
+2023-05-03 19:33:39,813 INFO: [1xuns..][epoch: 87, iter:  22,300, lr:(1.000e-04,)] [eta: 10:25:48, time (data): 0.481 (0.004)] l_g_pix: 2.9031e-02 l_g_percep: 9.1261e-01 l_g_gan: 1.2604e-01 l_d_real: 5.5846e-01 out_d_real: 8.1008e-01 l_d_fake: 6.2711e-01 out_d_fake: -6.3329e-01 
+2023-05-03 19:34:27,736 INFO: [1xuns..][epoch: 87, iter:  22,400, lr:(1.000e-04,)] [eta: 10:24:58, time (data): 0.478 (0.001)] l_g_pix: 4.6091e-02 l_g_percep: 9.7964e-01 l_g_gan: 9.1970e-02 l_d_real: 5.6998e-01 out_d_real: 6.2230e-01 l_d_fake: 6.4690e-01 out_d_fake: -2.7283e-01 
+2023-05-03 19:35:15,658 INFO: [1xuns..][epoch: 87, iter:  22,500, lr:(1.000e-04,)] [eta: 10:24:08, time (data): 0.479 (0.001)] l_g_pix: 3.1233e-02 l_g_percep: 8.7432e-01 l_g_gan: 1.6728e-01 l_d_real: 4.9881e-01 out_d_real: 1.2096e+00 l_d_fake: 5.1919e-01 out_d_fake: -1.1532e+00 
+2023-05-03 19:36:04,035 INFO: [1xuns..][epoch: 88, iter:  22,600, lr:(1.000e-04,)] [eta: 10:23:20, time (data): 0.483 (0.006)] l_g_pix: 3.8695e-02 l_g_percep: 8.2203e-01 l_g_gan: 8.7390e-02 l_d_real: 5.4415e-01 out_d_real: 9.8156e-01 l_d_fake: 8.2298e-01 out_d_fake: -5.1089e-02 
+2023-05-03 19:36:51,961 INFO: [1xuns..][epoch: 88, iter:  22,700, lr:(1.000e-04,)] [eta: 10:22:31, time (data): 0.481 (0.004)] l_g_pix: 3.3691e-02 l_g_percep: 9.9228e-01 l_g_gan: 1.3105e-01 l_d_real: 4.4722e-01 out_d_real: 8.7756e-01 l_d_fake: 4.5068e-01 out_d_fake: -8.5980e-01 
+2023-05-03 19:37:40,347 INFO: [1xuns..][epoch: 89, iter:  22,800, lr:(1.000e-04,)] [eta: 10:21:43, time (data): 0.484 (0.007)] l_g_pix: 4.0842e-02 l_g_percep: 8.7602e-01 l_g_gan: 7.8459e-02 l_d_real: 4.0455e-01 out_d_real: 1.1067e+00 l_d_fake: 9.1622e-01 out_d_fake: 1.3158e-01 
+2023-05-03 19:38:28,257 INFO: [1xuns..][epoch: 89, iter:  22,900, lr:(1.000e-04,)] [eta: 10:20:53, time (data): 0.481 (0.004)] l_g_pix: 3.9672e-02 l_g_percep: 1.0264e+00 l_g_gan: 1.3317e-01 l_d_real: 4.2426e-01 out_d_real: 1.1028e+00 l_d_fake: 4.4392e-01 out_d_fake: -8.8789e-01 
+2023-05-03 19:39:16,178 INFO: [1xuns..][epoch: 89, iter:  23,000, lr:(1.000e-04,)] [eta: 10:20:03, time (data): 0.478 (0.001)] l_g_pix: 4.1754e-02 l_g_percep: 9.7779e-01 l_g_gan: 1.1377e-01 l_d_real: 4.4377e-01 out_d_real: 9.5020e-01 l_d_fake: 6.0265e-01 out_d_fake: -5.3525e-01 
+2023-05-03 19:39:16,178 INFO: Saving models and training states.
+2023-05-03 19:40:05,394 INFO: [1xuns..][epoch: 90, iter:  23,100, lr:(1.000e-04,)] [eta: 10:19:18, time (data): 0.481 (0.004)] l_g_pix: 3.3432e-02 l_g_percep: 8.2862e-01 l_g_gan: 7.2431e-02 l_d_real: 3.2462e-01 out_d_real: 1.4783e+00 l_d_fake: 9.0313e-01 out_d_fake: 1.7870e-01 
+2023-05-03 19:40:53,325 INFO: [1xuns..][epoch: 90, iter:  23,200, lr:(1.000e-04,)] [eta: 10:18:28, time (data): 0.478 (0.001)] l_g_pix: 5.3174e-02 l_g_percep: 1.0872e+00 l_g_gan: 1.4740e-01 l_d_real: 4.7473e-01 out_d_real: 7.8784e-01 l_d_fake: 4.6396e-01 out_d_fake: -1.0100e+00 
+2023-05-03 19:41:41,742 INFO: [1xuns..][epoch: 91, iter:  23,300, lr:(1.000e-04,)] [eta: 10:17:40, time (data): 0.481 (0.004)] l_g_pix: 4.0942e-02 l_g_percep: 9.7908e-01 l_g_gan: 2.0303e-01 l_d_real: 3.0527e-01 out_d_real: 1.4745e+00 l_d_fake: 4.4897e-01 out_d_fake: -1.5802e+00 
+2023-05-03 19:42:29,669 INFO: [1xuns..][epoch: 91, iter:  23,400, lr:(1.000e-04,)] [eta: 10:16:51, time (data): 0.478 (0.001)] l_g_pix: 7.4492e-02 l_g_percep: 1.1781e+00 l_g_gan: 2.4713e-01 l_d_real: 4.9437e-01 out_d_real: 1.3478e+00 l_d_fake: 4.0045e-01 out_d_fake: -2.0695e+00 
+2023-05-03 19:43:17,591 INFO: [1xuns..][epoch: 91, iter:  23,500, lr:(1.000e-04,)] [eta: 10:16:01, time (data): 0.479 (0.001)] l_g_pix: 3.2467e-02 l_g_percep: 9.2422e-01 l_g_gan: 2.5420e-01 l_d_real: 3.0215e-01 out_d_real: 1.6927e+00 l_d_fake: 8.5553e-01 out_d_fake: -1.6858e+00 
+2023-05-03 19:44:05,998 INFO: [1xuns..][epoch: 92, iter:  23,600, lr:(1.000e-04,)] [eta: 10:15:13, time (data): 0.484 (0.007)] l_g_pix: 4.2028e-02 l_g_percep: 9.0386e-01 l_g_gan: 9.0961e-02 l_d_real: 2.7804e-01 out_d_real: 1.7105e+00 l_d_fake: 8.0651e-01 out_d_fake: -1.0342e-01 
+2023-05-03 19:44:53,935 INFO: [1xuns..][epoch: 92, iter:  23,700, lr:(1.000e-04,)] [eta: 10:14:23, time (data): 0.481 (0.004)] l_g_pix: 5.2884e-02 l_g_percep: 1.0559e+00 l_g_gan: 2.2447e-01 l_d_real: 6.2915e-01 out_d_real: 5.9661e-01 l_d_fake: 3.0390e-01 out_d_fake: -1.9402e+00 
+2023-05-03 19:45:41,873 INFO: [1xuns..][epoch: 92, iter:  23,800, lr:(1.000e-04,)] [eta: 10:13:34, time (data): 0.478 (0.001)] l_g_pix: 3.6802e-02 l_g_percep: 9.9940e-01 l_g_gan: 1.1911e-01 l_d_real: 4.8952e-01 out_d_real: 8.6547e-01 l_d_fake: 4.8160e-01 out_d_fake: -7.0979e-01 
+2023-05-03 19:46:30,267 INFO: [1xuns..][epoch: 93, iter:  23,900, lr:(1.000e-04,)] [eta: 10:12:46, time (data): 0.481 (0.004)] l_g_pix: 5.2392e-02 l_g_percep: 1.0317e+00 l_g_gan: 2.0782e-01 l_d_real: 3.8322e-01 out_d_real: 1.4015e+00 l_d_fake: 4.9299e-01 out_d_fake: -1.5847e+00 
+2023-05-03 19:47:18,204 INFO: [1xuns..][epoch: 93, iter:  24,000, lr:(1.000e-04,)] [eta: 10:11:56, time (data): 0.478 (0.001)] l_g_pix: 3.8468e-02 l_g_percep: 1.0495e+00 l_g_gan: 2.5244e-01 l_d_real: 4.0566e-01 out_d_real: 9.8014e-01 l_d_fake: 4.4562e-01 out_d_fake: -2.0773e+00 
+2023-05-03 19:47:18,204 INFO: Saving models and training states.
+2023-05-03 19:48:07,458 INFO: [1xuns..][epoch: 94, iter:  24,100, lr:(1.000e-04,)] [eta: 10:11:11, time (data): 0.481 (0.004)] l_g_pix: 4.0939e-02 l_g_percep: 8.8557e-01 l_g_gan: 1.7060e-01 l_d_real: 4.7816e-01 out_d_real: 9.5778e-01 l_d_fake: 4.4546e-01 out_d_fake: -1.2603e+00 
+2023-05-03 19:48:55,384 INFO: [1xuns..][epoch: 94, iter:  24,200, lr:(1.000e-04,)] [eta: 10:10:21, time (data): 0.478 (0.001)] l_g_pix: 5.8441e-02 l_g_percep: 8.9982e-01 l_g_gan: 1.6701e-01 l_d_real: 5.2532e-01 out_d_real: 7.0828e-01 l_d_fake: 3.2268e-01 out_d_fake: -1.3474e+00 
+2023-05-03 19:49:43,325 INFO: [1xuns..][epoch: 94, iter:  24,300, lr:(1.000e-04,)] [eta: 10:09:32, time (data): 0.479 (0.001)] l_g_pix: 5.2412e-02 l_g_percep: 1.0960e+00 l_g_gan: 3.5940e-01 l_d_real: 5.1953e-01 out_d_real: 7.8825e-01 l_d_fake: 3.5671e-01 out_d_fake: -3.2335e+00 
+2023-05-03 19:50:31,737 INFO: [1xuns..][epoch: 95, iter:  24,400, lr:(1.000e-04,)] [eta: 10:08:44, time (data): 0.478 (0.001)] l_g_pix: 6.1788e-02 l_g_percep: 1.0609e+00 l_g_gan: 5.4670e-01 l_d_real: 3.7265e-01 out_d_real: 1.1631e+00 l_d_fake: 5.5850e-01 out_d_fake: -4.9061e+00 
+2023-05-03 19:51:19,656 INFO: [1xuns..][epoch: 95, iter:  24,500, lr:(1.000e-04,)] [eta: 10:07:54, time (data): 0.479 (0.001)] l_g_pix: 4.4784e-02 l_g_percep: 8.8916e-01 l_g_gan: 2.0738e-01 l_d_real: 4.3832e-01 out_d_real: 1.1360e+00 l_d_fake: 5.1618e-01 out_d_fake: -1.5568e+00 
+2023-05-03 19:52:08,094 INFO: [1xuns..][epoch: 96, iter:  24,600, lr:(1.000e-04,)] [eta: 10:07:07, time (data): 0.485 (0.008)] l_g_pix: 4.0344e-02 l_g_percep: 1.0104e+00 l_g_gan: 2.4348e-01 l_d_real: 4.5304e-01 out_d_real: 1.5081e+00 l_d_fake: 5.4805e-01 out_d_fake: -1.8845e+00 
+2023-05-03 19:52:56,009 INFO: [1xuns..][epoch: 96, iter:  24,700, lr:(1.000e-04,)] [eta: 10:06:17, time (data): 0.482 (0.004)] l_g_pix: 3.9742e-02 l_g_percep: 9.3279e-01 l_g_gan: 1.9022e-01 l_d_real: 6.9878e-01 out_d_real: 4.1186e-01 l_d_fake: 4.0343e-01 out_d_fake: -1.4987e+00 
+2023-05-03 19:53:43,928 INFO: [1xuns..][epoch: 96, iter:  24,800, lr:(1.000e-04,)] [eta: 10:05:28, time (data): 0.478 (0.001)] l_g_pix: 5.9426e-02 l_g_percep: 1.1287e+00 l_g_gan: 2.5204e-01 l_d_real: 4.2456e-01 out_d_real: 1.0778e+00 l_d_fake: 4.1859e-01 out_d_fake: -2.1014e+00 
+2023-05-03 19:54:32,310 INFO: [1xuns..][epoch: 97, iter:  24,900, lr:(1.000e-04,)] [eta: 10:04:39, time (data): 0.481 (0.004)] l_g_pix: 5.6611e-02 l_g_percep: 1.0939e+00 l_g_gan: 3.5823e-01 l_d_real: 5.5630e-01 out_d_real: 8.0942e-01 l_d_fake: 4.5046e-01 out_d_fake: -3.1286e+00 
+2023-05-03 19:55:20,241 INFO: [1xuns..][epoch: 97, iter:  25,000, lr:(1.000e-04,)] [eta: 10:03:50, time (data): 0.478 (0.001)] l_g_pix: 5.2379e-02 l_g_percep: 9.3367e-01 l_g_gan: 1.2610e-01 l_d_real: 5.6710e-01 out_d_real: 7.2418e-01 l_d_fake: 5.3487e-01 out_d_fake: -7.2617e-01 
+2023-05-03 19:55:20,241 INFO: Saving models and training states.
+2023-05-03 19:56:09,570 INFO: [1xuns..][epoch: 98, iter:  25,100, lr:(1.000e-04,)] [eta: 10:03:05, time (data): 0.481 (0.004)] l_g_pix: 4.0225e-02 l_g_percep: 1.0270e+00 l_g_gan: 1.2243e-01 l_d_real: 5.4074e-01 out_d_real: 7.9919e-01 l_d_fake: 4.6885e-01 out_d_fake: -7.5538e-01 
+2023-05-03 19:56:57,489 INFO: [1xuns..][epoch: 98, iter:  25,200, lr:(1.000e-04,)] [eta: 10:02:15, time (data): 0.478 (0.001)] l_g_pix: 3.8037e-02 l_g_percep: 1.0112e+00 l_g_gan: 2.3166e-01 l_d_real: 5.3493e-01 out_d_real: 8.7936e-01 l_d_fake: 3.8240e-01 out_d_fake: -1.9339e+00 
+2023-05-03 19:57:45,427 INFO: [1xuns..][epoch: 98, iter:  25,300, lr:(1.000e-04,)] [eta: 10:01:26, time (data): 0.479 (0.001)] l_g_pix: 3.9719e-02 l_g_percep: 9.8235e-01 l_g_gan: 1.2948e-01 l_d_real: 5.5426e-01 out_d_real: 5.7354e-01 l_d_fake: 4.7267e-01 out_d_fake: -8.2211e-01 
+2023-05-03 19:58:33,834 INFO: [1xuns..][epoch: 99, iter:  25,400, lr:(1.000e-04,)] [eta: 10:00:38, time (data): 0.485 (0.008)] l_g_pix: 4.1124e-02 l_g_percep: 1.0317e+00 l_g_gan: 1.6028e-01 l_d_real: 6.0507e-01 out_d_real: 6.1608e-01 l_d_fake: 6.1244e-01 out_d_fake: -9.9022e-01 
+2023-05-03 19:59:21,757 INFO: [1xuns..][epoch: 99, iter:  25,500, lr:(1.000e-04,)] [eta: 9:59:48, time (data): 0.482 (0.004)] l_g_pix: 4.2503e-02 l_g_percep: 1.0191e+00 l_g_gan: 1.7343e-01 l_d_real: 6.1584e-01 out_d_real: 5.1380e-01 l_d_fake: 3.8611e-01 out_d_fake: -1.3480e+00 
+2023-05-03 20:00:09,685 INFO: [1xuns..][epoch: 99, iter:  25,600, lr:(1.000e-04,)] [eta: 9:58:59, time (data): 0.478 (0.001)] l_g_pix: 5.4031e-02 l_g_percep: 1.0493e+00 l_g_gan: 1.6916e-01 l_d_real: 3.8658e-01 out_d_real: 1.0946e+00 l_d_fake: 4.2495e-01 out_d_fake: -1.2664e+00 
+2023-05-03 20:00:58,069 INFO: [1xuns..][epoch:100, iter:  25,700, lr:(1.000e-04,)] [eta: 9:58:11, time (data): 0.481 (0.004)] l_g_pix: 7.4416e-02 l_g_percep: 1.1648e+00 l_g_gan: 2.8983e-01 l_d_real: 3.6156e-01 out_d_real: 1.6383e+00 l_d_fake: 3.8776e-01 out_d_fake: -2.5086e+00 
+2023-05-03 20:01:46,012 INFO: [1xuns..][epoch:100, iter:  25,800, lr:(1.000e-04,)] [eta: 9:57:22, time (data): 0.478 (0.001)] l_g_pix: 4.5587e-02 l_g_percep: 1.1178e+00 l_g_gan: 1.7065e-01 l_d_real: 2.9165e-01 out_d_real: 1.8171e+00 l_d_fake: 4.8501e-01 out_d_fake: -1.2213e+00 
+2023-05-03 20:02:34,409 INFO: [1xuns..][epoch:101, iter:  25,900, lr:(1.000e-04,)] [eta: 9:56:33, time (data): 0.482 (0.004)] l_g_pix: 4.8922e-02 l_g_percep: 9.5658e-01 l_g_gan: 1.1037e-01 l_d_real: 3.9296e-01 out_d_real: 1.0190e+00 l_d_fake: 6.9486e-01 out_d_fake: -4.0874e-01 
+2023-05-03 20:03:22,328 INFO: [1xuns..][epoch:101, iter:  26,000, lr:(1.000e-04,)] [eta: 9:55:44, time (data): 0.478 (0.001)] l_g_pix: 6.0816e-02 l_g_percep: 1.0434e+00 l_g_gan: 2.2252e-01 l_d_real: 4.0785e-01 out_d_real: 1.0148e+00 l_d_fake: 4.3438e-01 out_d_fake: -1.7901e+00 
+2023-05-03 20:03:22,329 INFO: Saving models and training states.
+2023-05-03 20:04:11,058 INFO: [1xuns..][epoch:101, iter:  26,100, lr:(1.000e-04,)] [eta: 9:54:57, time (data): 0.478 (0.001)] l_g_pix: 4.6827e-02 l_g_percep: 1.0762e+00 l_g_gan: 1.1967e-01 l_d_real: 3.7165e-01 out_d_real: 1.2849e+00 l_d_fake: 4.9332e-01 out_d_fake: -7.0336e-01 
+2023-05-03 20:04:59,463 INFO: [1xuns..][epoch:102, iter:  26,200, lr:(1.000e-04,)] [eta: 9:54:09, time (data): 0.478 (0.001)] l_g_pix: 4.6445e-02 l_g_percep: 8.3731e-01 l_g_gan: 1.6957e-01 l_d_real: 7.3466e-01 out_d_real: 1.4299e-01 l_d_fake: 4.0407e-01 out_d_fake: -1.2915e+00 
+2023-05-03 20:05:47,409 INFO: [1xuns..][epoch:102, iter:  26,300, lr:(1.000e-04,)] [eta: 9:53:20, time (data): 0.479 (0.001)] l_g_pix: 3.0982e-02 l_g_percep: 9.6282e-01 l_g_gan: 1.5746e-01 l_d_real: 5.9433e-01 out_d_real: 5.3510e-01 l_d_fake: 3.9128e-01 out_d_fake: -1.1831e+00 
+2023-05-03 20:06:35,817 INFO: [1xuns..][epoch:103, iter:  26,400, lr:(1.000e-04,)] [eta: 9:52:32, time (data): 0.485 (0.008)] l_g_pix: 5.5337e-02 l_g_percep: 9.6865e-01 l_g_gan: 2.0973e-01 l_d_real: 6.3026e-01 out_d_real: 4.3281e-01 l_d_fake: 3.1302e-01 out_d_fake: -1.7839e+00 
+2023-05-03 20:07:23,742 INFO: [1xuns..][epoch:103, iter:  26,500, lr:(1.000e-04,)] [eta: 9:51:42, time (data): 0.482 (0.004)] l_g_pix: 4.4516e-02 l_g_percep: 9.7296e-01 l_g_gan: 1.3439e-01 l_d_real: 3.4046e-01 out_d_real: 1.3192e+00 l_d_fake: 7.1904e-01 out_d_fake: -6.2463e-01 
+2023-05-03 20:08:11,671 INFO: [1xuns..][epoch:103, iter:  26,600, lr:(1.000e-04,)] [eta: 9:50:53, time (data): 0.478 (0.001)] l_g_pix: 3.1263e-02 l_g_percep: 8.9949e-01 l_g_gan: 1.0074e-01 l_d_real: 4.0254e-01 out_d_real: 1.0643e+00 l_d_fake: 6.5382e-01 out_d_fake: -3.5366e-01 
+2023-05-03 20:09:00,064 INFO: [1xuns..][epoch:104, iter:  26,700, lr:(1.000e-04,)] [eta: 9:50:05, time (data): 0.482 (0.004)] l_g_pix: 4.8359e-02 l_g_percep: 9.4782e-01 l_g_gan: 2.0475e-01 l_d_real: 5.2098e-01 out_d_real: 6.3496e-01 l_d_fake: 3.8281e-01 out_d_fake: -1.6643e+00 
+2023-05-03 20:09:47,993 INFO: [1xuns..][epoch:104, iter:  26,800, lr:(1.000e-04,)] [eta: 9:49:16, time (data): 0.478 (0.001)] l_g_pix: 2.9452e-02 l_g_percep: 7.6707e-01 l_g_gan: 8.8359e-02 l_d_real: 5.3458e-01 out_d_real: 6.3060e-01 l_d_fake: 7.1086e-01 out_d_fake: -1.7292e-01 
+2023-05-03 20:10:36,399 INFO: [1xuns..][epoch:105, iter:  26,900, lr:(1.000e-04,)] [eta: 9:48:28, time (data): 0.482 (0.004)] l_g_pix: 3.4041e-02 l_g_percep: 9.5117e-01 l_g_gan: 1.1856e-01 l_d_real: 4.5578e-01 out_d_real: 9.1779e-01 l_d_fake: 5.6434e-01 out_d_fake: -6.2128e-01 
+2023-05-03 20:11:24,317 INFO: [1xuns..][epoch:105, iter:  27,000, lr:(1.000e-04,)] [eta: 9:47:38, time (data): 0.478 (0.001)] l_g_pix: 3.4085e-02 l_g_percep: 8.7550e-01 l_g_gan: 2.8975e-01 l_d_real: 5.0821e-01 out_d_real: 9.9045e-01 l_d_fake: 5.5962e-01 out_d_fake: -2.3367e+00 
+2023-05-03 20:11:24,317 INFO: Saving models and training states.
+2023-05-03 20:12:13,120 INFO: [1xuns..][epoch:105, iter:  27,100, lr:(1.000e-04,)] [eta: 9:46:51, time (data): 0.479 (0.001)] l_g_pix: 4.8702e-02 l_g_percep: 1.1041e+00 l_g_gan: 2.4894e-01 l_d_real: 5.8065e-01 out_d_real: 8.3032e-01 l_d_fake: 5.3763e-01 out_d_fake: -1.9504e+00 
+2023-05-03 20:13:01,585 INFO: [1xuns..][epoch:106, iter:  27,200, lr:(1.000e-04,)] [eta: 9:46:03, time (data): 0.486 (0.009)] l_g_pix: 4.9501e-02 l_g_percep: 9.8213e-01 l_g_gan: 1.2120e-01 l_d_real: 4.5021e-01 out_d_real: 1.1128e+00 l_d_fake: 7.4360e-01 out_d_fake: -4.6842e-01 
+2023-05-03 20:13:49,528 INFO: [1xuns..][epoch:106, iter:  27,300, lr:(1.000e-04,)] [eta: 9:45:14, time (data): 0.482 (0.004)] l_g_pix: 5.0010e-02 l_g_percep: 9.6104e-01 l_g_gan: 1.1160e-01 l_d_real: 4.3513e-01 out_d_real: 1.0076e+00 l_d_fake: 5.9749e-01 out_d_fake: -5.1868e-01 
+2023-05-03 20:14:37,951 INFO: [1xuns..][epoch:107, iter:  27,400, lr:(1.000e-04,)] [eta: 9:44:26, time (data): 0.486 (0.009)] l_g_pix: 4.0640e-02 l_g_percep: 1.0194e+00 l_g_gan: 1.0350e-01 l_d_real: 3.6673e-01 out_d_real: 1.3017e+00 l_d_fake: 6.1066e-01 out_d_fake: -4.2472e-01 
+2023-05-03 20:15:25,871 INFO: [1xuns..][epoch:107, iter:  27,500, lr:(1.000e-04,)] [eta: 9:43:37, time (data): 0.482 (0.004)] l_g_pix: 7.6951e-02 l_g_percep: 1.1419e+00 l_g_gan: 3.4205e-01 l_d_real: 3.5398e-01 out_d_real: 1.2342e+00 l_d_fake: 4.5799e-01 out_d_fake: -2.9602e+00 
+2023-05-03 20:16:13,794 INFO: [1xuns..][epoch:107, iter:  27,600, lr:(1.000e-04,)] [eta: 9:42:48, time (data): 0.478 (0.001)] l_g_pix: 4.7079e-02 l_g_percep: 1.0640e+00 l_g_gan: 1.5657e-01 l_d_real: 5.1469e-01 out_d_real: 7.9167e-01 l_d_fake: 4.3965e-01 out_d_fake: -1.1259e+00 
+2023-05-03 20:17:02,167 INFO: [1xuns..][epoch:108, iter:  27,700, lr:(1.000e-04,)] [eta: 9:41:59, time (data): 0.482 (0.004)] l_g_pix: 2.7918e-02 l_g_percep: 8.0465e-01 l_g_gan: 1.6298e-01 l_d_real: 9.0897e-01 out_d_real: -9.1811e-02 l_d_fake: 4.4211e-01 out_d_fake: -1.1874e+00 
+2023-05-03 20:17:50,104 INFO: [1xuns..][epoch:108, iter:  27,800, lr:(1.000e-04,)] [eta: 9:41:10, time (data): 0.478 (0.001)] l_g_pix: 3.9162e-02 l_g_percep: 9.1910e-01 l_g_gan: 9.7247e-02 l_d_real: 4.3162e-01 out_d_real: 7.8627e-01 l_d_fake: 6.4183e-01 out_d_fake: -3.3063e-01 
+2023-05-03 20:18:38,034 INFO: [1xuns..][epoch:108, iter:  27,900, lr:(1.000e-04,)] [eta: 9:40:21, time (data): 0.479 (0.001)] l_g_pix: 4.3780e-02 l_g_percep: 8.9043e-01 l_g_gan: 2.7923e-01 l_d_real: 4.6635e-01 out_d_real: 1.0652e+00 l_d_fake: 4.5948e-01 out_d_fake: -2.3324e+00 
+2023-05-03 20:19:26,436 INFO: [1xuns..][epoch:109, iter:  28,000, lr:(1.000e-04,)] [eta: 9:39:33, time (data): 0.478 (0.001)] l_g_pix: 3.1186e-02 l_g_percep: 9.5323e-01 l_g_gan: 1.3104e-01 l_d_real: 3.1988e-01 out_d_real: 1.6895e+00 l_d_fake: 5.2966e-01 out_d_fake: -7.8092e-01 
+2023-05-03 20:19:26,437 INFO: Saving models and training states.
+2023-05-03 20:20:15,165 INFO: [1xuns..][epoch:109, iter:  28,100, lr:(1.000e-04,)] [eta: 9:38:46, time (data): 0.479 (0.001)] l_g_pix: 3.8987e-02 l_g_percep: 8.6409e-01 l_g_gan: 1.0503e-01 l_d_real: 4.3603e-01 out_d_real: 9.1793e-01 l_d_fake: 7.0231e-01 out_d_fake: -3.4796e-01 
+2023-05-03 20:21:03,604 INFO: [1xuns..][epoch:110, iter:  28,200, lr:(1.000e-04,)] [eta: 9:37:58, time (data): 0.487 (0.010)] l_g_pix: 2.8850e-02 l_g_percep: 8.1878e-01 l_g_gan: 8.8249e-02 l_d_real: 5.6659e-01 out_d_real: 4.8277e-01 l_d_fake: 6.3419e-01 out_d_fake: -2.4840e-01 
+2023-05-03 20:21:51,544 INFO: [1xuns..][epoch:110, iter:  28,300, lr:(1.000e-04,)] [eta: 9:37:09, time (data): 0.482 (0.004)] l_g_pix: 5.0679e-02 l_g_percep: 1.1458e+00 l_g_gan: 2.1248e-01 l_d_real: 5.3200e-01 out_d_real: 6.6478e-01 l_d_fake: 2.0404e-01 out_d_fake: -1.9204e+00 
+2023-05-03 20:22:39,490 INFO: [1xuns..][epoch:110, iter:  28,400, lr:(1.000e-04,)] [eta: 9:36:19, time (data): 0.478 (0.001)] l_g_pix: 2.9780e-02 l_g_percep: 9.1679e-01 l_g_gan: 1.1130e-01 l_d_real: 3.8192e-01 out_d_real: 1.1743e+00 l_d_fake: 6.4722e-01 out_d_fake: -4.6575e-01 
+2023-05-03 20:23:27,890 INFO: [1xuns..][epoch:111, iter:  28,500, lr:(1.000e-04,)] [eta: 9:35:31, time (data): 0.482 (0.004)] l_g_pix: 6.3097e-02 l_g_percep: 9.1940e-01 l_g_gan: 2.6931e-01 l_d_real: 6.1662e-01 out_d_real: 6.1205e-01 l_d_fake: 4.0424e-01 out_d_fake: -2.2881e+00 
+2023-05-03 20:24:15,810 INFO: [1xuns..][epoch:111, iter:  28,600, lr:(1.000e-04,)] [eta: 9:34:42, time (data): 0.478 (0.001)] l_g_pix: 5.0897e-02 l_g_percep: 9.2076e-01 l_g_gan: 1.5292e-01 l_d_real: 4.3852e-01 out_d_real: 1.1875e+00 l_d_fake: 6.0520e-01 out_d_fake: -9.2382e-01 
+2023-05-03 20:25:04,205 INFO: [1xuns..][epoch:112, iter:  28,700, lr:(1.000e-04,)] [eta: 9:33:54, time (data): 0.482 (0.004)] l_g_pix: 2.7550e-02 l_g_percep: 8.4926e-01 l_g_gan: 1.0244e-01 l_d_real: 5.7720e-01 out_d_real: 5.1130e-01 l_d_fake: 7.1483e-01 out_d_fake: -3.0947e-01 
+2023-05-03 20:25:52,137 INFO: [1xuns..][epoch:112, iter:  28,800, lr:(1.000e-04,)] [eta: 9:33:05, time (data): 0.478 (0.001)] l_g_pix: 7.8095e-02 l_g_percep: 9.3112e-01 l_g_gan: 2.2914e-01 l_d_real: 4.0310e-01 out_d_real: 1.2123e+00 l_d_fake: 5.5908e-01 out_d_fake: -1.7309e+00 
+2023-05-03 20:26:40,066 INFO: [1xuns..][epoch:112, iter:  28,900, lr:(1.000e-04,)] [eta: 9:32:16, time (data): 0.479 (0.001)] l_g_pix: 4.1416e-02 l_g_percep: 9.8613e-01 l_g_gan: 2.0325e-01 l_d_real: 2.5372e-01 out_d_real: 1.8483e+00 l_d_fake: 8.3255e-01 out_d_fake: -1.1993e+00 
+2023-05-03 20:27:28,485 INFO: [1xuns..][epoch:113, iter:  29,000, lr:(1.000e-04,)] [eta: 9:31:28, time (data): 0.478 (0.001)] l_g_pix: 4.9222e-02 l_g_percep: 1.0098e+00 l_g_gan: 1.7621e-01 l_d_real: 8.9456e-01 out_d_real: 1.9087e-01 l_d_fake: 3.3028e-01 out_d_fake: -1.4314e+00 
+2023-05-03 20:27:28,485 INFO: Saving models and training states.
+2023-05-03 20:28:17,287 INFO: [1xuns..][epoch:113, iter:  29,100, lr:(1.000e-04,)] [eta: 9:30:41, time (data): 0.479 (0.001)] l_g_pix: 3.9288e-02 l_g_percep: 9.8903e-01 l_g_gan: 2.0691e-01 l_d_real: 4.9263e-01 out_d_real: 9.7771e-01 l_d_fake: 5.1076e-01 out_d_fake: -1.5578e+00 
+2023-05-03 20:29:05,691 INFO: [1xuns..][epoch:114, iter:  29,200, lr:(1.000e-04,)] [eta: 9:29:53, time (data): 0.487 (0.010)] l_g_pix: 2.9011e-02 l_g_percep: 9.0425e-01 l_g_gan: 1.4325e-01 l_d_real: 4.7619e-01 out_d_real: 9.7812e-01 l_d_fake: 4.9575e-01 out_d_fake: -9.3668e-01 
+2023-05-03 20:29:53,619 INFO: [1xuns..][epoch:114, iter:  29,300, lr:(1.000e-04,)] [eta: 9:29:03, time (data): 0.482 (0.004)] l_g_pix: 3.9862e-02 l_g_percep: 9.4349e-01 l_g_gan: 1.6267e-01 l_d_real: 3.9746e-01 out_d_real: 1.0891e+00 l_d_fake: 4.5077e-01 out_d_fake: -1.1758e+00 
+2023-05-03 20:30:41,561 INFO: [1xuns..][epoch:114, iter:  29,400, lr:(1.000e-04,)] [eta: 9:28:14, time (data): 0.478 (0.001)] l_g_pix: 2.8821e-02 l_g_percep: 8.9845e-01 l_g_gan: 1.3052e-01 l_d_real: 3.1122e-01 out_d_real: 1.8702e+00 l_d_fake: 7.1322e-01 out_d_fake: -5.9191e-01 
+2023-05-03 20:31:29,966 INFO: [1xuns..][epoch:115, iter:  29,500, lr:(1.000e-04,)] [eta: 9:27:26, time (data): 0.482 (0.004)] l_g_pix: 4.4090e-02 l_g_percep: 9.3650e-01 l_g_gan: 1.9285e-01 l_d_real: 6.5163e-01 out_d_real: 3.7854e-01 l_d_fake: 3.1672e-01 out_d_fake: -1.6112e+00 
+2023-05-03 20:32:17,887 INFO: [1xuns..][epoch:115, iter:  29,600, lr:(1.000e-04,)] [eta: 9:26:37, time (data): 0.478 (0.001)] l_g_pix: 6.1581e-02 l_g_percep: 1.0452e+00 l_g_gan: 1.6746e-01 l_d_real: 3.2493e-01 out_d_real: 1.3914e+00 l_d_fake: 5.0770e-01 out_d_fake: -1.1665e+00 
+2023-05-03 20:33:06,263 INFO: [1xuns..][epoch:116, iter:  29,700, lr:(1.000e-04,)] [eta: 9:25:49, time (data): 0.482 (0.004)] l_g_pix: 6.0858e-02 l_g_percep: 9.8700e-01 l_g_gan: 2.2218e-01 l_d_real: 6.0123e-01 out_d_real: 5.0755e-01 l_d_fake: 3.4977e-01 out_d_fake: -1.8715e+00 
+2023-05-03 20:33:54,190 INFO: [1xuns..][epoch:116, iter:  29,800, lr:(1.000e-04,)] [eta: 9:25:00, time (data): 0.478 (0.001)] l_g_pix: 3.1986e-02 l_g_percep: 8.3679e-01 l_g_gan: 1.0715e-01 l_d_real: 4.6812e-01 out_d_real: 8.6506e-01 l_d_fake: 6.2637e-01 out_d_fake: -4.4521e-01 
+2023-05-03 20:34:42,119 INFO: [1xuns..][epoch:116, iter:  29,900, lr:(1.000e-04,)] [eta: 9:24:11, time (data): 0.479 (0.001)] l_g_pix: 5.4780e-02 l_g_percep: 9.2349e-01 l_g_gan: 2.0929e-01 l_d_real: 5.4731e-01 out_d_real: 4.6274e-01 l_d_fake: 3.8520e-01 out_d_fake: -1.7073e+00 
+2023-05-03 20:35:30,511 INFO: [1xuns..][epoch:117, iter:  30,000, lr:(1.000e-04,)] [eta: 9:23:23, time (data): 0.487 (0.010)] l_g_pix: 5.6257e-02 l_g_percep: 1.1797e+00 l_g_gan: 1.1930e-01 l_d_real: 7.4476e-01 out_d_real: 2.7076e-01 l_d_fake: 5.3377e-01 out_d_fake: -6.5948e-01 
+2023-05-03 20:35:30,511 INFO: Saving models and training states.
+2023-05-03 20:36:19,246 INFO: [1xuns..][epoch:117, iter:  30,100, lr:(1.000e-04,)] [eta: 9:22:35, time (data): 0.482 (0.004)] l_g_pix: 3.7531e-02 l_g_percep: 9.6511e-01 l_g_gan: 1.0850e-01 l_d_real: 3.8779e-01 out_d_real: 9.8416e-01 l_d_fake: 5.5272e-01 out_d_fake: -5.3237e-01 
+2023-05-03 20:37:07,188 INFO: [1xuns..][epoch:117, iter:  30,200, lr:(1.000e-04,)] [eta: 9:21:46, time (data): 0.478 (0.001)] l_g_pix: 4.9764e-02 l_g_percep: 1.0401e+00 l_g_gan: 3.7809e-01 l_d_real: 2.9028e-01 out_d_real: 1.9214e+00 l_d_fake: 5.3298e-01 out_d_fake: -3.2456e+00 
+2023-05-03 20:37:55,609 INFO: [1xuns..][epoch:118, iter:  30,300, lr:(1.000e-04,)] [eta: 9:20:58, time (data): 0.482 (0.004)] l_g_pix: 5.8707e-02 l_g_percep: 1.0118e+00 l_g_gan: 2.7644e-01 l_d_real: 3.7596e-01 out_d_real: 1.4160e+00 l_d_fake: 4.9039e-01 out_d_fake: -2.2724e+00 
+2023-05-03 20:38:43,553 INFO: [1xuns..][epoch:118, iter:  30,400, lr:(1.000e-04,)] [eta: 9:20:09, time (data): 0.478 (0.001)] l_g_pix: 2.5887e-02 l_g_percep: 7.8827e-01 l_g_gan: 9.4399e-02 l_d_real: 6.1212e-01 out_d_real: 3.4926e-01 l_d_fake: 5.9910e-01 out_d_fake: -3.4500e-01 
+2023-05-03 20:39:31,962 INFO: [1xuns..][epoch:119, iter:  30,500, lr:(1.000e-04,)] [eta: 9:19:21, time (data): 0.482 (0.004)] l_g_pix: 3.2270e-02 l_g_percep: 9.2682e-01 l_g_gan: 1.8279e-01 l_d_real: 5.4569e-01 out_d_real: 7.3377e-01 l_d_fake: 5.4453e-01 out_d_fake: -1.2824e+00 
+2023-05-03 20:40:19,888 INFO: [1xuns..][epoch:119, iter:  30,600, lr:(1.000e-04,)] [eta: 9:18:32, time (data): 0.478 (0.001)] l_g_pix: 3.8863e-02 l_g_percep: 8.8569e-01 l_g_gan: 1.4904e-01 l_d_real: 5.2411e-01 out_d_real: 8.0642e-01 l_d_fake: 5.3517e-01 out_d_fake: -9.5476e-01 
+2023-05-03 20:41:07,816 INFO: [1xuns..][epoch:119, iter:  30,700, lr:(1.000e-04,)] [eta: 9:17:43, time (data): 0.479 (0.001)] l_g_pix: 7.2474e-02 l_g_percep: 1.0978e+00 l_g_gan: 2.0816e-01 l_d_real: 4.8752e-01 out_d_real: 7.6039e-01 l_d_fake: 3.3615e-01 out_d_fake: -1.7453e+00 
+2023-05-03 20:41:56,200 INFO: [1xuns..][epoch:120, iter:  30,800, lr:(1.000e-04,)] [eta: 9:16:55, time (data): 0.478 (0.001)] l_g_pix: 5.5894e-02 l_g_percep: 1.1363e+00 l_g_gan: 2.1212e-01 l_d_real: 6.0222e-01 out_d_real: 5.8539e-01 l_d_fake: 2.4933e-01 out_d_fake: -1.8714e+00 
+2023-05-03 20:42:44,143 INFO: [1xuns..][epoch:120, iter:  30,900, lr:(1.000e-04,)] [eta: 9:16:06, time (data): 0.479 (0.001)] l_g_pix: 3.5795e-02 l_g_percep: 9.4787e-01 l_g_gan: 1.3657e-01 l_d_real: 3.9559e-01 out_d_real: 1.3509e+00 l_d_fake: 4.7194e-01 out_d_fake: -8.9367e-01 
+2023-05-03 20:43:32,547 INFO: [1xuns..][epoch:121, iter:  31,000, lr:(1.000e-04,)] [eta: 9:15:18, time (data): 0.488 (0.011)] l_g_pix: 3.1471e-02 l_g_percep: 8.4719e-01 l_g_gan: 1.8481e-01 l_d_real: 3.8655e-01 out_d_real: 1.3455e+00 l_d_fake: 5.6243e-01 out_d_fake: -1.2852e+00 
+2023-05-03 20:43:32,547 INFO: Saving models and training states.
+2023-05-03 20:44:21,331 INFO: [1xuns..][epoch:121, iter:  31,100, lr:(1.000e-04,)] [eta: 9:14:31, time (data): 0.482 (0.004)] l_g_pix: 4.2134e-02 l_g_percep: 9.9029e-01 l_g_gan: 1.0615e-01 l_d_real: 3.2514e-01 out_d_real: 1.5977e+00 l_d_fake: 6.0260e-01 out_d_fake: -4.5902e-01 
+2023-05-03 20:45:09,272 INFO: [1xuns..][epoch:121, iter:  31,200, lr:(1.000e-04,)] [eta: 9:13:42, time (data): 0.478 (0.001)] l_g_pix: 4.7379e-02 l_g_percep: 1.0624e+00 l_g_gan: 1.9558e-01 l_d_real: 5.7489e-01 out_d_real: 7.6443e-01 l_d_fake: 3.0877e-01 out_d_fake: -1.6468e+00 
+2023-05-03 20:45:57,670 INFO: [1xuns..][epoch:122, iter:  31,300, lr:(1.000e-04,)] [eta: 9:12:53, time (data): 0.482 (0.005)] l_g_pix: 4.0099e-02 l_g_percep: 8.8039e-01 l_g_gan: 1.5675e-01 l_d_real: 4.3030e-01 out_d_real: 1.3150e+00 l_d_fake: 6.0314e-01 out_d_fake: -9.6406e-01 
+2023-05-03 20:46:45,608 INFO: [1xuns..][epoch:122, iter:  31,400, lr:(1.000e-04,)] [eta: 9:12:04, time (data): 0.478 (0.001)] l_g_pix: 2.4283e-02 l_g_percep: 7.4990e-01 l_g_gan: 1.0874e-01 l_d_real: 7.4580e-01 out_d_real: 3.4345e-01 l_d_fake: 6.2207e-01 out_d_fake: -4.6536e-01 
+2023-05-03 20:47:34,024 INFO: [1xuns..][epoch:123, iter:  31,500, lr:(1.000e-04,)] [eta: 9:11:16, time (data): 0.482 (0.005)] l_g_pix: 2.8814e-02 l_g_percep: 8.9793e-01 l_g_gan: 1.3347e-01 l_d_real: 5.7006e-01 out_d_real: 6.3209e-01 l_d_fake: 4.8205e-01 out_d_fake: -8.5262e-01 
+2023-05-03 20:48:21,953 INFO: [1xuns..][epoch:123, iter:  31,600, lr:(1.000e-04,)] [eta: 9:10:27, time (data): 0.478 (0.001)] l_g_pix: 6.1720e-02 l_g_percep: 1.1093e+00 l_g_gan: 2.1426e-01 l_d_real: 5.5606e-01 out_d_real: 5.4886e-01 l_d_fake: 3.0710e-01 out_d_fake: -1.8346e+00 
+2023-05-03 20:49:09,879 INFO: [1xuns..][epoch:123, iter:  31,700, lr:(1.000e-04,)] [eta: 9:09:38, time (data): 0.479 (0.001)] l_g_pix: 5.6440e-02 l_g_percep: 9.1560e-01 l_g_gan: 3.8167e-01 l_d_real: 5.9015e-01 out_d_real: 4.4417e-01 l_d_fake: 4.3755e-01 out_d_fake: -3.3758e+00 
+2023-05-03 20:49:58,289 INFO: [1xuns..][epoch:124, iter:  31,800, lr:(1.000e-04,)] [eta: 9:08:50, time (data): 0.478 (0.001)] l_g_pix: 3.1946e-02 l_g_percep: 8.8287e-01 l_g_gan: 1.1190e-01 l_d_real: 3.7370e-01 out_d_real: 1.1947e+00 l_d_fake: 5.5785e-01 out_d_fake: -5.6103e-01 
+2023-05-03 20:50:46,228 INFO: [1xuns..][epoch:124, iter:  31,900, lr:(1.000e-04,)] [eta: 9:08:01, time (data): 0.479 (0.001)] l_g_pix: 4.5312e-02 l_g_percep: 1.0004e+00 l_g_gan: 3.3148e-01 l_d_real: 3.4702e-01 out_d_real: 1.5029e+00 l_d_fake: 6.0784e-01 out_d_fake: -2.7052e+00 
+2023-05-03 20:51:34,160 INFO: [1xuns..][epoch:124, iter:  32,000, lr:(1.000e-04,)] [eta: 9:07:12, time (data): 0.478 (0.001)] l_g_pix: 3.7346e-02 l_g_percep: 1.0079e+00 l_g_gan: 2.1957e-01 l_d_real: 3.0090e-01 out_d_real: 1.5798e+00 l_d_fake: 4.7629e-01 out_d_fake: -1.7184e+00 
+2023-05-03 20:51:34,160 INFO: Saving models and training states.
+2023-05-03 20:52:23,408 INFO: [1xuns..][epoch:125, iter:  32,100, lr:(1.000e-04,)] [eta: 9:06:26, time (data): 0.482 (0.005)] l_g_pix: 4.1848e-02 l_g_percep: 9.2727e-01 l_g_gan: 1.0906e-01 l_d_real: 5.1634e-01 out_d_real: 9.1995e-01 l_d_fake: 7.0067e-01 out_d_fake: -3.8997e-01 
+2023-05-03 20:53:11,338 INFO: [1xuns..][epoch:125, iter:  32,200, lr:(1.000e-04,)] [eta: 9:05:37, time (data): 0.478 (0.001)] l_g_pix: 7.1424e-02 l_g_percep: 1.2186e+00 l_g_gan: 3.8908e-01 l_d_real: 3.1190e-01 out_d_real: 1.9477e+00 l_d_fake: 5.2241e-01 out_d_fake: -3.3647e+00 
+2023-05-03 20:53:59,749 INFO: [1xuns..][epoch:126, iter:  32,300, lr:(1.000e-04,)] [eta: 9:04:49, time (data): 0.482 (0.005)] l_g_pix: 2.1617e-02 l_g_percep: 7.8883e-01 l_g_gan: 1.2710e-01 l_d_real: 5.7777e-01 out_d_real: 7.0524e-01 l_d_fake: 4.5804e-01 out_d_fake: -8.1301e-01 
+2023-05-03 20:54:47,673 INFO: [1xuns..][epoch:126, iter:  32,400, lr:(1.000e-04,)] [eta: 9:04:00, time (data): 0.478 (0.001)] l_g_pix: 5.6654e-02 l_g_percep: 9.1396e-01 l_g_gan: 2.8544e-01 l_d_real: 7.5648e-01 out_d_real: 2.3263e-01 l_d_fake: 2.8061e-01 out_d_fake: -2.5721e+00 
+2023-05-03 20:55:35,596 INFO: [1xuns..][epoch:126, iter:  32,500, lr:(1.000e-04,)] [eta: 9:03:11, time (data): 0.479 (0.001)] l_g_pix: 4.2087e-02 l_g_percep: 1.0761e+00 l_g_gan: 1.4036e-01 l_d_real: 4.2624e-01 out_d_real: 1.2419e+00 l_d_fake: 4.7395e-01 out_d_fake: -9.2963e-01 
+2023-05-03 20:56:23,996 INFO: [1xuns..][epoch:127, iter:  32,600, lr:(1.000e-04,)] [eta: 9:02:23, time (data): 0.478 (0.001)] l_g_pix: 3.8351e-02 l_g_percep: 9.0781e-01 l_g_gan: 2.0471e-01 l_d_real: 4.0703e-01 out_d_real: 1.1984e+00 l_d_fake: 4.8652e-01 out_d_fake: -1.5602e+00 
+2023-05-03 20:57:11,911 INFO: [1xuns..][epoch:127, iter:  32,700, lr:(1.000e-04,)] [eta: 9:01:34, time (data): 0.479 (0.001)] l_g_pix: 3.7374e-02 l_g_percep: 8.7729e-01 l_g_gan: 1.7579e-01 l_d_real: 5.4897e-01 out_d_real: 6.9685e-01 l_d_fake: 4.8385e-01 out_d_fake: -1.2739e+00 
+2023-05-03 20:58:00,297 INFO: [1xuns..][epoch:128, iter:  32,800, lr:(1.000e-04,)] [eta: 9:00:46, time (data): 0.491 (0.014)] l_g_pix: 3.5420e-02 l_g_percep: 9.2654e-01 l_g_gan: 1.0245e-01 l_d_real: 5.9200e-01 out_d_real: 5.2479e-01 l_d_fake: 5.6557e-01 out_d_fake: -4.5913e-01 
+2023-05-03 20:58:48,235 INFO: [1xuns..][epoch:128, iter:  32,900, lr:(1.000e-04,)] [eta: 8:59:57, time (data): 0.482 (0.005)] l_g_pix: 3.5028e-02 l_g_percep: 8.9324e-01 l_g_gan: 1.8560e-01 l_d_real: 4.6376e-01 out_d_real: 9.7519e-01 l_d_fake: 4.8279e-01 out_d_fake: -1.3729e+00 
+2023-05-03 20:59:36,174 INFO: [1xuns..][epoch:128, iter:  33,000, lr:(1.000e-04,)] [eta: 8:59:08, time (data): 0.478 (0.001)] l_g_pix: 5.0823e-02 l_g_percep: 1.0820e+00 l_g_gan: 2.7220e-01 l_d_real: 3.3218e-01 out_d_real: 1.5790e+00 l_d_fake: 5.1683e-01 out_d_fake: -2.2046e+00 
+2023-05-03 20:59:36,175 INFO: Saving models and training states.
+2023-05-03 21:00:25,411 INFO: [1xuns..][epoch:129, iter:  33,100, lr:(1.000e-04,)] [eta: 8:58:21, time (data): 0.482 (0.005)] l_g_pix: 2.6986e-02 l_g_percep: 9.6844e-01 l_g_gan: 1.2324e-01 l_d_real: 3.6479e-01 out_d_real: 1.8627e+00 l_d_fake: 9.1288e-01 out_d_fake: -3.1949e-01 
+2023-05-03 21:01:13,330 INFO: [1xuns..][epoch:129, iter:  33,200, lr:(1.000e-04,)] [eta: 8:57:32, time (data): 0.478 (0.001)] l_g_pix: 2.7030e-02 l_g_percep: 7.6338e-01 l_g_gan: 1.0816e-01 l_d_real: 3.0671e-01 out_d_real: 1.4562e+00 l_d_fake: 8.8023e-01 out_d_fake: -2.0129e-01 
+2023-05-03 21:02:01,749 INFO: [1xuns..][epoch:130, iter:  33,300, lr:(1.000e-04,)] [eta: 8:56:44, time (data): 0.483 (0.005)] l_g_pix: 7.2272e-02 l_g_percep: 1.0738e+00 l_g_gan: 2.9000e-01 l_d_real: 4.8623e-01 out_d_real: 8.6945e-01 l_d_fake: 5.2754e-01 out_d_fake: -2.3705e+00 
+2023-05-03 21:02:49,684 INFO: [1xuns..][epoch:130, iter:  33,400, lr:(1.000e-04,)] [eta: 8:55:55, time (data): 0.478 (0.001)] l_g_pix: 6.1314e-02 l_g_percep: 1.0331e+00 l_g_gan: 3.3116e-01 l_d_real: 5.6787e-01 out_d_real: 6.5369e-01 l_d_fake: 2.4929e-01 out_d_fake: -3.0604e+00 
+2023-05-03 21:03:37,604 INFO: [1xuns..][epoch:130, iter:  33,500, lr:(1.000e-04,)] [eta: 8:55:06, time (data): 0.479 (0.001)] l_g_pix: 3.3488e-02 l_g_percep: 8.9089e-01 l_g_gan: 1.1022e-01 l_d_real: 3.3491e-01 out_d_real: 1.4164e+00 l_d_fake: 6.1071e-01 out_d_fake: -4.9158e-01 
+2023-05-03 21:04:26,039 INFO: [1xuns..][epoch:131, iter:  33,600, lr:(1.000e-04,)] [eta: 8:54:18, time (data): 0.478 (0.001)] l_g_pix: 4.3740e-02 l_g_percep: 8.5792e-01 l_g_gan: 1.3453e-01 l_d_real: 4.0460e-01 out_d_real: 1.4466e+00 l_d_fake: 6.9968e-01 out_d_fake: -6.4546e-01 
+2023-05-03 21:05:13,963 INFO: [1xuns..][epoch:131, iter:  33,700, lr:(1.000e-04,)] [eta: 8:53:29, time (data): 0.479 (0.001)] l_g_pix: 5.3955e-02 l_g_percep: 1.0293e+00 l_g_gan: 1.5407e-01 l_d_real: 6.3952e-01 out_d_real: 3.7650e-01 l_d_fake: 4.2366e-01 out_d_fake: -1.1167e+00 
+2023-05-03 21:06:02,362 INFO: [1xuns..][epoch:132, iter:  33,800, lr:(1.000e-04,)] [eta: 8:52:41, time (data): 0.493 (0.016)] l_g_pix: 3.4932e-02 l_g_percep: 8.9297e-01 l_g_gan: 1.8378e-01 l_d_real: 4.1397e-01 out_d_real: 9.7478e-01 l_d_fake: 6.9246e-01 out_d_fake: -1.1448e+00 
+2023-05-03 21:06:50,288 INFO: [1xuns..][epoch:132, iter:  33,900, lr:(1.000e-04,)] [eta: 8:51:52, time (data): 0.483 (0.005)] l_g_pix: 5.2645e-02 l_g_percep: 1.1629e+00 l_g_gan: 2.5166e-01 l_d_real: 4.1030e-01 out_d_real: 1.1533e+00 l_d_fake: 4.4165e-01 out_d_fake: -2.0742e+00 
+2023-05-03 21:07:38,222 INFO: [1xuns..][epoch:132, iter:  34,000, lr:(1.000e-04,)] [eta: 8:51:03, time (data): 0.478 (0.001)] l_g_pix: 4.2071e-02 l_g_percep: 1.0162e+00 l_g_gan: 4.8515e-01 l_d_real: 2.9310e-01 out_d_real: 2.0009e+00 l_d_fake: 5.1344e-01 out_d_fake: -4.3347e+00 
+2023-05-03 21:07:38,222 INFO: Saving models and training states.
+2023-05-03 21:08:27,493 INFO: [1xuns..][epoch:133, iter:  34,100, lr:(1.000e-04,)] [eta: 8:50:17, time (data): 0.482 (0.005)] l_g_pix: 4.3298e-02 l_g_percep: 9.3856e-01 l_g_gan: 2.8369e-01 l_d_real: 5.9939e-01 out_d_real: 7.1462e-01 l_d_fake: 3.6396e-01 out_d_fake: -2.4705e+00 
+2023-05-03 21:09:15,428 INFO: [1xuns..][epoch:133, iter:  34,200, lr:(1.000e-04,)] [eta: 8:49:28, time (data): 0.478 (0.001)] l_g_pix: 3.5328e-02 l_g_percep: 9.1991e-01 l_g_gan: 1.2521e-01 l_d_real: 5.5741e-01 out_d_real: 7.5983e-01 l_d_fake: 6.9060e-01 out_d_fake: -5.6160e-01 
+2023-05-03 21:10:03,368 INFO: [1xuns..][epoch:133, iter:  34,300, lr:(1.000e-04,)] [eta: 8:48:39, time (data): 0.479 (0.001)] l_g_pix: 4.0369e-02 l_g_percep: 1.0377e+00 l_g_gan: 4.6138e-01 l_d_real: 3.3906e-01 out_d_real: 1.3992e+00 l_d_fake: 4.7242e-01 out_d_fake: -4.1411e+00 
+2023-05-03 21:10:51,755 INFO: [1xuns..][epoch:134, iter:  34,400, lr:(1.000e-04,)] [eta: 8:47:51, time (data): 0.478 (0.001)] l_g_pix: 4.8317e-02 l_g_percep: 9.6080e-01 l_g_gan: 1.7881e-01 l_d_real: 6.8968e-01 out_d_real: 5.3091e-01 l_d_fake: 5.7698e-01 out_d_fake: -1.2108e+00 
+2023-05-03 21:11:39,685 INFO: [1xuns..][epoch:134, iter:  34,500, lr:(1.000e-04,)] [eta: 8:47:02, time (data): 0.479 (0.001)] l_g_pix: 5.4913e-02 l_g_percep: 1.0580e+00 l_g_gan: 2.9280e-01 l_d_real: 5.3024e-01 out_d_real: 8.9228e-01 l_d_fake: 3.0307e-01 out_d_fake: -2.6239e+00 
+2023-05-03 21:12:28,105 INFO: [1xuns..][epoch:135, iter:  34,600, lr:(1.000e-04,)] [eta: 8:46:14, time (data): 0.478 (0.001)] l_g_pix: 4.5850e-02 l_g_percep: 1.0247e+00 l_g_gan: 1.5833e-01 l_d_real: 3.4273e-01 out_d_real: 1.5718e+00 l_d_fake: 4.4034e-01 out_d_fake: -1.1430e+00 
+2023-05-03 21:13:16,038 INFO: [1xuns..][epoch:135, iter:  34,700, lr:(1.000e-04,)] [eta: 8:45:25, time (data): 0.479 (0.001)] l_g_pix: 4.0735e-02 l_g_percep: 9.0283e-01 l_g_gan: 2.4433e-01 l_d_real: 7.1787e-01 out_d_real: 2.6358e-01 l_d_fake: 4.4137e-01 out_d_fake: -2.0011e+00 
+2023-05-03 21:14:03,968 INFO: [1xuns..][epoch:135, iter:  34,800, lr:(1.000e-04,)] [eta: 8:44:36, time (data): 0.478 (0.001)] l_g_pix: 2.2857e-02 l_g_percep: 7.6933e-01 l_g_gan: 1.5591e-01 l_d_real: 5.6329e-01 out_d_real: 5.9157e-01 l_d_fake: 4.9281e-01 out_d_fake: -1.0662e+00 
+2023-05-03 21:14:52,394 INFO: [1xuns..][epoch:136, iter:  34,900, lr:(1.000e-04,)] [eta: 8:43:48, time (data): 0.483 (0.005)] l_g_pix: 4.8547e-02 l_g_percep: 1.0236e+00 l_g_gan: 1.9679e-01 l_d_real: 4.2595e-01 out_d_real: 1.1269e+00 l_d_fake: 3.9177e-01 out_d_fake: -1.5758e+00 
+2023-05-03 21:15:40,323 INFO: [1xuns..][epoch:136, iter:  35,000, lr:(1.000e-04,)] [eta: 8:42:59, time (data): 0.478 (0.001)] l_g_pix: 4.8266e-02 l_g_percep: 8.7205e-01 l_g_gan: 2.9572e-01 l_d_real: 6.9608e-01 out_d_real: 2.3407e-01 l_d_fake: 4.6707e-01 out_d_fake: -2.4889e+00 
+2023-05-03 21:15:40,323 INFO: Saving models and training states.
+2023-05-03 21:16:29,516 INFO: [1xuns..][epoch:137, iter:  35,100, lr:(1.000e-04,)] [eta: 8:42:13, time (data): 0.483 (0.005)] l_g_pix: 4.4092e-02 l_g_percep: 1.0939e+00 l_g_gan: 2.7201e-01 l_d_real: 5.6752e-01 out_d_real: 5.6290e-01 l_d_fake: 3.0522e-01 out_d_fake: -2.4137e+00 
+2023-05-03 21:17:17,450 INFO: [1xuns..][epoch:137, iter:  35,200, lr:(1.000e-04,)] [eta: 8:41:24, time (data): 0.478 (0.001)] l_g_pix: 3.4264e-02 l_g_percep: 8.4999e-01 l_g_gan: 1.4654e-01 l_d_real: 6.0605e-01 out_d_real: 5.8068e-01 l_d_fake: 4.2735e-01 out_d_fake: -1.0376e+00 
+2023-05-03 21:18:05,382 INFO: [1xuns..][epoch:137, iter:  35,300, lr:(1.000e-04,)] [eta: 8:40:35, time (data): 0.479 (0.001)] l_g_pix: 4.6156e-02 l_g_percep: 1.0119e+00 l_g_gan: 2.0126e-01 l_d_real: 2.8169e-01 out_d_real: 1.5280e+00 l_d_fake: 6.1835e-01 out_d_fake: -1.3936e+00 
+2023-05-03 21:18:53,787 INFO: [1xuns..][epoch:138, iter:  35,400, lr:(1.000e-04,)] [eta: 8:39:47, time (data): 0.478 (0.001)] l_g_pix: 3.0183e-02 l_g_percep: 9.0358e-01 l_g_gan: 1.0074e-01 l_d_real: 4.4379e-01 out_d_real: 9.9442e-01 l_d_fake: 6.7566e-01 out_d_fake: -3.3192e-01 
+2023-05-03 21:19:41,724 INFO: [1xuns..][epoch:138, iter:  35,500, lr:(1.000e-04,)] [eta: 8:38:58, time (data): 0.479 (0.001)] l_g_pix: 7.3241e-02 l_g_percep: 1.1791e+00 l_g_gan: 3.7203e-01 l_d_real: 3.9931e-01 out_d_real: 1.2316e+00 l_d_fake: 2.4537e-01 out_d_fake: -3.4718e+00 
+2023-05-03 21:20:30,141 INFO: [1xuns..][epoch:139, iter:  35,600, lr:(1.000e-04,)] [eta: 8:38:10, time (data): 0.499 (0.022)] l_g_pix: 6.2578e-02 l_g_percep: 1.0095e+00 l_g_gan: 4.0106e-01 l_d_real: 4.4369e-01 out_d_real: 1.1055e+00 l_d_fake: 5.0031e-01 out_d_fake: -3.5088e+00 
+2023-05-03 21:21:18,089 INFO: [1xuns..][epoch:139, iter:  35,700, lr:(1.000e-04,)] [eta: 8:37:21, time (data): 0.483 (0.005)] l_g_pix: 5.2788e-02 l_g_percep: 8.2203e-01 l_g_gan: 1.6283e-01 l_d_real: 5.9595e-01 out_d_real: 6.2880e-01 l_d_fake: 5.9790e-01 out_d_fake: -1.0298e+00 
+2023-05-03 21:22:06,031 INFO: [1xuns..][epoch:139, iter:  35,800, lr:(1.000e-04,)] [eta: 8:36:32, time (data): 0.478 (0.001)] l_g_pix: 4.2218e-02 l_g_percep: 9.0687e-01 l_g_gan: 1.2930e-01 l_d_real: 5.2408e-01 out_d_real: 6.6261e-01 l_d_fake: 3.9227e-01 out_d_fake: -9.0071e-01 
+2023-05-03 21:22:54,429 INFO: [1xuns..][epoch:140, iter:  35,900, lr:(1.000e-04,)] [eta: 8:35:44, time (data): 0.483 (0.005)] l_g_pix: 4.8703e-02 l_g_percep: 1.1428e+00 l_g_gan: 2.4383e-01 l_d_real: 3.7394e-01 out_d_real: 1.6408e+00 l_d_fake: 3.0879e-01 out_d_fake: -2.1290e+00 
+2023-05-03 21:23:43,067 INFO: [1xuns..][epoch:140, iter:  36,000, lr:(1.000e-04,)] [eta: 8:34:56, time (data): 0.493 (0.001)] l_g_pix: 3.7181e-02 l_g_percep: 8.8733e-01 l_g_gan: 1.3665e-01 l_d_real: 3.8776e-01 out_d_real: 1.6492e+00 l_d_fake: 6.8606e-01 out_d_fake: -6.8050e-01 
+2023-05-03 21:23:43,067 INFO: Saving models and training states.

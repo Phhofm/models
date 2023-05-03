@@ -12,4 +12,7 @@
 **OTF Training** No (PairedImageDataset)  
 **Pretrained_Model_G:** None  
 **Total Training Time:** ~ 22 hours  
-**Description:** A compact model that has been trained using kim's destroyer script on musl's nomos8k_sfw dataset to handle diverse degradations  
+**Description:** A compact model that has been trained using kim's destroyer script on musl's nomos8k_sfw dataset to handle diverse degradations:  
+blur: average,gaussian,isotropic,anisotropic   
+noise: uniform,gaussian,color,gray  
+compression: mpeg,mpeg2,h264,hevc,jpeg,webp  
