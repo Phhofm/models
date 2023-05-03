@@ -3,7 +3,7 @@
 **Model Architecture:** SRVGG  
 **Scale:** 1  
 **Purpose:** Restore degraded images  
-**Iterations:** 88'0000  
+**Iterations:** 88'000  
 **Epoch:** 143  
 **batch_size:** 10  
 **HR_size:** 128  
