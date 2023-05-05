@@ -6,7 +6,9 @@ A repo for me to publish trained models. After having made my [interactive visua
 
 **4xLSDIRCompact** - My first release - a compact model for photo upscaling. Up to 3 versions, version 3 contains N C R models, version 2 is a general model interpolated of C and R. Trained on the huge LSDIR dataset (84991 images *2 for paired training C around 160 GB).  
 
-**2xHFA2xCompact** - My second release - an anime compact (=fast) upscaling model for anime video clips, can also be used for still images.  
+**2xHFA2xCompact** - My second release - an anime compact (=fast) upscaling model for anime video clips, can also be used for still images.
+
+**2xParimgCompact** - My third release - A compact model based on Microsofts ImagePairs (11,421 images, 111 GB ) for photo upscaling. Was one of the very first models I had started training and finished it now. 
 
 ### Experimental / In Progress  
 
@@ -20,9 +22,7 @@ A repo for me to publish trained models. After having made my [interactive visua
 
 **1xunstroyerAnimeCompact** - Like 1xunstroyerCompact but trained on anime images, musl's HFA2k dataset, using kim's destroyer.  
 
-**1xunvideoAnimeCompact** - Like 1xunvideCompact to remove video compression but trained on anime images, musl's HFA2k dataset, using kim's destroyer.  
-
-**2xParimgCompact** - The very first training process I had started without any adaptation to the dataset, a compact model on Microsofts ImagePairs (11,421 images, 111 GB ) for photo upscaling.  
+**1xunvideoAnimeCompact** - Like 1xunvideCompact to remove video compression but trained on anime images, musl's HFA2k dataset, using kim's destroyer.   
 
 **4xLSDIR** - A RRDBNet model, simple ESRGAN experiment without any degradations and without any pretrain for photo upscaling.  
 
