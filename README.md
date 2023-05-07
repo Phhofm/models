@@ -1,18 +1,18 @@
 # Models
 
-A repo for me to publish trained models. After having made my [interactive visual comparison site of upscaling models](https://phhofm.github.io/upscale/) I started  training image models myself. Released models have been trained for a minimum of 24 hours. Each folder should contain its own *README.md* file with infos to the model.
+A repo for me to publish trained models. After having made my [interactive visual comparison site of upscaling models](https://phhofm.github.io/upscale/) I started training image models myself. Released models have been trained for a minimum of 24 hours. Each folder should contain its own *README.md* file with infos to the model.
 
 ### Released  
 
-**4xLSDIRCompact** - My first release - a compact model for photo upscaling. Up to 3 versions, version 3 contains N C R models, version 2 is a general model interpolated of C and R. Trained on the huge LSDIR dataset (84991 images *2 for paired training C around 160 GB).  
+**4xLSDIRCompact** - My first release - a 4x compact model for photo upscaling. Up to 3 versions, version 3 contains N C R models, version 2 is a general model interpolated of C and R. Trained on the huge LSDIR dataset (84991 images *2 for paired training C around 160 GB).  
 
-**2xHFA2xCompact** - My second release - an anime compact (=fast) upscaling model for anime video clips, can also be used for still images.
+**2xHFA2kCompact** - My second release - a 2x anime compact (=fast) upscaling model for anime video clips, can also be used for still images.
 
-**2xParimgCompact** - My third release - A compact model based on Microsofts ImagePairs (11,421 images, 111 GB ) for photo upscaling. Was one of the very first models I had started training and finished it now. 
+**2xParimgCompact** - My third release - a 2x compact model based on Microsofts ImagePairs (11,421 images, 111 GB ) for photo upscaling. Was one of the very first models I had started training and finished it now. 
+
+**4xHFA2k** - My fourth release - a 4x anime image upscaling RRDBNet model.   
 
 ### Experimental / In Progress  
-
-**4xHFA2k** - Anime upscaling RRDBNet model for still images (can also be used for clips but will be way slower).  
 
 **4xNomos8kS** - A photo upscaling RRDBNet model based on musl's Nomos8k_sfw dataset.  
 
