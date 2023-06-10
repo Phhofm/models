@@ -1,0 +1,236 @@
+2023-06-10 01:00:03,089 INFO: 
+                ____                _       _____  ____
+               / __ ) ____ _ _____ (_)_____/ ___/ / __ \
+              / __  |/ __ `// ___// // ___/\__ \ / /_/ /
+             / /_/ // /_/ /(__  )/ // /__ ___/ // _, _/
+            /_____/ \__,_//____//_/ \___//____//_/ |_|
+     ______                   __   __                 __      __
+    / ____/____   ____   ____/ /  / /   __  __ _____ / /__   / /
+   / / __ / __ \ / __ \ / __  /  / /   / / / // ___// //_/  / /
+  / /_/ // /_/ // /_/ // /_/ /  / /___/ /_/ // /__ / /<    /_/
+  \____/ \____/ \____/ \____/  /_____/\____/ \___//_/|_|  (_)
+    
+Version Information: 
+	BasicSR: 1.3.4.8
+	PyTorch: 2.0.1+cu117
+	TorchVision: 0.15.2+cu117
+2023-06-10 01:00:03,089 INFO: 
+  name: 4xHFA2kLUDVAESFMN
+  model_type: SRModel
+  scale: 4
+  num_gpu: 1
+  manual_seed: 0
+  datasets:[
+    test_1:[
+      name: LUDVAE_TEST
+      type: PairedImageDataset
+      dataroot_gt: /home/phips/Documents/datasets/HFA2k_LUDVAE/VAL_HR
+      dataroot_lq: /home/phips/Documents/datasets/HFA2k_LUDVAE/VAL_LR
+      filename_tmpl: {}
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 4
+    ]
+  ]
+  network_g:[
+    type: SAFMN
+    dim: 36
+    n_blocks: 8
+    ffn_scale: 2.0
+    upscaling_factor: 4
+  ]
+  path:[
+    pretrain_network_g: /home/phips/Documents/SAFMN/experiments/4xHFA2kLUDVAESAFMN/models/net_g_245000.pth
+    strict_load_g: True
+    results_root: /home/phips/Documents/SAFMN/results/4xHFA2kLUDVAESFMN
+    log: /home/phips/Documents/SAFMN/results/4xHFA2kLUDVAESFMN
+    visualization: /home/phips/Documents/SAFMN/results/4xHFA2kLUDVAESFMN/visualization
+  ]
+  val:[
+    save_img: True
+    suffix: None
+    metrics:[
+      psnr:[
+        type: calculate_psnr
+        crop_border: 4
+        test_y_channel: True
+      ]
+      ssim:[
+        type: calculate_ssim
+        crop_border: 4
+        test_y_channel: True
+      ]
+    ]
+  ]
+  dist: False
+  rank: 0
+  world_size: 1
+  auto_resume: False
+  is_train: False
+
+2023-06-10 01:00:03,090 INFO: Dataset [PairedImageDataset] - LUDVAE_TEST is built.
+2023-06-10 01:00:03,090 INFO: Number of test images in LUDVAE_TEST: 14
+2023-06-10 01:00:03,096 INFO: Network [SAFMN] is created.
+2023-06-10 01:00:03,486 INFO: Network: SAFMN, with parameters: 239,520
+2023-06-10 01:00:03,486 INFO: SAFMN(
+  (to_feat): Conv2d(3, 36, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (feats): Sequential(
+    (0): AttBlock(
+      (norm1): LayerNorm()
+      (norm2): LayerNorm()
+      (safm): SAFM(
+        (mfr): ModuleList(
+          (0-3): 4 x Conv2d(9, 9, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=9)
+        )
+        (aggr): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (act): GELU(approximate='none')
+      )
+      (ccm): CCM(
+        (ccm): Sequential(
+          (0): Conv2d(36, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): GELU(approximate='none')
+          (2): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (1): AttBlock(
+      (norm1): LayerNorm()
+      (norm2): LayerNorm()
+      (safm): SAFM(
+        (mfr): ModuleList(
+          (0-3): 4 x Conv2d(9, 9, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=9)
+        )
+        (aggr): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (act): GELU(approximate='none')
+      )
+      (ccm): CCM(
+        (ccm): Sequential(
+          (0): Conv2d(36, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): GELU(approximate='none')
+          (2): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (2): AttBlock(
+      (norm1): LayerNorm()
+      (norm2): LayerNorm()
+      (safm): SAFM(
+        (mfr): ModuleList(
+          (0-3): 4 x Conv2d(9, 9, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=9)
+        )
+        (aggr): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (act): GELU(approximate='none')
+      )
+      (ccm): CCM(
+        (ccm): Sequential(
+          (0): Conv2d(36, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): GELU(approximate='none')
+          (2): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (3): AttBlock(
+      (norm1): LayerNorm()
+      (norm2): LayerNorm()
+      (safm): SAFM(
+        (mfr): ModuleList(
+          (0-3): 4 x Conv2d(9, 9, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=9)
+        )
+        (aggr): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (act): GELU(approximate='none')
+      )
+      (ccm): CCM(
+        (ccm): Sequential(
+          (0): Conv2d(36, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): GELU(approximate='none')
+          (2): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (4): AttBlock(
+      (norm1): LayerNorm()
+      (norm2): LayerNorm()
+      (safm): SAFM(
+        (mfr): ModuleList(
+          (0-3): 4 x Conv2d(9, 9, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=9)
+        )
+        (aggr): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (act): GELU(approximate='none')
+      )
+      (ccm): CCM(
+        (ccm): Sequential(
+          (0): Conv2d(36, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): GELU(approximate='none')
+          (2): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (5): AttBlock(
+      (norm1): LayerNorm()
+      (norm2): LayerNorm()
+      (safm): SAFM(
+        (mfr): ModuleList(
+          (0-3): 4 x Conv2d(9, 9, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=9)
+        )
+        (aggr): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (act): GELU(approximate='none')
+      )
+      (ccm): CCM(
+        (ccm): Sequential(
+          (0): Conv2d(36, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): GELU(approximate='none')
+          (2): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (6): AttBlock(
+      (norm1): LayerNorm()
+      (norm2): LayerNorm()
+      (safm): SAFM(
+        (mfr): ModuleList(
+          (0-3): 4 x Conv2d(9, 9, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=9)
+        )
+        (aggr): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (act): GELU(approximate='none')
+      )
+      (ccm): CCM(
+        (ccm): Sequential(
+          (0): Conv2d(36, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): GELU(approximate='none')
+          (2): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+    (7): AttBlock(
+      (norm1): LayerNorm()
+      (norm2): LayerNorm()
+      (safm): SAFM(
+        (mfr): ModuleList(
+          (0-3): 4 x Conv2d(9, 9, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=9)
+        )
+        (aggr): Conv2d(36, 36, kernel_size=(1, 1), stride=(1, 1))
+        (act): GELU(approximate='none')
+      )
+      (ccm): CCM(
+        (ccm): Sequential(
+          (0): Conv2d(36, 72, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+          (1): GELU(approximate='none')
+          (2): Conv2d(72, 36, kernel_size=(1, 1), stride=(1, 1))
+        )
+      )
+    )
+  )
+  (to_img): Sequential(
+    (0): Conv2d(36, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): PixelShuffle(upscale_factor=4)
+  )
+)
+2023-06-10 01:00:03,492 INFO: Loading SAFMN model from /home/phips/Documents/SAFMN/experiments/4xHFA2kLUDVAESAFMN/models/net_g_245000.pth, with param key: [params].
+2023-06-10 01:00:03,500 INFO: Model [SRModel] is created.
+2023-06-10 01:00:03,500 INFO: Testing LUDVAE_TEST...
+2023-06-10 01:00:08,059 INFO: Validation LUDVAE_TEST
+	 # psnr: 28.5989	Best: 28.5989 @ 4xHFA2kLUDVAESFMN iter
+	 # ssim: 0.8449	Best: 0.8449 @ 4xHFA2kLUDVAESFMN iter
+

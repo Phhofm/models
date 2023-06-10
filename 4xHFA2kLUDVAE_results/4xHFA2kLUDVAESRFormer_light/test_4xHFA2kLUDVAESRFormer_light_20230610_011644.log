@@ -1,0 +1,551 @@
+2023-06-10 01:16:44,428 INFO: 
+   __             _ _   ___   __                              __
+  / /__________ _(_) | / / | / /__  _____      ________  ____/ /_  ___  __
+ / __/ ___/ __ `/ /  |/ /  |/ / _ \/ ___/_____/ ___/ _ \/ __  / / / / |/_/
+/ /_/ /  / /_/ / / /|  / /|  /  __/ /  /_____/ /  /  __/ /_/ / /_/ />  <
+\__/_/   \__,_/_/_/ |_/_/ |_/\___/_/        /_/   \___/\__,_/\__,_/_/|_|
+     ______                   __   __                 __      __
+    / ____/____   ____   ____/ /  / /   __  __ _____ / /__   / /
+   / / __ / __ \ / __ \ / __  /  / /   / / / // ___// //_/  / /
+  / /_/ // /_/ // /_/ // /_/ /  / /___/ /_/ // /__ / /<    /_/
+  \____/ \____/ \____/ \____/  /_____/\____/ \___//_/|_|  (_)
+    
+Version Information: 
+	PyTorch: 2.0.1+cu117
+	TorchVision: 0.15.2+cu117
+2023-06-10 01:16:44,428 INFO: 
+  name: 4xHFA2kLUDVAESRFormer_light
+  model_type: GeneralGANModel
+  scale: 4
+  num_gpu: 1
+  manual_seed: 0
+  datasets:[
+    test:[
+      name: LUDVAE_TEST
+      type: PairedImageDataset
+      dataroot_gt: /home/phips/Documents/datasets/HFA2k_LUDVAE/VAL_HR
+      dataroot_lq: /home/phips/Documents/datasets/HFA2k_LUDVAE/VAL_LR
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 4
+    ]
+  ]
+  network_g:[
+    type: SRFormer
+    upscale: 4
+    in_chans: 3
+    img_size: 64
+    window_size: 16
+    img_range: 1.0
+    depths: [6, 6, 6, 6]
+    embed_dim: 60
+    num_heads: [6, 6, 6, 6]
+    mlp_ratio: 2
+    upsampler: pixelshuffledirect
+    resi_connection: 1conv
+  ]
+  path:[
+    pretrain_network_g: /home/phips/Documents/traiNNer-redux-FJ/experiments/2xHFA2kLUDVAESRFormer_light/models/net_g_300000.pth
+    param_key_g: params_ema
+    strict_load_g: True
+    results_root: /home/phips/Documents/results/4xHFA2kLUDVAESRFormer_light
+    log: /home/phips/Documents/results/4xHFA2kLUDVAESRFormer_light
+    visualization: /home/phips/Documents/results/4xHFA2kLUDVAESRFormer_light/visualization
+  ]
+  val:[
+    save_img: True
+    suffix: None
+    metrics:[
+      psnr:[
+        type: calculate_psnr
+        crop_border: 4
+        test_y_channel: False
+      ]
+      ssim:[
+        type: calculate_ssim
+        crop_border: 4
+        test_y_channel: False
+      ]
+    ]
+  ]
+  dist: False
+  rank: 0
+  world_size: 1
+  auto_resume: False
+  is_train: False
+
+2023-06-10 01:16:44,429 INFO: Dataset [PairedImageDataset] - LUDVAE_TEST is built.
+2023-06-10 01:16:44,429 INFO: Number of test images in LUDVAE_TEST: 14
+2023-06-10 01:16:44,476 INFO: Network [SRFormer] is created.
+2023-06-10 01:16:45,227 INFO: Network: SRFormer, with parameters: 872,748
+2023-06-10 01:16:45,227 INFO: SRFormer(
+  (conv_first): Conv2d(3, 60, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (patch_embed): PatchEmbed(
+    (norm): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+  )
+  (patch_unembed): PatchUnEmbed()
+  (pos_drop): Dropout(p=0.0, inplace=False)
+  (layers): ModuleList(
+    (0): PSA_Group(
+      (residual_group): BasicLayer(
+        dim=60, input_resolution=(64, 64), depth=6
+        (blocks): ModuleList(
+          (0): PSA_Block(
+            dim=60, input_resolution=(64, 64), num_heads=6, window_size=16, shift_size=0, mlp_ratio=2
+            (norm1): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (attn): PSA(
+              dim=60, window_size=(8, 8), num_heads=6
+              (kv): Linear(in_features=60, out_features=30, bias=True)
+              (q): Linear(in_features=60, out_features=60, bias=True)
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (proj): Linear(in_features=60, out_features=60, bias=True)
+              (proj_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (drop_path): Identity()
+            (norm2): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (mlp): ConvFFN(
+              (fc1): Linear(in_features=60, out_features=120, bias=True)
+              (act): GELU(approximate='none')
+              (before_add): emptyModule()
+              (after_add): emptyModule()
+              (dwconv): dwconv(
+                (depthwise_conv): Sequential(
+                  (0): Conv2d(120, 120, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=120)
+                  (1): GELU(approximate='none')
+                )
+              )
+              (fc2): Linear(in_features=120, out_features=60, bias=True)
+              (drop): Dropout(p=0.0, inplace=False)
+            )
+            (after_norm1): emptyModule()
+            (after_attention): emptyModule()
+            (residual_after_attention): emptyModule()
+            (after_norm2): emptyModule()
+            (after_mlp): emptyModule()
+            (residual_after_mlp): emptyModule()
+          )
+          (1): PSA_Block(
+            dim=60, input_resolution=(64, 64), num_heads=6, window_size=16, shift_size=8, mlp_ratio=2
+            (norm1): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (attn): PSA(
+              dim=60, window_size=(8, 8), num_heads=6
+              (kv): Linear(in_features=60, out_features=30, bias=True)
+              (q): Linear(in_features=60, out_features=60, bias=True)
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (proj): Linear(in_features=60, out_features=60, bias=True)
+              (proj_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (drop_path): DropPath()
+            (norm2): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (mlp): ConvFFN(
+              (fc1): Linear(in_features=60, out_features=120, bias=True)
+              (act): GELU(approximate='none')
+              (before_add): emptyModule()
+              (after_add): emptyModule()
+              (dwconv): dwconv(
+                (depthwise_conv): Sequential(
+                  (0): Conv2d(120, 120, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=120)
+                  (1): GELU(approximate='none')
+                )
+              )
+              (fc2): Linear(in_features=120, out_features=60, bias=True)
+              (drop): Dropout(p=0.0, inplace=False)
+            )
+            (after_norm1): emptyModule()
+            (after_attention): emptyModule()
+            (residual_after_attention): emptyModule()
+            (after_norm2): emptyModule()
+            (after_mlp): emptyModule()
+            (residual_after_mlp): emptyModule()
+          )
+          (2): PSA_Block(
+            dim=60, input_resolution=(64, 64), num_heads=6, window_size=16, shift_size=0, mlp_ratio=2
+            (norm1): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (attn): PSA(
+              dim=60, window_size=(8, 8), num_heads=6
+              (kv): Linear(in_features=60, out_features=30, bias=True)
+              (q): Linear(in_features=60, out_features=60, bias=True)
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (proj): Linear(in_features=60, out_features=60, bias=True)
+              (proj_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (drop_path): DropPath()
+            (norm2): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (mlp): ConvFFN(
+              (fc1): Linear(in_features=60, out_features=120, bias=True)
+              (act): GELU(approximate='none')
+              (before_add): emptyModule()
+              (after_add): emptyModule()
+              (dwconv): dwconv(
+                (depthwise_conv): Sequential(
+                  (0): Conv2d(120, 120, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=120)
+                  (1): GELU(approximate='none')
+                )
+              )
+              (fc2): Linear(in_features=120, out_features=60, bias=True)
+              (drop): Dropout(p=0.0, inplace=False)
+            )
+            (after_norm1): emptyModule()
+            (after_attention): emptyModule()
+            (residual_after_attention): emptyModule()
+            (after_norm2): emptyModule()
+            (after_mlp): emptyModule()
+            (residual_after_mlp): emptyModule()
+          )
+          (3): PSA_Block(
+            dim=60, input_resolution=(64, 64), num_heads=6, window_size=16, shift_size=8, mlp_ratio=2
+            (norm1): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (attn): PSA(
+              dim=60, window_size=(8, 8), num_heads=6
+              (kv): Linear(in_features=60, out_features=30, bias=True)
+              (q): Linear(in_features=60, out_features=60, bias=True)
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (proj): Linear(in_features=60, out_features=60, bias=True)
+              (proj_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (drop_path): DropPath()
+            (norm2): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (mlp): ConvFFN(
+              (fc1): Linear(in_features=60, out_features=120, bias=True)
+              (act): GELU(approximate='none')
+              (before_add): emptyModule()
+              (after_add): emptyModule()
+              (dwconv): dwconv(
+                (depthwise_conv): Sequential(
+                  (0): Conv2d(120, 120, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=120)
+                  (1): GELU(approximate='none')
+                )
+              )
+              (fc2): Linear(in_features=120, out_features=60, bias=True)
+              (drop): Dropout(p=0.0, inplace=False)
+            )
+            (after_norm1): emptyModule()
+            (after_attention): emptyModule()
+            (residual_after_attention): emptyModule()
+            (after_norm2): emptyModule()
+            (after_mlp): emptyModule()
+            (residual_after_mlp): emptyModule()
+          )
+          (4): PSA_Block(
+            dim=60, input_resolution=(64, 64), num_heads=6, window_size=16, shift_size=0, mlp_ratio=2
+            (norm1): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (attn): PSA(
+              dim=60, window_size=(8, 8), num_heads=6
+              (kv): Linear(in_features=60, out_features=30, bias=True)
+              (q): Linear(in_features=60, out_features=60, bias=True)
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (proj): Linear(in_features=60, out_features=60, bias=True)
+              (proj_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (drop_path): DropPath()
+            (norm2): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (mlp): ConvFFN(
+              (fc1): Linear(in_features=60, out_features=120, bias=True)
+              (act): GELU(approximate='none')
+              (before_add): emptyModule()
+              (after_add): emptyModule()
+              (dwconv): dwconv(
+                (depthwise_conv): Sequential(
+                  (0): Conv2d(120, 120, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=120)
+                  (1): GELU(approximate='none')
+                )
+              )
+              (fc2): Linear(in_features=120, out_features=60, bias=True)
+              (drop): Dropout(p=0.0, inplace=False)
+            )
+            (after_norm1): emptyModule()
+            (after_attention): emptyModule()
+            (residual_after_attention): emptyModule()
+            (after_norm2): emptyModule()
+            (after_mlp): emptyModule()
+            (residual_after_mlp): emptyModule()
+          )
+          (5): PSA_Block(
+            dim=60, input_resolution=(64, 64), num_heads=6, window_size=16, shift_size=8, mlp_ratio=2
+            (norm1): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (attn): PSA(
+              dim=60, window_size=(8, 8), num_heads=6
+              (kv): Linear(in_features=60, out_features=30, bias=True)
+              (q): Linear(in_features=60, out_features=60, bias=True)
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (proj): Linear(in_features=60, out_features=60, bias=True)
+              (proj_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (drop_path): DropPath()
+            (norm2): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (mlp): ConvFFN(
+              (fc1): Linear(in_features=60, out_features=120, bias=True)
+              (act): GELU(approximate='none')
+              (before_add): emptyModule()
+              (after_add): emptyModule()
+              (dwconv): dwconv(
+                (depthwise_conv): Sequential(
+                  (0): Conv2d(120, 120, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=120)
+                  (1): GELU(approximate='none')
+                )
+              )
+              (fc2): Linear(in_features=120, out_features=60, bias=True)
+              (drop): Dropout(p=0.0, inplace=False)
+            )
+            (after_norm1): emptyModule()
+            (after_attention): emptyModule()
+            (residual_after_attention): emptyModule()
+            (after_norm2): emptyModule()
+            (after_mlp): emptyModule()
+            (residual_after_mlp): emptyModule()
+          )
+        )
+      )
+      (conv): Conv2d(60, 60, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (patch_embed): PatchEmbed()
+      (patch_unembed): PatchUnEmbed()
+      (before_PSA_Group_conv): emptyModule()
+      (after_PSA_Group_conv): emptyModule()
+      (after_PSA_Group_Residual): emptyModule()
+    )
+    (1-3): 3 x PSA_Group(
+      (residual_group): BasicLayer(
+        dim=60, input_resolution=(64, 64), depth=6
+        (blocks): ModuleList(
+          (0): PSA_Block(
+            dim=60, input_resolution=(64, 64), num_heads=6, window_size=16, shift_size=0, mlp_ratio=2
+            (norm1): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (attn): PSA(
+              dim=60, window_size=(8, 8), num_heads=6
+              (kv): Linear(in_features=60, out_features=30, bias=True)
+              (q): Linear(in_features=60, out_features=60, bias=True)
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (proj): Linear(in_features=60, out_features=60, bias=True)
+              (proj_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (drop_path): DropPath()
+            (norm2): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (mlp): ConvFFN(
+              (fc1): Linear(in_features=60, out_features=120, bias=True)
+              (act): GELU(approximate='none')
+              (before_add): emptyModule()
+              (after_add): emptyModule()
+              (dwconv): dwconv(
+                (depthwise_conv): Sequential(
+                  (0): Conv2d(120, 120, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=120)
+                  (1): GELU(approximate='none')
+                )
+              )
+              (fc2): Linear(in_features=120, out_features=60, bias=True)
+              (drop): Dropout(p=0.0, inplace=False)
+            )
+            (after_norm1): emptyModule()
+            (after_attention): emptyModule()
+            (residual_after_attention): emptyModule()
+            (after_norm2): emptyModule()
+            (after_mlp): emptyModule()
+            (residual_after_mlp): emptyModule()
+          )
+          (1): PSA_Block(
+            dim=60, input_resolution=(64, 64), num_heads=6, window_size=16, shift_size=8, mlp_ratio=2
+            (norm1): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (attn): PSA(
+              dim=60, window_size=(8, 8), num_heads=6
+              (kv): Linear(in_features=60, out_features=30, bias=True)
+              (q): Linear(in_features=60, out_features=60, bias=True)
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (proj): Linear(in_features=60, out_features=60, bias=True)
+              (proj_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (drop_path): DropPath()
+            (norm2): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (mlp): ConvFFN(
+              (fc1): Linear(in_features=60, out_features=120, bias=True)
+              (act): GELU(approximate='none')
+              (before_add): emptyModule()
+              (after_add): emptyModule()
+              (dwconv): dwconv(
+                (depthwise_conv): Sequential(
+                  (0): Conv2d(120, 120, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=120)
+                  (1): GELU(approximate='none')
+                )
+              )
+              (fc2): Linear(in_features=120, out_features=60, bias=True)
+              (drop): Dropout(p=0.0, inplace=False)
+            )
+            (after_norm1): emptyModule()
+            (after_attention): emptyModule()
+            (residual_after_attention): emptyModule()
+            (after_norm2): emptyModule()
+            (after_mlp): emptyModule()
+            (residual_after_mlp): emptyModule()
+          )
+          (2): PSA_Block(
+            dim=60, input_resolution=(64, 64), num_heads=6, window_size=16, shift_size=0, mlp_ratio=2
+            (norm1): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (attn): PSA(
+              dim=60, window_size=(8, 8), num_heads=6
+              (kv): Linear(in_features=60, out_features=30, bias=True)
+              (q): Linear(in_features=60, out_features=60, bias=True)
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (proj): Linear(in_features=60, out_features=60, bias=True)
+              (proj_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (drop_path): DropPath()
+            (norm2): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (mlp): ConvFFN(
+              (fc1): Linear(in_features=60, out_features=120, bias=True)
+              (act): GELU(approximate='none')
+              (before_add): emptyModule()
+              (after_add): emptyModule()
+              (dwconv): dwconv(
+                (depthwise_conv): Sequential(
+                  (0): Conv2d(120, 120, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=120)
+                  (1): GELU(approximate='none')
+                )
+              )
+              (fc2): Linear(in_features=120, out_features=60, bias=True)
+              (drop): Dropout(p=0.0, inplace=False)
+            )
+            (after_norm1): emptyModule()
+            (after_attention): emptyModule()
+            (residual_after_attention): emptyModule()
+            (after_norm2): emptyModule()
+            (after_mlp): emptyModule()
+            (residual_after_mlp): emptyModule()
+          )
+          (3): PSA_Block(
+            dim=60, input_resolution=(64, 64), num_heads=6, window_size=16, shift_size=8, mlp_ratio=2
+            (norm1): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (attn): PSA(
+              dim=60, window_size=(8, 8), num_heads=6
+              (kv): Linear(in_features=60, out_features=30, bias=True)
+              (q): Linear(in_features=60, out_features=60, bias=True)
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (proj): Linear(in_features=60, out_features=60, bias=True)
+              (proj_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (drop_path): DropPath()
+            (norm2): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (mlp): ConvFFN(
+              (fc1): Linear(in_features=60, out_features=120, bias=True)
+              (act): GELU(approximate='none')
+              (before_add): emptyModule()
+              (after_add): emptyModule()
+              (dwconv): dwconv(
+                (depthwise_conv): Sequential(
+                  (0): Conv2d(120, 120, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=120)
+                  (1): GELU(approximate='none')
+                )
+              )
+              (fc2): Linear(in_features=120, out_features=60, bias=True)
+              (drop): Dropout(p=0.0, inplace=False)
+            )
+            (after_norm1): emptyModule()
+            (after_attention): emptyModule()
+            (residual_after_attention): emptyModule()
+            (after_norm2): emptyModule()
+            (after_mlp): emptyModule()
+            (residual_after_mlp): emptyModule()
+          )
+          (4): PSA_Block(
+            dim=60, input_resolution=(64, 64), num_heads=6, window_size=16, shift_size=0, mlp_ratio=2
+            (norm1): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (attn): PSA(
+              dim=60, window_size=(8, 8), num_heads=6
+              (kv): Linear(in_features=60, out_features=30, bias=True)
+              (q): Linear(in_features=60, out_features=60, bias=True)
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (proj): Linear(in_features=60, out_features=60, bias=True)
+              (proj_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (drop_path): DropPath()
+            (norm2): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (mlp): ConvFFN(
+              (fc1): Linear(in_features=60, out_features=120, bias=True)
+              (act): GELU(approximate='none')
+              (before_add): emptyModule()
+              (after_add): emptyModule()
+              (dwconv): dwconv(
+                (depthwise_conv): Sequential(
+                  (0): Conv2d(120, 120, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=120)
+                  (1): GELU(approximate='none')
+                )
+              )
+              (fc2): Linear(in_features=120, out_features=60, bias=True)
+              (drop): Dropout(p=0.0, inplace=False)
+            )
+            (after_norm1): emptyModule()
+            (after_attention): emptyModule()
+            (residual_after_attention): emptyModule()
+            (after_norm2): emptyModule()
+            (after_mlp): emptyModule()
+            (residual_after_mlp): emptyModule()
+          )
+          (5): PSA_Block(
+            dim=60, input_resolution=(64, 64), num_heads=6, window_size=16, shift_size=8, mlp_ratio=2
+            (norm1): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (attn): PSA(
+              dim=60, window_size=(8, 8), num_heads=6
+              (kv): Linear(in_features=60, out_features=30, bias=True)
+              (q): Linear(in_features=60, out_features=60, bias=True)
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (proj): Linear(in_features=60, out_features=60, bias=True)
+              (proj_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (drop_path): DropPath()
+            (norm2): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+            (mlp): ConvFFN(
+              (fc1): Linear(in_features=60, out_features=120, bias=True)
+              (act): GELU(approximate='none')
+              (before_add): emptyModule()
+              (after_add): emptyModule()
+              (dwconv): dwconv(
+                (depthwise_conv): Sequential(
+                  (0): Conv2d(120, 120, kernel_size=(5, 5), stride=(1, 1), padding=(2, 2), groups=120)
+                  (1): GELU(approximate='none')
+                )
+              )
+              (fc2): Linear(in_features=120, out_features=60, bias=True)
+              (drop): Dropout(p=0.0, inplace=False)
+            )
+            (after_norm1): emptyModule()
+            (after_attention): emptyModule()
+            (residual_after_attention): emptyModule()
+            (after_norm2): emptyModule()
+            (after_mlp): emptyModule()
+            (residual_after_mlp): emptyModule()
+          )
+        )
+      )
+      (conv): Conv2d(60, 60, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (patch_embed): PatchEmbed()
+      (patch_unembed): PatchUnEmbed()
+      (before_PSA_Group_conv): emptyModule()
+      (after_PSA_Group_conv): emptyModule()
+      (after_PSA_Group_Residual): emptyModule()
+    )
+  )
+  (norm): LayerNorm((60,), eps=1e-05, elementwise_affine=True)
+  (conv_after_body): Conv2d(60, 60, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (upsample): UpsampleOneStep(
+    (0): Conv2d(60, 48, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): PixelShuffle(upscale_factor=4)
+  )
+)
+2023-06-10 01:16:45,311 INFO: Loading SRFormer model from /home/phips/Documents/traiNNer-redux-FJ/experiments/2xHFA2kLUDVAESRFormer_light/models/net_g_300000.pth, with param key: [params_ema].
+2023-06-10 01:16:45,356 INFO: Model [GeneralGANModel] is created.
+2023-06-10 01:16:45,356 INFO: Testing LUDVAE_TEST...
+2023-06-10 01:17:04,533 INFO: Validation LUDVAE_TEST
+	 # psnr: 28.2416	Best: 28.2416 @ 4xHFA2kLUDVAESRFormer_light iter
+	 # ssim: 0.8444	Best: 0.8444 @ 4xHFA2kLUDVAESRFormer_light iter
+
