@@ -1,4 +1,4 @@
-# GENERATE TIME: Fri Jun  9 12:07:10 2023
+# GENERATE TIME: Sat Jun 10 14:58:39 2023
 # CMD:
 # train.py -opt options/train/SRFormer/4xHFA2kLUDVAESRFormer_light.yml
 
@@ -28,15 +28,14 @@ datasets:
     io_backend:
       type: disk
 
-    #final_sinc_prob: 0.5
-    gt_size: 128 #256
+    gt_size: 256
     use_hflip: true
     use_rot: true
     
     # data loader
     use_shuffle: true
     num_worker_per_gpu: 4
-    batch_size_per_gpu: 3 #4
+    batch_size_per_gpu: 2
     dataset_enlarge_ratio: 1
     prefetch_mode: ~
 
@@ -71,13 +70,13 @@ network_d:
 
 # path
 path:
-  pretrain_network_g: /home/phips/Documents/traiNNer-redux-FJ/experiments/pretrained_models/net_g_254000.pth
+  pretrain_network_g: /home/phips/Documents/traiNNer-redux-FJ/experiments/pretrained_models/net_g_300000.pth
   param_key_g: params_ema
   strict_load_g: true
-  pretrain_network_d: /home/phips/Documents/traiNNer-redux-FJ/experiments/pretrained_models/net_d_254000.pth
+  pretrain_network_d: /home/phips/Documents/traiNNer-redux-FJ/experiments/pretrained_models/net_d_300000.pth
   param_key_d: params
   strict_load_d: true
-  resume_state: /home/phips/Documents/traiNNer-redux-FJ/experiments/pretrained_models/254000.state
+  resume_state: /home/phips/Documents/traiNNer-redux-FJ/experiments/pretrained_models/300000.state
 
 # training settings
 train:
@@ -95,10 +94,10 @@ train:
 
   scheduler:
     type: MultiStepLR
-    milestones: [200000, 400000] #at these iterations it will reduce the learning rate.
+    milestones: [200000, 600000] #at these iterations it will reduce the learning rate.
     gamma: 0.5
 
-  total_iter: 400000
+  total_iter: 600000
   warmup_iter: -1  # no warm up
 
   # losses
@@ -186,7 +185,7 @@ logger:
 dist_params:
   backend: nccl
   port: 29500
-aining settings
+ining settings
 dist_params:
   backend: nccl
   port: 29500

@@ -14,6 +14,10 @@ A repo for me to publish trained models. After having made my [interactive visua
 
 **4xNomos8kS**C - My fifth release - a realistic photo upscaling RRDBNet model based on musl's Nomos8k_sfw dataset.   
 
+**4xHFA2kLUDAVESwinIR_light** - My sixth release - a lightweight anime upscaling model which handles realistic degradations like compression, noise and blur, trained on musl's HFA2kLUDVAE dataset.  
+
+**4xHFA2kLUDVAESRFormer_light** - Also in my sixth release - a lightweight anime upscaling model which handles realistic degradations like compression, noise and blur, trained on musl's HFA2kLUDVAE dataset (different network).  
+
 ### Experimental / In Progress  
 
 **1xunstroyerCompact** - A compact model removing various degradations (blur, noise, compression) from an image. Trained with using kim's destroyer script on musl's Nomos8k_sfw dataset.  
@@ -27,6 +31,10 @@ A repo for me to publish trained models. After having made my [interactive visua
 **4xLSDIR** - A RRDBNet model, simple ESRGAN experiment without any degradations and without any pretrain for photo upscaling.  
 
 **4xLSDIRplus** - An RRDBNet experiment to see what influence a huge dataset has on the official x4plus model for photo upscaling.  
+
+**4xHFA2kLUDVAE** - Training lightweight models of different networks to test for interence speed and metrics for anime upscaling with realistic degradations. See results in the corresponding results folder.  
+
+**Lexica** - Also training different models for AI generated image upscaling.  
 
 ### Pretrains  
 

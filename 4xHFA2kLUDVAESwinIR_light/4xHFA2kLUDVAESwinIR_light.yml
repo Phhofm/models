@@ -1,4 +1,4 @@
-# GENERATE TIME: Sat Jun 10 09:44:05 2023
+# GENERATE TIME: Sat Jun 10 09:54:35 2023
 # CMD:
 # train.py -opt options/train/SwinIR/4xHFA2kLUDVAESwinIR_light.yml
 
@@ -29,7 +29,7 @@ datasets:
     io_backend:
       type: disk
 
-    gt_size: 128
+    gt_size: 256 # previous 128. Also possible: 192, 256, 320, 384, 448, 512
     use_hflip: true
     use_rot: true
 
@@ -64,10 +64,10 @@ network_g:
 
 # path
 path:
-  pretrain_network_g:
+  pretrain_network_g: /home/phips/Documents/traiNNer-redux-FJ/experiments/pretrained_models/net_g_300000.pth
   strict_load_g: true
   param_key_g: params_ema
-  resume_state:
+  resume_state: /home/phips/Documents/traiNNer-redux-FJ/experiments/pretrained_models/300000.state
 
 # training settings
 train:
