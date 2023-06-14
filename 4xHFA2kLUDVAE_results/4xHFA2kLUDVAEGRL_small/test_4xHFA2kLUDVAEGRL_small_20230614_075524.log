@@ -1,0 +1,1110 @@
+2023-06-14 07:55:24,018 INFO: 
+   __             _ _   ___   __                              __
+  / /__________ _(_) | / / | / /__  _____      ________  ____/ /_  ___  __
+ / __/ ___/ __ `/ /  |/ /  |/ / _ \/ ___/_____/ ___/ _ \/ __  / / / / |/_/
+/ /_/ /  / /_/ / / /|  / /|  /  __/ /  /_____/ /  /  __/ /_/ / /_/ />  <
+\__/_/   \__,_/_/_/ |_/_/ |_/\___/_/        /_/   \___/\__,_/\__,_/_/|_|
+     ______                   __   __                 __      __
+    / ____/____   ____   ____/ /  / /   __  __ _____ / /__   / /
+   / / __ / __ \ / __ \ / __  /  / /   / / / // ___// //_/  / /
+  / /_/ // /_/ // /_/ // /_/ /  / /___/ /_/ // /__ / /<    /_/
+  \____/ \____/ \____/ \____/  /_____/\____/ \___//_/|_|  (_)
+    
+Version Information: 
+	PyTorch: 2.0.1+cu117
+	TorchVision: 0.15.2+cu117
+2023-06-14 07:55:24,018 INFO: 
+  name: 4xHFA2kLUDVAEGRL_small
+  model_type: GeneralGANModel
+  scale: 4
+  num_gpu: 1
+  manual_seed: 0
+  datasets:[
+    test:[
+      name: LUDVAE_TEST
+      type: PairedImageDataset
+      dataroot_gt: /home/phips/Documents/datasets/HFA2k_LUDVAE/VAL_HR
+      dataroot_lq: /home/phips/Documents/datasets/HFA2k_LUDVAE/VAL_LR
+      io_backend:[
+        type: disk
+      ]
+      phase: test
+      scale: 4
+    ]
+  ]
+  network_g:[
+    type: GRL
+    upscale: 4
+    in_channels: 3
+    embed_dim: 128
+    img_range: 1.0
+    img_size: 64
+    upsampler: pixelshuffle
+    depths: [4, 4, 4, 4]
+    num_heads_window: [2, 2, 2, 2]
+    num_heads_stripe: [2, 2, 2, 2]
+    window_size: 8
+    stripe_size: [8, None]
+    stripe_groups: [None, 4]
+    stripe_shift: True
+    mlp_ratio: 2
+    qkv_proj_type: linear
+    anchor_proj_type: avgpool
+    anchor_one_stage: True
+    anchor_window_down_factor: 4
+    out_proj_type: linear
+    conv_type: 1conv
+    init_method: n
+    fairscale_checkpoint: False
+    offload_to_cpu: False
+    double_window: False
+    stripe_square: False
+    separable_conv_act: True
+    local_connection: False
+    use_buffer: True
+    use_efficient_buffer: True
+    euclidean_dist: False
+  ]
+  path:[
+    pretrain_network_g: /home/phips/Documents/traiNNer-redux-FJ/experiments/4xHFA2kLUDVAEGRL_small/models/net_g_200000.pth
+    param_key_g: params_ema
+    strict_load_g: True
+    results_root: /home/phips/Documents/results/4xHFA2kLUDVAEGRL_small
+    log: /home/phips/Documents/results/4xHFA2kLUDVAEGRL_small
+    visualization: /home/phips/Documents/results/4xHFA2kLUDVAEGRL_small/visualization
+  ]
+  val:[
+    save_img: True
+    suffix: None
+    metrics:[
+      psnr:[
+        type: calculate_psnr
+        crop_border: 4
+        test_y_channel: False
+      ]
+      ssim:[
+        type: calculate_ssim
+        crop_border: 4
+        test_y_channel: False
+      ]
+    ]
+  ]
+  dist: False
+  rank: 0
+  world_size: 1
+  auto_resume: False
+  is_train: False
+
+2023-06-14 07:55:24,018 INFO: Dataset [PairedImageDataset] - LUDVAE_TEST is built.
+2023-06-14 07:55:24,018 INFO: Number of test images in LUDVAE_TEST: 14
+2023-06-14 07:55:24,072 INFO: Network [GRL] is created.
+2023-06-14 07:55:24,806 INFO: Network: GRL, with parameters: 3,487,715
+2023-06-14 07:55:24,806 INFO: GRL(
+  (conv_first): Conv2d(3, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (norm_start): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+  (pos_drop): Dropout(p=0.0, inplace=False)
+  (layers): ModuleList(
+    (0): TransformerStage(
+      (blocks): ModuleList(
+        (0): EfficientMixAttnTransformerBlock(
+          dim=128, input_resolution=(64, 64), num_heads=(2, 2), window_size=(8, 8), window_shift=True, stripe_size=[8, None], stripe_groups=[None, 4], stripe_shift=False, self.stripe_type=H, mlp_ratio=2, res_scale=1.0
+          (attn): MixedAttention(
+            dim=128, input_resolution=(64, 64)
+            (qkv): QKVProjection(
+              (body): Linear(in_features=128, out_features=384, bias=True)
+            )
+            (anchor): AnchorProjection(
+              (body): ModuleList(
+                (0): AnchorLinear(
+                  (pooling): AvgPool2d(kernel_size=4, stride=4, padding=0)
+                  (reduction): Linear(in_features=128, out_features=64, bias=True)
+                )
+              )
+            )
+            (window_attn): WindowAttention(
+              window_size=(8, 8), shift_size=4, pretrained_window_size=[0, 0], num_heads=2
+              (attn_transform): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (stripe_attn): AnchorStripeAttention(
+              stripe_size=[8, None], stripe_groups=[None, 4], stripe_shift=False, pretrained_stripe_size=[0, 0], num_heads=2, anchor_window_down_factor=4
+              (attn_transform1): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_transform2): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (proj): Linear(in_features=128, out_features=128, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+          (drop_path): Identity()
+          (mlp): Mlp(
+            (fc1): Linear(in_features=128, out_features=256, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (fc2): Linear(in_features=256, out_features=128, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        )
+        (1): EfficientMixAttnTransformerBlock(
+          dim=128, input_resolution=(64, 64), num_heads=(2, 2), window_size=(8, 8), window_shift=False, stripe_size=[None, 8], stripe_groups=[4, None], stripe_shift=False, self.stripe_type=W, mlp_ratio=2, res_scale=1.0
+          (attn): MixedAttention(
+            dim=128, input_resolution=(64, 64)
+            (qkv): QKVProjection(
+              (body): Linear(in_features=128, out_features=384, bias=True)
+            )
+            (anchor): AnchorProjection(
+              (body): ModuleList(
+                (0): AnchorLinear(
+                  (pooling): AvgPool2d(kernel_size=4, stride=4, padding=0)
+                  (reduction): Linear(in_features=128, out_features=64, bias=True)
+                )
+              )
+            )
+            (window_attn): WindowAttention(
+              window_size=(8, 8), shift_size=0, pretrained_window_size=[0, 0], num_heads=2
+              (attn_transform): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (stripe_attn): AnchorStripeAttention(
+              stripe_size=[None, 8], stripe_groups=[4, None], stripe_shift=False, pretrained_stripe_size=[0, 0], num_heads=2, anchor_window_down_factor=4
+              (attn_transform1): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_transform2): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (proj): Linear(in_features=128, out_features=128, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.007)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=128, out_features=256, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (fc2): Linear(in_features=256, out_features=128, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        )
+        (2): EfficientMixAttnTransformerBlock(
+          dim=128, input_resolution=(64, 64), num_heads=(2, 2), window_size=(8, 8), window_shift=True, stripe_size=[8, None], stripe_groups=[None, 4], stripe_shift=True, self.stripe_type=H, mlp_ratio=2, res_scale=1.0
+          (attn): MixedAttention(
+            dim=128, input_resolution=(64, 64)
+            (qkv): QKVProjection(
+              (body): Linear(in_features=128, out_features=384, bias=True)
+            )
+            (anchor): AnchorProjection(
+              (body): ModuleList(
+                (0): AnchorLinear(
+                  (pooling): AvgPool2d(kernel_size=4, stride=4, padding=0)
+                  (reduction): Linear(in_features=128, out_features=64, bias=True)
+                )
+              )
+            )
+            (window_attn): WindowAttention(
+              window_size=(8, 8), shift_size=4, pretrained_window_size=[0, 0], num_heads=2
+              (attn_transform): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (stripe_attn): AnchorStripeAttention(
+              stripe_size=[8, None], stripe_groups=[None, 4], stripe_shift=True, pretrained_stripe_size=[0, 0], num_heads=2, anchor_window_down_factor=4
+              (attn_transform1): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_transform2): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (proj): Linear(in_features=128, out_features=128, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.013)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=128, out_features=256, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (fc2): Linear(in_features=256, out_features=128, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        )
+        (3): EfficientMixAttnTransformerBlock(
+          dim=128, input_resolution=(64, 64), num_heads=(2, 2), window_size=(8, 8), window_shift=False, stripe_size=[None, 8], stripe_groups=[4, None], stripe_shift=True, self.stripe_type=W, mlp_ratio=2, res_scale=1.0
+          (attn): MixedAttention(
+            dim=128, input_resolution=(64, 64)
+            (qkv): QKVProjection(
+              (body): Linear(in_features=128, out_features=384, bias=True)
+            )
+            (anchor): AnchorProjection(
+              (body): ModuleList(
+                (0): AnchorLinear(
+                  (pooling): AvgPool2d(kernel_size=4, stride=4, padding=0)
+                  (reduction): Linear(in_features=128, out_features=64, bias=True)
+                )
+              )
+            )
+            (window_attn): WindowAttention(
+              window_size=(8, 8), shift_size=0, pretrained_window_size=[0, 0], num_heads=2
+              (attn_transform): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (stripe_attn): AnchorStripeAttention(
+              stripe_size=[None, 8], stripe_groups=[4, None], stripe_shift=True, pretrained_stripe_size=[0, 0], num_heads=2, anchor_window_down_factor=4
+              (attn_transform1): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_transform2): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (proj): Linear(in_features=128, out_features=128, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.020)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=128, out_features=256, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (fc2): Linear(in_features=256, out_features=128, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        )
+      )
+      (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    )
+    (1): TransformerStage(
+      (blocks): ModuleList(
+        (0): EfficientMixAttnTransformerBlock(
+          dim=128, input_resolution=(64, 64), num_heads=(2, 2), window_size=(8, 8), window_shift=True, stripe_size=[8, None], stripe_groups=[None, 4], stripe_shift=False, self.stripe_type=H, mlp_ratio=2, res_scale=1.0
+          (attn): MixedAttention(
+            dim=128, input_resolution=(64, 64)
+            (qkv): QKVProjection(
+              (body): Linear(in_features=128, out_features=384, bias=True)
+            )
+            (anchor): AnchorProjection(
+              (body): ModuleList(
+                (0): AnchorLinear(
+                  (pooling): AvgPool2d(kernel_size=4, stride=4, padding=0)
+                  (reduction): Linear(in_features=128, out_features=64, bias=True)
+                )
+              )
+            )
+            (window_attn): WindowAttention(
+              window_size=(8, 8), shift_size=4, pretrained_window_size=[0, 0], num_heads=2
+              (attn_transform): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (stripe_attn): AnchorStripeAttention(
+              stripe_size=[8, None], stripe_groups=[None, 4], stripe_shift=False, pretrained_stripe_size=[0, 0], num_heads=2, anchor_window_down_factor=4
+              (attn_transform1): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_transform2): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (proj): Linear(in_features=128, out_features=128, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.027)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=128, out_features=256, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (fc2): Linear(in_features=256, out_features=128, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        )
+        (1): EfficientMixAttnTransformerBlock(
+          dim=128, input_resolution=(64, 64), num_heads=(2, 2), window_size=(8, 8), window_shift=False, stripe_size=[None, 8], stripe_groups=[4, None], stripe_shift=False, self.stripe_type=W, mlp_ratio=2, res_scale=1.0
+          (attn): MixedAttention(
+            dim=128, input_resolution=(64, 64)
+            (qkv): QKVProjection(
+              (body): Linear(in_features=128, out_features=384, bias=True)
+            )
+            (anchor): AnchorProjection(
+              (body): ModuleList(
+                (0): AnchorLinear(
+                  (pooling): AvgPool2d(kernel_size=4, stride=4, padding=0)
+                  (reduction): Linear(in_features=128, out_features=64, bias=True)
+                )
+              )
+            )
+            (window_attn): WindowAttention(
+              window_size=(8, 8), shift_size=0, pretrained_window_size=[0, 0], num_heads=2
+              (attn_transform): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (stripe_attn): AnchorStripeAttention(
+              stripe_size=[None, 8], stripe_groups=[4, None], stripe_shift=False, pretrained_stripe_size=[0, 0], num_heads=2, anchor_window_down_factor=4
+              (attn_transform1): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_transform2): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (proj): Linear(in_features=128, out_features=128, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.033)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=128, out_features=256, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (fc2): Linear(in_features=256, out_features=128, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        )
+        (2): EfficientMixAttnTransformerBlock(
+          dim=128, input_resolution=(64, 64), num_heads=(2, 2), window_size=(8, 8), window_shift=True, stripe_size=[8, None], stripe_groups=[None, 4], stripe_shift=True, self.stripe_type=H, mlp_ratio=2, res_scale=1.0
+          (attn): MixedAttention(
+            dim=128, input_resolution=(64, 64)
+            (qkv): QKVProjection(
+              (body): Linear(in_features=128, out_features=384, bias=True)
+            )
+            (anchor): AnchorProjection(
+              (body): ModuleList(
+                (0): AnchorLinear(
+                  (pooling): AvgPool2d(kernel_size=4, stride=4, padding=0)
+                  (reduction): Linear(in_features=128, out_features=64, bias=True)
+                )
+              )
+            )
+            (window_attn): WindowAttention(
+              window_size=(8, 8), shift_size=4, pretrained_window_size=[0, 0], num_heads=2
+              (attn_transform): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (stripe_attn): AnchorStripeAttention(
+              stripe_size=[8, None], stripe_groups=[None, 4], stripe_shift=True, pretrained_stripe_size=[0, 0], num_heads=2, anchor_window_down_factor=4
+              (attn_transform1): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_transform2): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (proj): Linear(in_features=128, out_features=128, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.040)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=128, out_features=256, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (fc2): Linear(in_features=256, out_features=128, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        )
+        (3): EfficientMixAttnTransformerBlock(
+          dim=128, input_resolution=(64, 64), num_heads=(2, 2), window_size=(8, 8), window_shift=False, stripe_size=[None, 8], stripe_groups=[4, None], stripe_shift=True, self.stripe_type=W, mlp_ratio=2, res_scale=1.0
+          (attn): MixedAttention(
+            dim=128, input_resolution=(64, 64)
+            (qkv): QKVProjection(
+              (body): Linear(in_features=128, out_features=384, bias=True)
+            )
+            (anchor): AnchorProjection(
+              (body): ModuleList(
+                (0): AnchorLinear(
+                  (pooling): AvgPool2d(kernel_size=4, stride=4, padding=0)
+                  (reduction): Linear(in_features=128, out_features=64, bias=True)
+                )
+              )
+            )
+            (window_attn): WindowAttention(
+              window_size=(8, 8), shift_size=0, pretrained_window_size=[0, 0], num_heads=2
+              (attn_transform): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (stripe_attn): AnchorStripeAttention(
+              stripe_size=[None, 8], stripe_groups=[4, None], stripe_shift=True, pretrained_stripe_size=[0, 0], num_heads=2, anchor_window_down_factor=4
+              (attn_transform1): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_transform2): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (proj): Linear(in_features=128, out_features=128, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.047)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=128, out_features=256, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (fc2): Linear(in_features=256, out_features=128, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        )
+      )
+      (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    )
+    (2): TransformerStage(
+      (blocks): ModuleList(
+        (0): EfficientMixAttnTransformerBlock(
+          dim=128, input_resolution=(64, 64), num_heads=(2, 2), window_size=(8, 8), window_shift=True, stripe_size=[8, None], stripe_groups=[None, 4], stripe_shift=False, self.stripe_type=H, mlp_ratio=2, res_scale=1.0
+          (attn): MixedAttention(
+            dim=128, input_resolution=(64, 64)
+            (qkv): QKVProjection(
+              (body): Linear(in_features=128, out_features=384, bias=True)
+            )
+            (anchor): AnchorProjection(
+              (body): ModuleList(
+                (0): AnchorLinear(
+                  (pooling): AvgPool2d(kernel_size=4, stride=4, padding=0)
+                  (reduction): Linear(in_features=128, out_features=64, bias=True)
+                )
+              )
+            )
+            (window_attn): WindowAttention(
+              window_size=(8, 8), shift_size=4, pretrained_window_size=[0, 0], num_heads=2
+              (attn_transform): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (stripe_attn): AnchorStripeAttention(
+              stripe_size=[8, None], stripe_groups=[None, 4], stripe_shift=False, pretrained_stripe_size=[0, 0], num_heads=2, anchor_window_down_factor=4
+              (attn_transform1): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_transform2): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (proj): Linear(in_features=128, out_features=128, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.053)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=128, out_features=256, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (fc2): Linear(in_features=256, out_features=128, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        )
+        (1): EfficientMixAttnTransformerBlock(
+          dim=128, input_resolution=(64, 64), num_heads=(2, 2), window_size=(8, 8), window_shift=False, stripe_size=[None, 8], stripe_groups=[4, None], stripe_shift=False, self.stripe_type=W, mlp_ratio=2, res_scale=1.0
+          (attn): MixedAttention(
+            dim=128, input_resolution=(64, 64)
+            (qkv): QKVProjection(
+              (body): Linear(in_features=128, out_features=384, bias=True)
+            )
+            (anchor): AnchorProjection(
+              (body): ModuleList(
+                (0): AnchorLinear(
+                  (pooling): AvgPool2d(kernel_size=4, stride=4, padding=0)
+                  (reduction): Linear(in_features=128, out_features=64, bias=True)
+                )
+              )
+            )
+            (window_attn): WindowAttention(
+              window_size=(8, 8), shift_size=0, pretrained_window_size=[0, 0], num_heads=2
+              (attn_transform): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (stripe_attn): AnchorStripeAttention(
+              stripe_size=[None, 8], stripe_groups=[4, None], stripe_shift=False, pretrained_stripe_size=[0, 0], num_heads=2, anchor_window_down_factor=4
+              (attn_transform1): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_transform2): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (proj): Linear(in_features=128, out_features=128, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.060)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=128, out_features=256, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (fc2): Linear(in_features=256, out_features=128, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        )
+        (2): EfficientMixAttnTransformerBlock(
+          dim=128, input_resolution=(64, 64), num_heads=(2, 2), window_size=(8, 8), window_shift=True, stripe_size=[8, None], stripe_groups=[None, 4], stripe_shift=True, self.stripe_type=H, mlp_ratio=2, res_scale=1.0
+          (attn): MixedAttention(
+            dim=128, input_resolution=(64, 64)
+            (qkv): QKVProjection(
+              (body): Linear(in_features=128, out_features=384, bias=True)
+            )
+            (anchor): AnchorProjection(
+              (body): ModuleList(
+                (0): AnchorLinear(
+                  (pooling): AvgPool2d(kernel_size=4, stride=4, padding=0)
+                  (reduction): Linear(in_features=128, out_features=64, bias=True)
+                )
+              )
+            )
+            (window_attn): WindowAttention(
+              window_size=(8, 8), shift_size=4, pretrained_window_size=[0, 0], num_heads=2
+              (attn_transform): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (stripe_attn): AnchorStripeAttention(
+              stripe_size=[8, None], stripe_groups=[None, 4], stripe_shift=True, pretrained_stripe_size=[0, 0], num_heads=2, anchor_window_down_factor=4
+              (attn_transform1): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_transform2): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (proj): Linear(in_features=128, out_features=128, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.067)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=128, out_features=256, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (fc2): Linear(in_features=256, out_features=128, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        )
+        (3): EfficientMixAttnTransformerBlock(
+          dim=128, input_resolution=(64, 64), num_heads=(2, 2), window_size=(8, 8), window_shift=False, stripe_size=[None, 8], stripe_groups=[4, None], stripe_shift=True, self.stripe_type=W, mlp_ratio=2, res_scale=1.0
+          (attn): MixedAttention(
+            dim=128, input_resolution=(64, 64)
+            (qkv): QKVProjection(
+              (body): Linear(in_features=128, out_features=384, bias=True)
+            )
+            (anchor): AnchorProjection(
+              (body): ModuleList(
+                (0): AnchorLinear(
+                  (pooling): AvgPool2d(kernel_size=4, stride=4, padding=0)
+                  (reduction): Linear(in_features=128, out_features=64, bias=True)
+                )
+              )
+            )
+            (window_attn): WindowAttention(
+              window_size=(8, 8), shift_size=0, pretrained_window_size=[0, 0], num_heads=2
+              (attn_transform): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (stripe_attn): AnchorStripeAttention(
+              stripe_size=[None, 8], stripe_groups=[4, None], stripe_shift=True, pretrained_stripe_size=[0, 0], num_heads=2, anchor_window_down_factor=4
+              (attn_transform1): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_transform2): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (proj): Linear(in_features=128, out_features=128, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.073)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=128, out_features=256, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (fc2): Linear(in_features=256, out_features=128, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        )
+      )
+      (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    )
+    (3): TransformerStage(
+      (blocks): ModuleList(
+        (0): EfficientMixAttnTransformerBlock(
+          dim=128, input_resolution=(64, 64), num_heads=(2, 2), window_size=(8, 8), window_shift=True, stripe_size=[8, None], stripe_groups=[None, 4], stripe_shift=False, self.stripe_type=H, mlp_ratio=2, res_scale=1.0
+          (attn): MixedAttention(
+            dim=128, input_resolution=(64, 64)
+            (qkv): QKVProjection(
+              (body): Linear(in_features=128, out_features=384, bias=True)
+            )
+            (anchor): AnchorProjection(
+              (body): ModuleList(
+                (0): AnchorLinear(
+                  (pooling): AvgPool2d(kernel_size=4, stride=4, padding=0)
+                  (reduction): Linear(in_features=128, out_features=64, bias=True)
+                )
+              )
+            )
+            (window_attn): WindowAttention(
+              window_size=(8, 8), shift_size=4, pretrained_window_size=[0, 0], num_heads=2
+              (attn_transform): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (stripe_attn): AnchorStripeAttention(
+              stripe_size=[8, None], stripe_groups=[None, 4], stripe_shift=False, pretrained_stripe_size=[0, 0], num_heads=2, anchor_window_down_factor=4
+              (attn_transform1): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_transform2): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (proj): Linear(in_features=128, out_features=128, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.080)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=128, out_features=256, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (fc2): Linear(in_features=256, out_features=128, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        )
+        (1): EfficientMixAttnTransformerBlock(
+          dim=128, input_resolution=(64, 64), num_heads=(2, 2), window_size=(8, 8), window_shift=False, stripe_size=[None, 8], stripe_groups=[4, None], stripe_shift=False, self.stripe_type=W, mlp_ratio=2, res_scale=1.0
+          (attn): MixedAttention(
+            dim=128, input_resolution=(64, 64)
+            (qkv): QKVProjection(
+              (body): Linear(in_features=128, out_features=384, bias=True)
+            )
+            (anchor): AnchorProjection(
+              (body): ModuleList(
+                (0): AnchorLinear(
+                  (pooling): AvgPool2d(kernel_size=4, stride=4, padding=0)
+                  (reduction): Linear(in_features=128, out_features=64, bias=True)
+                )
+              )
+            )
+            (window_attn): WindowAttention(
+              window_size=(8, 8), shift_size=0, pretrained_window_size=[0, 0], num_heads=2
+              (attn_transform): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (stripe_attn): AnchorStripeAttention(
+              stripe_size=[None, 8], stripe_groups=[4, None], stripe_shift=False, pretrained_stripe_size=[0, 0], num_heads=2, anchor_window_down_factor=4
+              (attn_transform1): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_transform2): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (proj): Linear(in_features=128, out_features=128, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.087)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=128, out_features=256, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (fc2): Linear(in_features=256, out_features=128, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        )
+        (2): EfficientMixAttnTransformerBlock(
+          dim=128, input_resolution=(64, 64), num_heads=(2, 2), window_size=(8, 8), window_shift=True, stripe_size=[8, None], stripe_groups=[None, 4], stripe_shift=True, self.stripe_type=H, mlp_ratio=2, res_scale=1.0
+          (attn): MixedAttention(
+            dim=128, input_resolution=(64, 64)
+            (qkv): QKVProjection(
+              (body): Linear(in_features=128, out_features=384, bias=True)
+            )
+            (anchor): AnchorProjection(
+              (body): ModuleList(
+                (0): AnchorLinear(
+                  (pooling): AvgPool2d(kernel_size=4, stride=4, padding=0)
+                  (reduction): Linear(in_features=128, out_features=64, bias=True)
+                )
+              )
+            )
+            (window_attn): WindowAttention(
+              window_size=(8, 8), shift_size=4, pretrained_window_size=[0, 0], num_heads=2
+              (attn_transform): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (stripe_attn): AnchorStripeAttention(
+              stripe_size=[8, None], stripe_groups=[None, 4], stripe_shift=True, pretrained_stripe_size=[0, 0], num_heads=2, anchor_window_down_factor=4
+              (attn_transform1): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_transform2): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (proj): Linear(in_features=128, out_features=128, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.093)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=128, out_features=256, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (fc2): Linear(in_features=256, out_features=128, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        )
+        (3): EfficientMixAttnTransformerBlock(
+          dim=128, input_resolution=(64, 64), num_heads=(2, 2), window_size=(8, 8), window_shift=False, stripe_size=[None, 8], stripe_groups=[4, None], stripe_shift=True, self.stripe_type=W, mlp_ratio=2, res_scale=1.0
+          (attn): MixedAttention(
+            dim=128, input_resolution=(64, 64)
+            (qkv): QKVProjection(
+              (body): Linear(in_features=128, out_features=384, bias=True)
+            )
+            (anchor): AnchorProjection(
+              (body): ModuleList(
+                (0): AnchorLinear(
+                  (pooling): AvgPool2d(kernel_size=4, stride=4, padding=0)
+                  (reduction): Linear(in_features=128, out_features=64, bias=True)
+                )
+              )
+            )
+            (window_attn): WindowAttention(
+              window_size=(8, 8), shift_size=0, pretrained_window_size=[0, 0], num_heads=2
+              (attn_transform): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (stripe_attn): AnchorStripeAttention(
+              stripe_size=[None, 8], stripe_groups=[4, None], stripe_shift=True, pretrained_stripe_size=[0, 0], num_heads=2, anchor_window_down_factor=4
+              (attn_transform1): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_transform2): AffineTransform(
+                (cpb_mlp): CPB_MLP(
+                  (0): Linear(in_features=2, out_features=512, bias=True)
+                  (1): ReLU(inplace=True)
+                  (2): Linear(in_features=512, out_features=2, bias=False)
+                )
+              )
+              (attn_drop): Dropout(p=0.0, inplace=False)
+              (softmax): Softmax(dim=-1)
+            )
+            (proj): Linear(in_features=128, out_features=128, bias=True)
+            (proj_drop): Dropout(p=0.0, inplace=False)
+          )
+          (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath(drop_prob=0.100)
+          (mlp): Mlp(
+            (fc1): Linear(in_features=128, out_features=256, bias=True)
+            (act): GELU(approximate='none')
+            (drop1): Dropout(p=0.0, inplace=False)
+            (fc2): Linear(in_features=256, out_features=128, bias=True)
+            (drop2): Dropout(p=0.0, inplace=False)
+          )
+          (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        )
+      )
+      (conv): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    )
+  )
+  (norm_end): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+  (conv_after_body): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+  (conv_before_upsample): Sequential(
+    (0): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): LeakyReLU(negative_slope=0.01, inplace=True)
+  )
+  (upsample): Upsample(
+    (up): Sequential(
+      (0): Conv2d(64, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (1): PixelShuffle(upscale_factor=2)
+      (2): Conv2d(64, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (3): PixelShuffle(upscale_factor=2)
+    )
+  )
+  (conv_last): Conv2d(64, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+)
+2023-06-14 07:55:24,886 INFO: Loading GRL model from /home/phips/Documents/traiNNer-redux-FJ/experiments/4xHFA2kLUDVAEGRL_small/models/net_g_200000.pth, with param key: [params_ema].
+2023-06-14 07:55:24,929 INFO: Model [GeneralGANModel] is created.
+2023-06-14 07:55:24,929 INFO: Testing LUDVAE_TEST...
+2023-06-14 07:55:45,091 INFO: Validation LUDVAE_TEST
+	 # psnr: 27.8113	Best: 27.8113 @ 4xHFA2kLUDVAEGRL_small iter
+	 # ssim: 0.8374	Best: 0.8374 @ 4xHFA2kLUDVAEGRL_small iter
+

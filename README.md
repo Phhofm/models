@@ -12,21 +12,17 @@ A repo for me to publish trained models. After having made my [interactive visua
 
 **4xHFA2k** - My fourth release - a 4x anime image upscaling RRDBNet model, trained on musl's HFA2k dataset.    
 
-**4xNomos8kS**C - My fifth release - a realistic photo upscaling RRDBNet model based on musl's Nomos8k_sfw dataset.   
+**4xNomos8kSC** - My fifth release - a realistic photo upscaling RRDBNet model based on musl's Nomos8k_sfw dataset.   
 
-**4xHFA2kLUDAVESwinIR_light** - My sixth release - a lightweight anime upscaling model which handles realistic degradations like compression, noise and blur, trained on musl's HFA2kLUDVAE dataset.  
+**2xLexicaRRDBNet & 2xLexicaRRDBNet_Sharp** - My sixth release - a 2x upscaler for AI generated images (no degradations), trained on around 34k images from lexica.art
 
-**4xHFA2kLUDVAESRFormer_light** - Also in my sixth release - a lightweight anime upscaling model which handles realistic degradations like compression, noise and blur, trained on musl's HFA2kLUDVAE dataset (different network).  
+**4xHFA2kLUDAVESwinIR_light** - My seventh release - 4x anime super-resolution with real degradation. trained on musl's HFA2kLUDVAE dataset (SwinIR small model).  
 
-### Experimental / In Progress  
+**4xHFA2kLUDVAESRFormer_light** - Also in my seventh release - 4x anime super-resolution with real degradation, trained on musl's HFA2kLUDVAE dataset (SRFormer light model).  
 
-**1xunstroyerCompact** - A compact model removing various degradations (blur, noise, compression) from an image. Trained with using kim's destroyer script on musl's Nomos8k_sfw dataset.  
+**4xHFA2kLUDVAEGRL_small** - My eight release - 4x anime super-resolution with real degradation, trained on musl's HFA2kLUDVAE dataset (GRL small model). 
 
-**1xunvideoCompact** - A compact model removing video compression (MPEG, MPEG-2, H264, HEVC) from an image. Trained with using kim's destroyer script on musl's Nomos8k_sfw dataset. 
-
-**1xunstroyerAnimeCompact** - Like 1xunstroyerCompact but trained on anime images, musl's HFA2k dataset, using kim's destroyer.  
-
-**1xunvideoAnimeCompact** - Like 1xunvideCompact to remove video compression but trained on anime images, musl's HFA2k dataset, using kim's destroyer.   
+### Experimental / In Progress    
 
 **4xLSDIR** - A RRDBNet model, simple ESRGAN experiment without any degradations and without any pretrain for photo upscaling.  
 
@@ -34,7 +30,7 @@ A repo for me to publish trained models. After having made my [interactive visua
 
 **4xHFA2kLUDVAE** - Training lightweight models of different networks to test for interence speed and metrics for anime upscaling with realistic degradations. See results in the corresponding results folder.  
 
-**Lexica** - Also training different models for AI generated image upscaling.  
+**Lexica** - Also training different models for AI generated image upscaling. (RRDBNet, HAT, SwinIR)  
 
 ### Pretrains  
 
@@ -51,3 +47,11 @@ A repo for me to publish trained models. After having made my [interactive visua
 4xInt-RemacRestore (Remacri + UltraMix_Restore)  
 4xInt-AnimeArt (AnimeSharp + VolArt)  
 2xInt-LD-AnimeJaNai (LD-Anime + AnimeJaNai)  
+
+### Dropped 
+
+**SAFMN** - More specifically the 4xHFA2kLUDVAESAFMN model, this network had a tendency to generate artifacts on certain outputs. Dropped the whole network from future models because of artifacts introduction.
+
+**1xUnstroyer Series** - Was a series of srvggnet models that I started training to remove various degradations (compression: MPEG, MPEG-2, H264, HEVC, webp, jpg ; noise, blur etc) but results were not to my liking, dropped the project and worked on others
+
+
