@@ -1,0 +1,207 @@
+# GENERATE TIME: Fri Apr 14 00:07:06 2023
+# CMD:
+# realesrgan/train.py -opt options/2xHFA2KCompact.yml --auto_resume
+
+name: 2xHFA2kCompact
+model_type: RealESRGANModel
+scale: 2
+num_gpu: auto
+manual_seed: 0
+
+# got less 'extreme' results when i falsified all of them, or more 'natural' in that sense in my tests
+l1_gt_usm: False
+percep_gt_usm: False
+gan_gt_usm: False
+
+# Reduced the noises and got better results, they are just too extreme in the official configs in the real-esrgan repo.
+# PS removing noise altogether to keep details better, I might re-introduce it in later training stages if needed but probably wont need it since its more about handling some compression (like from web sources)
+resize_prob: [0.2, 0.7, 0.1]
+resize_range: [0.15, 1.5]
+#gaussian_noise_prob: 0.05
+gaussian_noise_prob: 0
+#noise_range: [1, 3]
+noise_range: [0, 0]
+#poisson_scale_range: [0.05, 0.5]
+poisson_scale_range: [0, 0]
+#gray_noise_prob: 0.1
+gray_noise_prob: 0
+jpeg_range: [75, 95]
+
+second_blur_prob: 0.8
+resize_prob2: [0.3, 0.4, 0.3]
+resize_range2: [0.3, 1.2]
+#gaussian_noise_prob2: 0.03
+gaussian_noise_prob2: 0
+#noise_range2: [1, 2]
+noise_range2: [0, 0]
+#poisson_scale_range2: [0.05, 0.5]
+poisson_scale_range2: [0, 0]
+#gray_noise_prob2: 0.05
+gray_noise_prob2: 0
+jpeg_range2: [75, 95]
+
+# increased gt size since it seems to give better results. But not 512 because the crops are already 512 and i have the otf resize setting (otherwise would need to remove)
+gt_size: 384
+queue_size: 180
+
+datasets:
+  train:
+    name: HFA2k # musls, the most recent one in the dataset-releases channel, lets try it out :) I see him as the expert in all of this.
+    type: RealESRGANDataset
+    dataroot_gt: datasets/HFA2k
+    meta_info: datasets/hfa2k_info.txt
+    io_backend:
+      type: disk
+
+# reduced kernel blur sizes, I still want it since bicubic/biliniar downsampling algos might still introduce a bit of blurriness, even tho all the other blur is intentional in anime but even for mastering they resize
+# should not flatten the image because I reduced it (again, official repo config seems too extreme)
+    blur_kernel_size: 12
+    kernel_list: ['iso', 'aniso', 'generalized_iso', 'generalized_aniso', 'plateau_iso', 'plateau_aniso']
+    kernel_prob: [0.45, 0.25, 0.12, 0.03, 0.12, 0.03]
+    sinc_prob: 0.1
+    blur_sigma: [0.2, 3]
+    betag_range: [0.5, 4]
+    betap_range: [1, 2]
+
+    blur_kernel_size2: 12
+    kernel_list2: ['iso', 'aniso', 'generalized_iso', 'generalized_aniso', 'plateau_iso', 'plateau_aniso']
+    kernel_prob2: [0.45, 0.25, 0.12, 0.03, 0.12, 0.03]
+    sinc_prob2: 0.1
+    blur_sigma2: [0.2, 1.5]
+    betag_range2: [0.5, 4]
+    betap_range2: [1, 2]
+
+    final_sinc_prob: 0.8
+
+# had increased gt size, enabled use_rot
+    gt_size: 384
+    use_hflip: True
+    use_rot: True
+
+    use_shuffle: true
+    num_worker_per_gpu: 4
+    batch_size_per_gpu: 2
+    dataset_enlarge_ratio: 1
+    prefetch_mode: ~
+# i want it to keep an eye on progression, especially since I use variable batch sizes for trainings, speeds up by a lot. Last training step is highest batch size basically
+  val:
+    name: validation
+    type: PairedImageDataset
+    dataroot_gt: inputs/val_hfa2k/val/HR
+    dataroot_lq: inputs/val_hfa2k/val/LR
+    io_backend:
+      type: disk
+# Compact for speed. Just learned I could up those parameters to get better results but will try out with SwinIR once later on with LSDIR to see if I can produce better results than my compact models I did on them
+network_g:  
+  type: SRVGGNetCompact
+  num_in_ch: 3
+  num_out_ch: 3
+  num_feat: 64
+  num_conv: 16
+  upscale: 2
+  act_type: prelu
+
+network_d:
+  type: UNetDiscriminatorSN
+  num_in_ch: 3
+  num_feat: 64
+  skip_connection: True
+
+path:
+  pretrain_network_g: experiments/pretrained_models/2x_Compact_Pretrain.pth #those pretrains that Zarxrax provided are great
+  param_key_g: params_ema
+  strict_load_g: true
+  resume_state: ~
+
+train:
+  ema_decay: 0.999
+  optim_g:
+    type: Adam
+    lr: !!float 1e-4
+    weight_decay: 0
+    betas: [0.9, 0.99]
+  optim_d:
+    type: Adam
+    lr: !!float 1e-4
+    weight_decay: 0
+    betas: [0.9, 0.99]
+
+  scheduler:
+    type: MultiStepLR
+    milestones: [400000]
+    gamma: 0.5
+
+  total_iter: 400000
+  warmup_iter: -1
+
+  pixel_opt:
+    type: L1Loss
+    loss_weight: 1.0
+    reduction: mean
+  perceptual_opt:
+    type: PerceptualLoss
+    layer_weights:
+      'conv1_2': 0.1
+      'conv2_2': 0.1
+      'conv3_4': 1
+      'conv4_4': 1
+      'conv5_4': 1
+    vgg_type: vgg19
+    use_input_norm: true
+    perceptual_weight: !!float 1e-1
+    style_weight: 0
+    range_norm: false
+    criterion: l1
+  gan_opt:
+    type: GANLoss
+    gan_type: vanilla
+    real_label_val: 1.0
+    fake_label_val: 0.0
+    loss_weight: !!float 1e-1
+  contextual_opt:
+    type: ContextualLoss
+    layer_weights:
+      "conv_3_2": 0.15
+      "conv_4_2": 0.15
+    max_1d_size: 64
+    distance_type: "cosine"
+    calc_type: "regular"
+    z_norm: false
+    crop_quarter: false
+    b: 1.0
+    band_width: 0.5
+    use_vgg: true
+    net: vgg19
+  color_opt:
+    type: ColorLoss
+    criterion: "l1"
+    loss_weight: 1.0
+
+  net_d_iters: 1
+  net_d_init_iters: 0
+
+val:
+  val_freq: 2500
+  save_img: True
+
+  metrics:
+    psnr:
+      type: calculate_psnr
+      crop_border: 4
+      test_y_channel: false
+    ssim:
+      type: calculate_ssim
+      crop_border: 4
+      test_y_channel: false 
+
+logger:
+  print_freq: 100
+  save_checkpoint_freq: 2500
+  use_tb_logger: true
+  wandb:
+    project: ~
+    resume_id: ~
+
+dist_params:
+  backend: nccl
+  port: 29500
