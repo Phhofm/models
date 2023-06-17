@@ -1,0 +1,2 @@
+0.png - scale: bicubic size factor=0.5, compression: h264 crf=28
+1.png - compression: h264 crf=28, scale: bilinear size factor=0.5
