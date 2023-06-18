@@ -55,6 +55,8 @@ My very first release - a 4x compact model for photo upscaling trained on the [S
 
 ### Interpolations
 
+These models can be found in the "Interpolated" folder, it consists of
+
 **4xInt-Ultracri**  
 [UltraSharp](https://openmodeldb.info/models/4x-UltraSharp) + [Remacri](https://openmodeldb.info/models/4x-Remacri)  
   
