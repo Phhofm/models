@@ -18,3 +18,22 @@ Description: The second released community trained model on the OmniSR network. 
 Examples:  
 https://imgsli.com/MTg2ODcz  
 https://imgsli.com/MTg2ODc1  
+
+
+
+**2xHFA2kAVCOmniSR_Sharp**
+
+Name: 2xHFA2kAVCOmniSR_Sharp  
+License: CC BY 4.0  
+Network: OmniSR  
+Scale: 2  
+Purpose: 2x sharp anime upscaling model that handles AVC (h264) compression   
+Iterations: 229,000  
+batch_size: 2-5  
+HR_size: 128-192  
+Dataset: HFA2k_h264  
+Number of train images: 2568  
+OTF Training: No  
+Pretrained_Model_G: None  
+
+Description: A sharper version of 2xHFA2kAVCOmniSR since it has been further trained with some additional USM applied. I recommend using 2xHFA2kAVCOmniSR in general, but if more sharpness is desired or you simply like these results better for your input source, you can of course also give this model a go :)

@@ -5,7 +5,7 @@ A repo for me to publish trained models. After having made my [interactive visua
 ### Released (sorted by new)
 
 18.06.23  
-**2xHFA2kAVCOmniSR**  
+**2xHFA2kAVCOmniSR & 2xHFA2kAVCOmniSR_Sharp**  
 My tenth release, a 2x anime upscaling model that handles AVC (h264) compression trained on the [OmniSR](https://github.com/Francis0625/Omni-SR) network (second released community model to use this network, which paper released less than two months ago, on the 24.04.23).  
 
 18.06.23  
