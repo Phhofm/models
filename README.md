@@ -113,3 +113,31 @@ Was a series of srvggnet models that I started training to remove various degrad
 **CompactPretrains**  
 These pretrains have been provided by Zarxrax and they are great to use to kick off training a compact model.  
 
+<br><br>
+
+## Visual Results
+<br>
+
+### Folder Files
+
+Some of these model folders contain examples, meaning inputs and outputs to visually see the effects of such a model. Series like LUDVAE or AVC have their own results folder where and encompass the outputs of multiple models trained on the same dataset and similiar settings, most of the time models of different networks, so these outputs can be compared with each other, coming from the same input. visual outputs (and inputs).
+<br><br>
+### Website with Image Slider
+
+I also made the [Selftrained page](https://phhofm.github.io/upscale/selftrained.html) where you can find with a slider the different outputs of my models but also together with over 600 other models so my self trained model outputs can be compared with a lot of other official paper models or community trained models.
+<br><br>
+
+### Quick Test Anime Opening from Youtube
+
+And then I started doing quick tests like downloading an anime opening in 360p from youtube with one of those yt2mp4 converters online (so the input has the compression artifacts for this usecase) and using my models on extracted frames. 
+
+For this anime opening I often liked my 2xHFA2kCompact model which is very fast for inference and gave good results which can be seen on these example frames
+
+Frame 933: https://imgsli.com/MTg2OTc5/0/4
+Frame 475: https://imgsli.com/MTg2OTc3/0/4
+Frame 1375: https://imgsli.com/MTg2OTk0/0/4 
+
+But then 2xHFA2kCompact deblurs scenes that have intentional blur/bokeh effect (see railing in the background) where I personally liked the AVC series better, so 2xHFA2kAVCOmniSR (or 2xHFA2kAVCCompact) since it kept that effect / stayed more truthful to the input in that sense
+
+Frame 1069 https://imgsli.com/MTg2OTg3/0/2
+Frame 2241 https://imgsli.com/MTg2OTgy/0/1
