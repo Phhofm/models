@@ -133,11 +133,11 @@ And then I started doing quick tests like downloading an anime opening in 360p f
 
 For this anime opening I often liked my 2xHFA2kCompact model which is very fast for inference and gave good results which can be seen on these example frames
 
-Frame 933: https://imgsli.com/MTg2OTc5/0/4
-Frame 475: https://imgsli.com/MTg2OTc3/0/4
-Frame 1375: https://imgsli.com/MTg2OTk0/0/4 
+Frame 933: https://imgsli.com/MTg2OTc5/0/4  
+Frame 475: https://imgsli.com/MTg2OTc3/0/4  
+Frame 1375: https://imgsli.com/MTg2OTk0/0/4   
 
 But then 2xHFA2kCompact deblurs scenes that have intentional blur/bokeh effect (see railing in the background) where I personally liked the AVC series better, so 2xHFA2kAVCOmniSR (or 2xHFA2kAVCCompact) since it kept that effect / stayed more truthful to the input in that sense
 
-Frame 1069 https://imgsli.com/MTg2OTg3/0/2
-Frame 2241 https://imgsli.com/MTg2OTgy/0/1
+Frame 1069 https://imgsli.com/MTg2OTg3/0/2  
+Frame 2241 https://imgsli.com/MTg2OTgy/0/1  
