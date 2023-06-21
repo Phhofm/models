@@ -120,11 +120,27 @@ These pretrains have been provided by Zarxrax and they are great to use to kick 
 
 ### Folder Files
 
-Some of these model folders contain examples, meaning inputs and outputs to visually see the effects of such a model. Series like LUDVAE or AVC have their own results folder where and encompass the outputs of multiple models trained on the same dataset and similiar settings, most of the time models of different networks, so these outputs can be compared with each other, coming from the same input. visual outputs (and inputs).
+Some of these model folders contain examples, meaning inputs and outputs to visually see the effects of such a model. Series like LUDVAE or AVC have their own results folder where and encompass the outputs of multiple models trained on the same dataset and similiar settings, most of the time models of different networks, so these outputs can be compared with each other, coming from the same input. visual outputs (and inputs).  
+<br>
+LUDVAE Model Series comparison images (Input, [SwinIR](https://github.com/JingyunLiang/SwinIR) small, [SRFormer](https://github.com/HVision-NKU/SRFormer) lightweight, [GRL](https://github.com/ofsoundof/GRL-Image-Restoration) small). Specific model in bottom caption:
+
+![0550](https://raw.githubusercontent.com/Phhofm/models/main/4xHFA2kLUDVAE_results/0550.png)
+![0045](https://raw.githubusercontent.com/Phhofm/models/main/4xHFA2kLUDVAE_results/0045.png)
+
+AVC Model Series comparison images (Input, [EDSR](https://github.com/LimBee/NTIRE2017), [SRVGGNet](https://github.com/xinntao/Real-ESRGAN), [OmniSR](https://github.com/Francis0625/Omni-SR)). Specific model in bottom caption:
+
+![AVC Example 0](2xHFA2kAVC_results/Output_0.png)
+![AVC Example 1](2xHFA2kAVC_results/Output_1.png)
+
+
 <br><br>
 ### Website with Image Slider
 
-I also made the [Selftrained page](https://phhofm.github.io/upscale/selftrained.html) where you can find with a slider the different outputs of my models but also together with over 600 other models so my self trained model outputs can be compared with a lot of other official paper models or community trained models.
+I also made the [Selftrained page](https://phhofm.github.io/upscale/selftrained.html) where you can find with a slider the different outputs of my models but also with the example below together with over 600 other models so my self trained model outputs can be compared with a lot of other official paper models or community trained models.  
+<br>
+Website Selftrained Page screenshot, click corresponding link above to get to the actual interactive version:
+
+![Website Selftrained Page screenshot](screenshot_website_selftrained.png)
 <br><br>
 
 ### Quick Test Anime Opening from Youtube
@@ -141,3 +157,8 @@ But then 2xHFA2kCompact deblurs scenes that have intentional blur/bokeh effect (
 
 Frame 1069 https://imgsli.com/MTg2OTg3/0/2  
 Frame 2241 https://imgsli.com/MTg2OTgy/0/1  
+
+<br>
+Frame 933 screenshot as a single example of the above imgsli comparison links, click corresponding links above to get to the actual interactive versions:  
+
+![Frame 933 screenshot](screenshot_imgsli_frame933.png)
