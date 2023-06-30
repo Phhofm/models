@@ -4,9 +4,9 @@ A repo for me to publish trained models. After having made my [interactive visua
 
 ### Released (sorted by new)
 
-26.06.23  
+30.06.23  
 **4xNomos8kSCHAT-L & 4xNomos8kSCHAT-S**  
-My twelfth release, this time a [HAT]([SRFormer](https://github.com/HVision-NKU/SRFormer) large and small model (they uploaded HAT-S codes and models two months ago) - a 4x realistic photo upscaling model handling JPG compression, trained on the [HAT]([SRFormer](https://github.com/HVision-NKU/SRFormer) network (small and large model) with musl's Nomos8k_sfw dataset together with OTF (on the fly degradation) jpg compression and blur.   
+My twelfth release, this time a [HAT](https://github.com/XPixelGroup/HAT) large and small model (they uploaded HAT-S codes and models two months ago) - a 4x realistic photo upscaling model handling JPG compression, trained on the [HAT](https://github.com/XPixelGroup/HAT) network (small and large model) with musl's Nomos8k_sfw dataset together with OTF (on the fly degradation) jpg compression and blur.   
 
 26.06.23  
 **4xNomos8kSCSRFormer**  
@@ -140,7 +140,7 @@ AVC Model Series comparison images (Input, [EDSR](https://github.com/LimBee/NTIR
 ![AVC Example 0](2xHFA2kAVC_results/Output_0.png)
 ![AVC Example 1](2xHFA2kAVC_results/Output_1.png)
 
-Nomos8kSC Series comparison images (Input, [ESRGAN (RRDBNet)](https://github.com/xinntao/ESRGAN), [SRFormer](https://github.com/HVision-NKU/SRFormer) base, [HAT]([SRFormer](https://github.com/HVision-NKU/SRFormer) large. 
+Nomos8kSC Series comparison images (Input, [ESRGAN (RRDBNet)](https://github.com/xinntao/ESRGAN), [SRFormer](https://github.com/HVision-NKU/SRFormer) base, [HAT](https://github.com/XPixelGroup/HAT) large. 
 
 ![Nomos Example 0](4xNomos8kSC_results/dearalice.png)
 ![Nomos Example 1](4xNomos8kSC_results/bibli.png)
