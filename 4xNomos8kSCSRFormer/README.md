@@ -17,3 +17,5 @@ Description: 4x photo upscaler with otf jpg compression and blur, trained on mus
 
 Important: The "4xNomos8kSCSRFormer.7z" file in here is a 7zip compressed archive (LZMA2, ultra) and needs to be exctracted first to use the containing pth file which is 185.4 MB, I compressed it because I can only push smaller than 100 MB files to github without needing git lfs.  
 [Link to uncompressed pth file (google drive)](https://drive.google.com/file/d/1VpMity5vqrEN7YFaPwawhVTdWYdJK8DG)
+
+I also provide some onnx conversion, I was trying around adopting some script, have a look into the onnx folder. The 131212 means the image input dimensions need to be divisible by 12, the 131616 by 16 and the 136464 by 64.

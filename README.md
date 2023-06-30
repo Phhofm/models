@@ -4,6 +4,14 @@ A repo for me to publish trained models. After having made my [interactive visua
 
 ### Released (sorted by new)
 
+26.06.23  
+**4xNomos8kSCHAT-L & 4xNomos8kSCHAT-S**  
+My twelfth release, this time a [HAT]([SRFormer](https://github.com/HVision-NKU/SRFormer) large and small model (they uploaded HAT-S codes and models two months ago) - a 4x realistic photo upscaling model handling JPG compression, trained on the [HAT]([SRFormer](https://github.com/HVision-NKU/SRFormer) network (small and large model) with musl's Nomos8k_sfw dataset together with OTF (on the fly degradation) jpg compression and blur.   
+
+26.06.23  
+**4xNomos8kSCSRFormer**  
+My eleventh release, a 4x realistic photo upscaling model handling JPG compression, trained on the [SRFormer](https://github.com/HVision-NKU/SRFormer) network (base model) with musl's Nomos8k_sfw dataset together with OTF (on the fly degradation) jpg compression and blur.   
+
 18.06.23  
 **2xHFA2kAVCOmniSR & 2xHFA2kAVCOmniSR_Sharp**  
 My tenth release, a 2x anime upscaling model that handles AVC (h264) compression trained on the [OmniSR](https://github.com/Francis0625/Omni-SR) network (second released community model to use this network, which paper released less than two months ago, on the 24.04.23).  
@@ -30,15 +38,15 @@ Also in my seventh release - 4x anime upscaling model handling real degradation,
 
 01.06.23  
 **2xLexicaRRDBNet & 2xLexicaRRDBNet_Sharp**  
-My sixth release - a 2x upscaler for AI generated images (no degradations), trained on the [ESRGAN (RRDBNet)](https://github.com/xinntao/ESRGAN) network with around 34k images from lexica.art.  
+My sixth release - a 2x upscaler for AI generated images (no degradations), trained on the [ESRGAN (RRDBNet)](https://github.com/xinntao/ESRGAN) network (base model) with around 34k images from lexica.art.  
 
 10.05.23  
 **4xNomos8kSC**  
-My fifth release - a 4x realistic photo upscaling model handling JPG compression, trained on the [ESRGAN (RRDBNet)](https://github.com/xinntao/ESRGAN) network with musl's Nomos8k_sfw dataset together with OTF (on the fly degradation) jpg compression and blur.   
+My fifth release - a 4x realistic photo upscaling model handling JPG compression, trained on the [ESRGAN (RRDBNet)](https://github.com/xinntao/ESRGAN) network (base model) with musl's Nomos8k_sfw dataset together with OTF (on the fly degradation) jpg compression and blur.   
 
 07.05.23  
 **4xHFA2k**  
-My fourth release - a 4x anime image upscaling model, trained on the [ESRGAN (RRDBNet)](https://github.com/xinntao/ESRGAN) network with musl's HFA2k dataset together with OTF (on the fly degradation) jpg compression and blur.    
+My fourth release - a 4x anime image upscaling model, trained on the [ESRGAN (RRDBNet)](https://github.com/xinntao/ESRGAN) network (base model) with musl's HFA2k dataset together with OTF (on the fly degradation) jpg compression and blur.    
 
 05.05.23  
 **2xParimgCompact**  
@@ -132,6 +140,11 @@ AVC Model Series comparison images (Input, [EDSR](https://github.com/LimBee/NTIR
 ![AVC Example 0](2xHFA2kAVC_results/Output_0.png)
 ![AVC Example 1](2xHFA2kAVC_results/Output_1.png)
 
+Nomos8kSC Series comparison images (Input, [ESRGAN (RRDBNet)](https://github.com/xinntao/ESRGAN), [SRFormer](https://github.com/HVision-NKU/SRFormer) base, [HAT]([SRFormer](https://github.com/HVision-NKU/SRFormer) large. 
+
+![Nomos Example 0](4xNomos8kSC_results/dearalice.png)
+![Nomos Example 1](4xNomos8kSC_results/bibli.png)
+![Nomos Example 2](4xNomos8kSC_results/seeufer.png)
 
 <br><br>
 ### Website with Image Slider

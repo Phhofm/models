@@ -1,0 +1,187 @@
+# GENERATE TIME: Mon Jun 26 09:19:25 2023
+# CMD:
+# train.py -opt options/train/HAT/4xNomos8kSCHAT-L_kaggle.yml
+
+name: 4xNomos8kSCHAT-L
+model_type: HATGANModel
+scale: 4
+num_gpu: auto
+manual_seed: 0
+
+l1_gt_usm: False
+percep_gt_usm: False
+gan_gt_usm: False
+
+resize_prob: [0.2, 0.7, 0.1]
+resize_range: [0.15, 1.5]
+gaussian_noise_prob: 0
+noise_range: [0, 0]
+poisson_scale_range: [0, 0]
+gray_noise_prob: 0
+jpeg_range: [75, 95]
+
+second_blur_prob: 0.8
+resize_prob2: [0.3, 0.4, 0.3]
+resize_range2: [0.3, 1.2]
+gaussian_noise_prob2: 0
+noise_range2: [0, 0]
+poisson_scale_range2: [0, 0]
+gray_noise_prob2: 0
+jpeg_range2: [75, 95]
+
+gt_size: 256
+queue_size: 180
+
+datasets:
+  train:
+    name: Nomos8k_sfw
+    type: RealESRGANDataset
+    dataroot_gt: /kaggle/input/nomos8k-sfw/nomos8k_sfw
+    meta_info: /kaggle/input/nomos8k-sfw/nomos8k_sfw_meta_info.txt
+    io_backend:
+      type: disk
+
+    blur_kernel_size: 12
+    kernel_list: ['iso', 'aniso', 'generalized_iso', 'generalized_aniso', 'plateau_iso', 'plateau_aniso']
+    kernel_prob: [0.65, 0.25, 0.12, 0.03, 0.12, 0.03]
+    sinc_prob: 0.1
+    blur_sigma: [0.2, 3]
+    betag_range: [0.5, 4]
+    betap_range: [1, 2]
+
+    blur_kernel_size2: 9
+    kernel_list2: ['iso', 'aniso', 'generalized_iso', 'generalized_aniso', 'plateau_iso', 'plateau_aniso']
+    kernel_prob2: [0.65, 0.25, 0.12, 0.03, 0.12, 0.03]
+    sinc_prob2: 0.1
+    blur_sigma2: [0.2, 1.5]
+    betag_range2: [0.5, 4]
+    betap_range2: [1, 2]
+
+    final_sinc_prob: 0.8
+
+    gt_size: 256
+    use_hflip: True
+    use_rot: True
+
+    use_shuffle: true
+    num_worker_per_gpu: 4
+    batch_size_per_gpu: 2
+    dataset_enlarge_ratio: 1
+    prefetch_mode: ~
+
+# HAT-L
+network_g:
+  type: HAT
+  upscale: 4
+  in_chans: 3
+  img_size: 64
+  window_size: 16
+  compress_ratio: 3
+  squeeze_factor: 30
+  conv_scale: 0.01
+  overlap_ratio: 0.5
+  img_range: 1.
+  depths: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+  embed_dim: 180
+  num_heads: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+  mlp_ratio: 2
+  upsampler: 'pixelshuffle'
+  resi_connection: '1conv'
+
+network_d:
+  type: UNetDiscriminatorSN
+  num_in_ch: 3
+  num_feat: 64
+
+path:
+  pretrain_network_g: /kaggle/working/traiNNer-redux-FJ/experiments/4xNomos8kSCHAT-L/models/net_g_52000.pth
+  param_key_g: params_ema
+  strict_load_g: true
+  pretrain_network_d: /kaggle/working/traiNNer-redux-FJ/experiments/4xNomos8kSCHAT-L/models/net_d_52000.pth
+  param_key_d: params_ema
+  strict_load_d: true
+  resume_state: /kaggle/working/traiNNer-redux-FJ/experiments/4xNomos8kSCHAT-L/training_states/52000.state
+  
+train:
+  ema_decay: 0.999
+  optim_g:
+    type: AdamW
+    lr: !!float 1.5e-4
+    weight_decay: 0
+    betas: [0.9, 0.99]
+  optim_d:
+    type: AdamW
+    lr: !!float 1e-4
+    weight_decay: 0
+    betas: [0.9, 0.99]
+
+  scheduler:
+    type: MultiStepLR
+    milestones: [400000]
+    gamma: 0.5
+
+  total_iter: 400000
+  warmup_iter: -1
+  
+  # losses
+  pixel_opt:
+    type: L1Loss
+    loss_weight: 1
+    reduction: mean
+  # perceptual loss (content and style losses)
+  perceptual_opt:
+    type: PerceptualLoss
+    layer_weights:
+      # before relu
+      "conv1_2": 0.1
+      "conv2_2": 0.1
+      "conv3_4": 1
+      "conv4_4": 1
+      "conv5_4": 1
+    vgg_type: vgg19
+    use_input_norm: true
+    perceptual_weight: 0.8
+    style_weight: 0
+    range_norm: false
+    criterion: l1
+  # contextual loss
+  #contextual_opt:
+  #  type: ContextualLoss
+  #  loss_weight: 0.25
+  #  layer_weights:
+  #    "conv_3_2": 0.15
+  #    "conv_4_2": 0.15
+  #  max_1d_size: 64
+  #  distance_type: "cosine"
+  #  calc_type: "regular"
+  #  z_norm: false
+  #  crop_quarter: false,
+  #  b: 1.0
+  #  band_width: 0.5
+  #  use_vgg: true,
+  #  net: vgg19
+  color_opt:
+    type: ColorLoss
+    criterion: "l1"
+    loss_weight: 1.0
+  gan_opt:
+    type: GANLoss
+    gan_type: vanilla
+    real_label_val: 1.0
+    fake_label_val: 0.0
+    loss_weight: !!float 1e-1
+
+  net_d_iters: 1
+  net_d_init_iters: 0
+
+logger:
+  print_freq: 100
+  save_checkpoint_freq: 1000
+  use_tb_logger: true
+  wandb:
+    project: ~
+    resume_id: ~
+
+dist_params:
+  backend: nccl
+  port: 29500
