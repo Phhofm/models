@@ -2,7 +2,15 @@
 
 A repo for me to publish trained models. After having made my [interactive visual comparison site of upscaling models](https://phhofm.github.io/upscale/) I started training image models myself. Released models have been trained for a minimum of 24 hours. Each folder should contain its own *README.md* file with infos to the model, while configs and examples may be present also. Some of these models can be run as a demo in this corresponding [gradio space](https://huggingface.co/spaces/Phips/upscale_demo) but inference times will be long since its using the free CPU and not a GPU.
 
-### Released (sorted by new)
+### Released (sorted by new)  
+
+07.07.23  
+**2xHFA2kAVCSRFormer_light**  
+A SRFormer light model for upscaling anime videos downloaded from the web, handling AVC (h264) compression.  
+
+06.07.23  
+**2xLexicaSwinIR, 4xLexicaHAT, 4xLSDIR, 4xLSDIRplus, 4xLSDIRplusC, 4xLSDIRplusN, 4xLSDIRplusR**  
+I upladed my model on [openmodeldb](https://openmodeldb.info/?q=Helaman&sort=date-desc) and therefore 'release' these models, the Lexica models handle no degradations and are for upscaling AI generated outputs further. The LSDIRplus are the official ESRGAN plus model further finetunes with LSDIR, the 4xLSDIRplus is an interpolation of C and R and handles compression and a bit of noise/blur. The 4xLSDIRplusN handles no degradation, the 4xLSDIRplusC handles compression, and 4xLSDIRplusR used the official Real-ESRGAN configs but its only for extremer cases since it destroys details, the 4xLSDIRplusC models should be sufficient for most cases.  
 
 30.06.23  
 **4xNomos8kSCHAT-L & 4xNomos8kSCHAT-S**  
@@ -93,27 +101,30 @@ These models can be found in the "Interpolated" folder, it consists of
 [LD-Anime](https://openmodeldb.info/models/2x-LD-Anime-Compact) + [AnimeJaNai](https://openmodeldb.info/models/2x-AnimeJaNai-Standard-v1-Compact)  
 
 
-### Experimental / In Progress   
+### Series
 
-**Lexica**  
-Training different models for AI generated image upscaling without degradations. (RRDBNet, [HAT](https://github.com/XPixelGroup/HAT), SwinIR)  
+**Lexica**   
+Training different models for AI generated image upscaling without degradations. (RRDBNet, [HAT](https://github.com/XPixelGroup/HAT), SwinIR)   
 
-**4xHFA2kLUDVAE**  
-Training lightweight models of different networks to test for interence speed and metrics for anime upscaling with realistic degradations. See results in the corresponding results folder.  
+**HFA2kLUDVAE**   
+Training lightweight models of different networks to test for interence speed and metrics for anime upscaling with realistic degradations. See results in the corresponding results folder.   
 
-**4xLSDIR**  
-A RRDBNet model, simple ESRGAN experiment without any degradations and without any pretrain for photo upscaling.  
+**LSDIR**   
+A series trained on the big LSDIR dataset. Mostly interpolated output result. Then N for no degradation, C for compression (should be sufficient for most cases) and R for noise, blur and compression (only use in extremer cases).  
 
-**4xLSDIRplus**  
+**LSDIRplus**   
 An RRDBNet experiment to see what influence a huge dataset has on the official x4plus model for photo upscaling.  
+
+**HFA2kAVC**  
+Model series handling AVC (h264) compression usually found on videos from the web. So for upscaling videos downloaded from the web basically.  
 
 ### Dropped 
 
 **SAFMN**  
 More specifically the 4xHFA2kLUDVAESAFMN model, this network had a tendency to generate artifacts on certain outputs. Dropped the whole network from future models because of artifacts introduction.  
 
-**1xUnstroyer Series**  
-Was a series of srvggnet models that I started training to remove various degradations (compression: MPEG, MPEG-2, H264, HEVC, webp, jpg ; noise, blur etc) but results were not to my liking, dropped the project and worked on others  
+**1xUnstroyer Series - Deleted**  
+Was a series of srvggnet models that I started training to remove various degradations simultaneously (compression: MPEG, MPEG-2, H264, HEVC, webp, jpg ; noise, blur etc) but results were not to my liking since it was too many different degradations for such a small network, dropped the project and worked on others  
 
 
 ### Pretrains  
