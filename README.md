@@ -4,6 +4,7 @@ A repo for me to publish trained models.
 Each folder should contain its own *README.md* file with infos to the model, while configs and examples may be present also.  
 Models can also be found on this [openmodeldb page](https://openmodeldb.info/?q=Helaman&sort=date-desc).  
 Some of these models can be run as a demo in this corresponding [gradio space](https://huggingface.co/spaces/Phips/upscale_demo) but inference times will be long since its using the free CPU and not a GPU.  
+These models can of course be run locally, with an application called [chaiNNer](https://github.com/chaiNNer-org/chaiNNer), I made a [youtube video on how to set up and use chaiNNer](https://youtu.be/_r-nhJ_Cf1k).   
 Results for some of these can be compared on my [interactive visual comparison website](https://phhofm.github.io/upscale/selftrained.html).  
 I also created a [youtube video](https://youtu.be/iH7-eYlf7eg) where I show how I am training these models.  
 
