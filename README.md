@@ -1,6 +1,54 @@
 # Models
 
-A repo for me to publish trained models. After having made my [interactive visual comparison site of upscaling models](https://phhofm.github.io/upscale/) I started training image models myself. Released models have been trained for a minimum of 24 hours. Each folder should contain its own *README.md* file with infos to the model, while configs and examples may be present also. Some of these models can be run as a demo in this corresponding [gradio space](https://huggingface.co/spaces/Phips/upscale_demo) but inference times will be long since its using the free CPU and not a GPU.
+A repo for me to publish trained models.  
+Each folder should contain its own *README.md* file with infos to the model, while configs and examples may be present also.  
+Models can also be found on this [openmodeldb page](https://openmodeldb.info/?q=Helaman&sort=date-desc).  
+Some of these models can be run as a demo in this corresponding [gradio space](https://huggingface.co/spaces/Phips/upscale_demo) but inference times will be long since its using the free CPU and not a GPU.  
+Results for some of these can be compared on my [interactive visual comparison website](https://phhofm.github.io/upscale/selftrained.html).  
+I also created a [youtube video](https://youtu.be/iH7-eYlf7eg) where I show how I am training these models.  
+
+### Models Summary
+
+*Photos*  
+4xNomos8kSCHAT-L - Photo upscaler, handles a bit of jpg compression and blur, [HAT-L](https://github.com/XPixelGroup/HAT) model (good results but very slow since huge model)  
+4xNomos8kSCHAT-S - Photo upscaler, handles a bit of jpg compression and blur, [HAT-S](https://github.com/XPixelGroup/HAT) model  
+4xNomos8kSCSRFormer - Photo upscaler, handles a bit of jpg compression and blur, [SRFormer](https://github.com/HVision-NKU/SRFormer) base model (also good results but also slow since big model)  
+4xNomos8kSC - Photo upscaler, handles a bit of jpg compression and blur, RRDBNet base model  
+4xLSDIR - Photo upscaler, no degradation handling, RRDBNet base model  
+4xLSDIRplus - Photo upscaler, handles a bit of jpg compression and blur, RRDBNet base model  
+4xLSDIRplusC - Photo upscaler, handles a bit of jpg compression, RRDBNet base model  
+4xLSDIRplusN - Photo upscaler, almost no degradation handling, RRDBNet base model  
+4xLSDIRplusR - Photo upscaler, handles degradation but too strong so loses details, RRDBNet base model    
+4xLSDIRCompact3 - Photo upscaler, handles a bit of jpg compression and blur, [SRVGGNet](https://github.com/xinntao/Real-ESRGAN) (also called Real-ESRGAN Compact) model    
+4xLSDIRCompactC3 - Photo upscaler, handles a bit of jpg compression, [SRVGGNet](https://github.com/xinntao/Real-ESRGAN) (also called Real-ESRGAN Compact) model    
+4xLSDIRCompactN3 - Photo upscaler, handles no degradations, [SRVGGNet](https://github.com/xinntao/Real-ESRGAN) (also called Real-ESRGAN Compact) model   
+4xLSDIRCompactR3 - Photo upscaler, handles degradation but too strong so loses details, [SRVGGNet](https://github.com/xinntao/Real-ESRGAN) (also called Real-ESRGAN Compact) model  
+4xLSDIRCompact2 - Photo upscaler, handles a bit of jpg compression and blur, [SRVGGNet](https://github.com/xinntao/Real-ESRGAN) (also called Real-ESRGAN Compact) model    
+4xLSDIRCompactC2 - Photo upscaler, handles a bit of jpg compression, [SRVGGNet](https://github.com/xinntao/Real-ESRGAN) (also called Real-ESRGAN Compact) model    
+4xLSDIRCompactR2 - Photo upscaler, handles degradation but too strong so loses details, [SRVGGNet](https://github.com/xinntao/Real-ESRGAN) (also called Real-ESRGAN Compact) model  
+4xLSDIRCompact1 - Photo upscaler, handles a bit of jpg compression and blur, [SRVGGNet](https://github.com/xinntao/Real-ESRGAN) (also called Real-ESRGAN Compact) model    
+4xLSDIRCompactC1 - Photo upscaler, handles a bit of jpg compression, [SRVGGNet](https://github.com/xinntao/Real-ESRGAN) (also called Real-ESRGAN Compact) model    
+4xLSDIRCompactR1 - Photo upscaler, handles degradation but too strong so loses details, [SRVGGNet](https://github.com/xinntao/Real-ESRGAN) (also called Real-ESRGAN Compact) model   
+2xParimgCompact - Photo upscaler that does some color shifting since based on ImagePairs, [SRVGGNet](https://github.com/xinntao/Real-ESRGAN) (also called Real-ESRGAN Compact) model   
+
+*Anime*  
+2xHFA2kAVCOmniSR - Anime frame upscaler that handles AVC (h264) video compression, [OmniSR](https://github.com/Francis0625/Omni-SR) model   
+2xHFA2kAVCOmniSR_Sharp - Anime frame upscaler that handles AVC (h264) video compression with sharper outputs, [OmniSR](https://github.com/Francis0625/Omni-SR) model  
+4xHFA2kAVCSRFormer_light - Anime frame upscaler that handles AVC (h264) video compression, [SRFormer](https://github.com/HVision-NKU/SRFormer) lightweight model  
+2xHFA2kAVCEDSR_M - Anime frame upscaler that handles AVC (h264) video compression, [EDSR-M](https://github.com/LimBee/NTIRE2017) model  
+2xHFA2kAVCCompact - Anime frame upscaler that handles AVC (h264) video compression, [SRVGGNet](https://github.com/xinntao/Real-ESRGAN) (also called Real-ESRGAN Compact) model  
+4xHFA2kLUDVAESwinIR_light - Anime image upscaler that handles various realistic degradations, [SwinIR](https://github.com/JingyunLiang/SwinIR) light model  
+4xHFA2kLUDVAEGRL_small - Anime image upscaler that handles various realistic degradations, [GRL](https://github.com/ofsoundof/GRL-Image-Restoration) small model  
+4xHFA2kLUDVAESRFormer_light - Anime image upscaler that handles various realistic degradations, [SRFormer](https://github.com/HVision-NKU/SRFormer) light model   
+4xHFA2k - Anime image upscaler that handles some jpg compression and blur, RRDBNet base model   
+2xHFA2kCompact - Anime image upscaler that handles some jpg compression and blur, [SRVGGNet](https://github.com/xinntao/Real-ESRGAN) (also called Real-ESRGAN Compact) model  
+4xHFA2kLUDVAESAFMN - dropped model since there were artifacts on the outputs when training with [SAFMN](https://github.com/sunny2109/SAFMN) arch 
+
+*AI generated*  
+4xLexicaHAT - An AI generated image upscaler, does not handle any degradations, [HAT](https://github.com/XPixelGroup/HAT) base model  
+2xLexicaSwinIR - An AI generated image upscaler, does not handle any degradations, [SwinIR](https://github.com/JingyunLiang/SwinIR) base model  
+2xLexicaRRDBNet - An AI generated image upscaler, does not handle any degradations, RRDBNet base model  
+2xLexicaRRDBNet_Sharp - An AI generated image upscaler with sharper outputs, does not handle any degradations, RRDBNet base model  
 
 ### Released (sorted by new)  
 
