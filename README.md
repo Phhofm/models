@@ -1,5 +1,8 @@
 # Models
 
+Update:
+All my latest model files that can be used with chaiNNer can be downloaded from [this google drive folder](https://drive.google.com/drive/folders/1khvw9E1VvlolmHioqKJ5kdKtM1Oka1cQ?usp=sharing). Make sure to use a chaiNNer version above/newer than Alpha v0.19.5 for DAT and SRFormer support. If you cannot find this version (by the time of writing this README entry it is not released yet) make sure to use the [nightly version](https://github.com/chaiNNer-org/chaiNNer-nightly/releases) instead, newer than 2023-08-27 since at that date/version, DAT and SRFormer was added to chaiNNer.
+
 A repo for me to publish trained models.  
 Each folder should contain its own *README.md* file with infos to the model, while configs and examples may be present also.  
 Models can also be found on this [openmodeldb page](https://openmodeldb.info/?q=Helaman&sort=date-desc).  
