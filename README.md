@@ -1,60 +1,104 @@
 # Models
 
-Update:
-All my latest model files that can be used with chaiNNer can be downloaded from [this google drive folder](https://drive.google.com/drive/folders/1khvw9E1VvlolmHioqKJ5kdKtM1Oka1cQ?usp=sharing). Make sure to use a chaiNNer version above/newer than Alpha v0.19.5 for DAT and SRFormer support. If you cannot find this version (by the time of writing this README entry it is not released yet) make sure to use the [nightly version](https://github.com/chaiNNer-org/chaiNNer-nightly/releases) instead, newer than 2023-08-27 since at that date/version, DAT and SRFormer was added to chaiNNer.
+This is a repo for me to publish my self trained single image super resolution (sisr) models.
 
-A repo for me to publish trained models.  
-Each folder should contain its own *README.md* file with infos to the model, while configs and examples may be present also.  
-Models can also be found on this [openmodeldb page](https://openmodeldb.info/?q=Helaman&sort=date-desc).  
-Some of these models can be run as a demo in this corresponding [gradio space](https://huggingface.co/spaces/Phips/upscale_demo) but inference times will be long since its using the free CPU and not a GPU.  
-These models can of course be run locally, with an application called [chaiNNer](https://github.com/chaiNNer-org/chaiNNer), I made a [youtube video on how to set up and use chaiNNer](https://youtu.be/_r-nhJ_Cf1k).   
-Results for some of these can be compared on my [interactive visual comparison website](https://phhofm.github.io/upscale/selftrained.html).  
-I also created a [youtube video](https://youtu.be/iH7-eYlf7eg) where I show how I am training these models.  
+Update 08.04.2024:  
+I am currently in the process of updating this repo by creating a [github release on this repo](https://github.com/Phhofm/models/releases) for each released model, check out the [Released Section](https://github.com/Phhofm/models?tab=readme-ov-file#released-sorted-by-new) in this partly updated README. Then I can also remove most file folders in this repo.
 
-### Models Summary
+As an example, you can have a look at my [4xRealWebPhoto_v3_atd release](https://github.com/Phhofm/models/releases/tag/4xRealWebPhoto_v3_atd) which you can try out currently with chaiNNer nightly, or then the [dat2 model version](https://github.com/Phhofm/models/releases/tag/4xRealWebPhoto_v4_dat2) of this with normal chaiNNer.
 
-*Photos*  
-4xNomos8kSCHAT-L - Photo upscaler, handles a bit of jpg compression and blur, HAT-L model (good results but very slow since huge model)  
-4xNomos8kSCHAT-S - Photo upscaler, handles a bit of jpg compression and blur, HAT-S model  
-4xNomos8kSCSRFormer - Photo upscaler, handles a bit of jpg compression and blur, SRFormer base model (also good results but also slow since big model)  
-4xNomos8kSC - Photo upscaler, handles a bit of jpg compression and blur, RRDBNet base model  
-4xLSDIR - Photo upscaler, no degradation handling, RRDBNet base model  
-4xLSDIRplus - Photo upscaler, handles a bit of jpg compression and blur, RRDBNet base model  
-4xLSDIRplusC - Photo upscaler, handles a bit of jpg compression, RRDBNet base model  
-4xLSDIRplusN - Photo upscaler, almost no degradation handling, RRDBNet base model  
-4xLSDIRplusR - Photo upscaler, handles degradation but too strong so loses details, RRDBNet base model    
-4xLSDIRCompact3 - Photo upscaler, handles a bit of jpg compression and blur, SRVGGNet model    
-4xLSDIRCompactC3 - Photo upscaler, handles a bit of jpg compression, SRVGGNet model    
-4xLSDIRCompactN3 - Photo upscaler, handles no degradations, SRVGGNet model   
-4xLSDIRCompactR3 - Photo upscaler, handles degradation but too strong so loses details, SRVGGNet model  
-4xLSDIRCompact2 - Photo upscaler, handles a bit of jpg compression and blur, SRVGGNet model    
-4xLSDIRCompactC2 - Photo upscaler, handles a bit of jpg compression, SRVGGNet model    
-4xLSDIRCompactR2 - Photo upscaler, handles degradation but too strong so loses details, SRVGGNet model  
-4xLSDIRCompact1 - Photo upscaler, handles a bit of jpg compression and blur, SRVGGNet model    
-4xLSDIRCompactC1 - Photo upscaler, handles a bit of jpg compression, SRVGGNet model    
-4xLSDIRCompactR1 - Photo upscaler, handles degradation but too strong so loses details, SRVGGNet model   
-2xParimgCompact - Photo upscaler that does some color shifting since based on ImagePairs, SRVGGNet model   
+For convenience, you can download a zip file of all my 111 released models (mostly as safetensors files) [here](https://github.com/Phhofm/models/releases/tag/all_models).
 
-*Anime*  
-2xHFA2kAVCOmniSR - Anime frame upscaler that handles AVC (h264) video compression, OmniSR model   
-2xHFA2kAVCOmniSR_Sharp - Anime frame upscaler that handles AVC (h264) video compression with sharper outputs, OmniSR model  
-4xHFA2kAVCSRFormer_light - Anime frame upscaler that handles AVC (h264) video compression, SRFormer lightweight model  
-2xHFA2kAVCEDSR_M - Anime frame upscaler that handles AVC (h264) video compression, EDSR-M model  
-2xHFA2kAVCCompact - Anime frame upscaler that handles AVC (h264) video compression, SRVGGNet model  
-4xHFA2kLUDVAESwinIR_light - Anime image upscaler that handles various realistic degradations, SwinIR light model  
-4xHFA2kLUDVAEGRL_small - Anime image upscaler that handles various realistic degradations, GRL small model  
-4xHFA2kLUDVAESRFormer_light - Anime image upscaler that handles various realistic degradations, SRFormer light model   
-4xHFA2k - Anime image upscaler that handles some jpg compression and blur, RRDBNet base model   
-2xHFA2kCompact - Anime image upscaler that handles some jpg compression and blur, SRVGGNet model  
-4xHFA2kLUDVAESAFMN - dropped model since there were artifacts on the outputs when training with SAFMN arch 
+After releasing all models here as github releases, I will also release them on [Hugging Face](https://huggingface.co/Phips) so they are automatically downloadable if used in an application, or used in a huggingface space for example, which i had made two just to showcase, youll find them in the link.
 
-*AI generated*  
-4xLexicaHAT - An AI generated image upscaler, does not handle any degradations, HAT base model  
-2xLexicaSwinIR - An AI generated image upscaler, does not handle any degradations, SwinIR base model  
-2xLexicaRRDBNet - An AI generated image upscaler, does not handle any degradations, RRDBNet base model  
-2xLexicaRRDBNet_Sharp - An AI generated image upscaler with sharper outputs, does not handle any degradations, RRDBNet base model  
+I recommend running these models locally with [chaiNNer](https://github.com/chaiNNer-org/chaiNNer).
+I made a [youtube video on how to set up and use chaiNNer](https://youtu.be/_r-nhJ_Cf1k). Btw they externalized their upscaling code into the [Spandrel Library](https://github.com/chaiNNer-org/spandrel)
+
+Results for some of these can be compared on my [interactive visual comparison website](https://phhofm.github.io/upscale/selftrained.html), but this site is currently not up-to-date since it became a 70GB repo so automatic deployment became unfeasible and updating a bit more cumbersome, maybe I will be able in the future to reduce it a bit with [BFG Repo-Cleaner](https://rtyley.github.io/bfg-repo-cleaner/). 
+
+I also made some youtube videos you might find interesting, like [this one](https://www.youtube.com/watch?v=QS4ZF7yzH88).
+
+Find more sisr models trained by the community in [openmodeldb](https://openmodeldb.info/).
+
+Here also a link to the [Enhance Everything! Discord Server](https://discord.gg/enhance-everything-547949405949657098) where I had been active.
+
+Also this weekend I played around with a comfyui workflow using SUPIR, I just uploaded the result in the SUPIR folder. Basically diffusion based upscalers in general have the tendency to produce output that is pretty different to an input image as to resemble more an 'img2img enlarger' process than super resolving. My play around was to try to use the consistency of transformers as the upscale, and then SUPIR in the second step but with settings that enforce consistency. Use case would be for very degraded input image where my transformer model hits a limit. Examples and readme and workflow in the folder.
 
 ### Released (sorted by new)  
+
+-- Newly Updated Section --  
+
+[All my 111 released models as safetensors files in a zip file](https://github.com/Phhofm/models/releases/tag/all_models)
+
+Model releases sorted by date, linked to their github release:
+
+04.04.2024 - [4xRealWebPhoto_v4_dat2](https://github.com/Phhofm/models/releases/tag/4xRealWebPhoto_v4_dat2) 4x upscaling photos downloaded from the web, handles jpg&webp compression, some realistic noise and some lens blur, [DAT2](https://github.com/zhengchen1999/dat) model.   
+25.03.2024 - [Ludvae200](https://github.com/Phhofm/models/releases/tag/Ludvae200) 1x realistic noise degradation model for training dataset creation, [LUD-VAE](https://github.com/zhengdharia/LUD-VAE) model.   
+22.03.2024 - [4xRealWebPhoto_v3_atd](https://github.com/Phhofm/models/releases/tag/4xRealWebPhoto_v3_atd) 4x upscaling photos downloaded from the web, handles jpg&webp compression, some realistic noise and some lens blur, [ATD](https://github.com/LabShuHangGU/Adaptive-Token-Dictionary) model - recommended to try out ;)   
+22.03.2024 - [4xNomos8k_atd_jpg](https://github.com/Phhofm/models/releases/tag/4xNomos8k_atd_jpg) 4x photo upscaler, handles jpg compression, preserves noise, [ATD](https://github.com/LabShuHangGU/Adaptive-Token-Dictionary) model.   
+10.03.2024 - [4xRealWebPhoto_v2_rgt_s](https://github.com/Phhofm/models/releases/tag/4xRealWebPhoto_v2_rgt_s) 4x upscaling photos downloaded from the web, handles jpg&webp compression, some realistic noise and some lens blur, [RGT-S](https://github.com/zhengchen1999/RGT) model.   
+20.02.2024 - [4xNomosUni_rgt_multijpg](https://github.com/Phhofm/models/releases/tag/4xNomosUni_rgt_multijpg) 4x universal DoF preserving upscaler, handles jpg compression, [RGT](https://github.com/zhengchen1999/RGT) model.   
+16.02.2024 - [4xNomosUni_rgt_s_multijpg](https://github.com/Phhofm/models/releases/tag/4xNomosUni_rgt_s_multijpg) 4x universal DoF preserving upscaler, handles jpg compression, [RGT-S](https://github.com/zhengchen1999/RGT) model.   
+12.02.2024 - [2xEvangelion_dat2](https://github.com/Phhofm/models/releases/tag/2xEvangelion_dat2) 2x upscaler for the Community Evangelion Ep16 upscale project, [DAT2](https://github.com/zhengchen1999/dat) model.   
+08.02.2024 [2xEvangelion_omnisr](https://github.com/Phhofm/models/releases/tag/2xEvangelion_omnisr) 2x upscaler for the Community Evangelion Ep16 upscale project, [OmniSR](https://github.com/Francis0625/Omni-SR) model.   
+04.02.2024 - [2xEvangelion_compact](https://github.com/Phhofm/models/releases/tag/2xEvangelion_compact) 2x upscaler for the Community Evangelion Ep16 upscale project, [SRVGGNetCompact](https://github.com/XPixelGroup/BasicSR/blob/master/basicsr/archs/srvgg_arch.py) model.   
+28.01.2024 - [4xNomosUniDAT2_multijpg_ldl & 4xNomosUniDAT2_multijpg_ldl_sharp](https://github.com/Phhofm/models/releases/tag/4xNomosUniDAT2_multijpg_ldl) 4x universal DoF preserving upscaler, handles jpg compression, [DAT2](https://github.com/zhengchen1999/dat) models.   
+27.01.2024 - [1xExposureCorrection_compact & 1xOverExposureCorrection_compact & 1xUnderExposureCorrection_compact](https://github.com/Phhofm/models/releases/tag/1xExposureCorrection_compact) 1x Exposure correction, [SRVGGNetCompact](https://github.com/XPixelGroup/BasicSR/blob/master/basicsr/archs/srvgg_arch.py) models.   
+13.01.2024 - [2xNomosUni_span_multijpg_ldl](https://github.com/Phhofm/models/releases/tag/2xNomosUni_span_multijpg_ldl) 2x fast universal DoF preserving upscaler, handles jpg compression, [SPAN](https://github.com/hongyuanyu/SPAN) model.   
+
+-- still making github releases for the following released models on this repo --
+
+11.01.2024 - 2xNomosUni_compact_multijpg_ldl   
+11.01.2024 - 2xNomosUni_compact_otf_medium   
+04.01.2024 - 4xHFA2k_VCISR_GRLGAN_ep200   
+04.01.2024 - 2xHFA2kShallowESRGAN   
+26.12.2024 - 2xHFA2kSPAN   
+26.12.2024 - 2xHFA2k_LUDVAE_SPAN   
+26.12.2024 - 2xHFA2k_LUDVAE_compact   
+26.12.2024 - 2xHFA2k_compact_multijpg   
+26.12.2024 - 2xHFA2Real-CUGAN   
+26.12.2024 - 2xHFA2OmniSR   
+26.12.2024 - 2xHFA2SwinIR-S   
+20.12.2023 - 2xNomosUni_esrgan_multijpg   
+13.12.2023 - 2xNomosUni_span_multijpg   
+13.12.2023 - 2xNomosUni_compact_multijpg   
+13.12.2023 - 4xTextureDAT2_otf   
+09.12.2023 - 4xNomosUni_span_multijpg   
+09.12.2023 - 4xNomos8k_span_otf_weak & 4xNomos8k_span_otf_medium & 4xNomos8k_span_otf_strong   
+01.11.2023 - 4xNomosUniDAT_otf   
+01.11.2023 - 4xLexicaDAT2_otf   
+01.11.2023 - 4xNomos8kHAT-L_otf   
+05.10.2023 - 4xNomos8kHAT-L_bokeh_jpg   
+23.09.2023 - 4xNomosUniDAT_otf   
+14.09.2023 - 4xNomosUniDAT_bokeh_jpg   
+10.09.2023 - 4xNomosUniDAT2_box   
+10.09.2023 - 4xLSDIRDAT   
+10.09.2023 - 4xSSDIRDAT   
+02.09.2023 - 4xFaceUpDAT & 4xFaceUpLDAT & 4xFaceUpSharpDAT & 4xFaceUpSharpLDAT   
+25.08.2023 - 4xFFHQDAT & 4xFFHQLDAT   
+13.08.2023 - 4xNomos8kDAT   
+02.08.2023 - 1xDeJPG_SRFormer_light, 1xDeJPG_OmniSR   
+11.07.2023 - 2xHFA2kAVCSRFormer_light   
+30.06.2023 - 4xNomos8kSCHAT-L & 4xNomos8kSCHAT-S  
+26.06.2023 - 4xNomos8kSCSRFormer  
+18.06.2023 - 2xHFA2kAVCCompact & 2xHFA2kAVCEDSR_M & 2xHFA2kAVCOmniSR  
+14.06.2023 - 4xHFA2kLUDVAEGRL_small  
+10.06.2023 - 4xHFA2kLUDVAESwinIR_light & 4xHFA2kLUDVAESRFormer_light  
+01.06.2023 - 2xLexicaRRDBNet & 2xLexicaRRDBNet_Sharp  
+10.05.2023 - 4xNomos8kSC  
+07.05.2023 - 4xHFA2k  
+05.05.2023 - 2xParimgCompact  
+18.04.2023 - 2xHFA2kCompact  
+11.04.2023 - 4xLSDIRCompactv3 (Series 3)  
+25.03.2023 - 4xLSDIRCompactv2 (Series 2)  
+17.03.2023 - 4xLSDIRCompactC & 4xLSDIRCompactR  
+11.03.2023 - 4xLSDIRCompact  
+
+---
+   
+Previous README 
+
+Released (sorted by new)  
 
 07.07.23  
 **2xHFA2kAVCSRFormer_light**  
@@ -119,6 +163,50 @@ My second release - a 2x anime compact upscaling model trained on the [SRVGGNet,
 11.03.23  
 **4xLSDIRCompact**  
 My very first release - a 4x compact model for photo upscaling trained on the [SRVGGNet, also called Real-ESRGAN Compact](https://github.com/xinntao/Real-ESRGAN) network. Up to 3 versions, version 3 contains N C R models, version 2 is a general model interpolated of C and R. Trained on the huge LSDIR dataset (84991 images *2 for paired training C around 160 GB). Suggested is the 4xLSDIRCompactC3 model  
+
+
+### Models Summary
+
+*Photos*  
+4xNomos8kSCHAT-L - Photo upscaler, handles a bit of jpg compression and blur, HAT-L model (good results but very slow since huge model)  
+4xNomos8kSCHAT-S - Photo upscaler, handles a bit of jpg compression and blur, HAT-S model  
+4xNomos8kSCSRFormer - Photo upscaler, handles a bit of jpg compression and blur, SRFormer base model (also good results but also slow since big model)  
+4xNomos8kSC - Photo upscaler, handles a bit of jpg compression and blur, RRDBNet base model  
+4xLSDIR - Photo upscaler, no degradation handling, RRDBNet base model  
+4xLSDIRplus - Photo upscaler, handles a bit of jpg compression and blur, RRDBNet base model  
+4xLSDIRplusC - Photo upscaler, handles a bit of jpg compression, RRDBNet base model  
+4xLSDIRplusN - Photo upscaler, almost no degradation handling, RRDBNet base model  
+4xLSDIRplusR - Photo upscaler, handles degradation but too strong so loses details, RRDBNet base model    
+4xLSDIRCompact3 - Photo upscaler, handles a bit of jpg compression and blur, SRVGGNet model    
+4xLSDIRCompactC3 - Photo upscaler, handles a bit of jpg compression, SRVGGNet model    
+4xLSDIRCompactN3 - Photo upscaler, handles no degradations, SRVGGNet model   
+4xLSDIRCompactR3 - Photo upscaler, handles degradation but too strong so loses details, SRVGGNet model  
+4xLSDIRCompact2 - Photo upscaler, handles a bit of jpg compression and blur, SRVGGNet model    
+4xLSDIRCompactC2 - Photo upscaler, handles a bit of jpg compression, SRVGGNet model    
+4xLSDIRCompactR2 - Photo upscaler, handles degradation but too strong so loses details, SRVGGNet model  
+4xLSDIRCompact1 - Photo upscaler, handles a bit of jpg compression and blur, SRVGGNet model    
+4xLSDIRCompactC1 - Photo upscaler, handles a bit of jpg compression, SRVGGNet model    
+4xLSDIRCompactR1 - Photo upscaler, handles degradation but too strong so loses details, SRVGGNet model   
+2xParimgCompact - Photo upscaler that does some color shifting since based on ImagePairs, SRVGGNet model   
+
+*Anime*  
+2xHFA2kAVCOmniSR - Anime frame upscaler that handles AVC (h264) video compression, OmniSR model   
+2xHFA2kAVCOmniSR_Sharp - Anime frame upscaler that handles AVC (h264) video compression with sharper outputs, OmniSR model  
+4xHFA2kAVCSRFormer_light - Anime frame upscaler that handles AVC (h264) video compression, SRFormer lightweight model  
+2xHFA2kAVCEDSR_M - Anime frame upscaler that handles AVC (h264) video compression, EDSR-M model  
+2xHFA2kAVCCompact - Anime frame upscaler that handles AVC (h264) video compression, SRVGGNet model  
+4xHFA2kLUDVAESwinIR_light - Anime image upscaler that handles various realistic degradations, SwinIR light model  
+4xHFA2kLUDVAEGRL_small - Anime image upscaler that handles various realistic degradations, GRL small model  
+4xHFA2kLUDVAESRFormer_light - Anime image upscaler that handles various realistic degradations, SRFormer light model   
+4xHFA2k - Anime image upscaler that handles some jpg compression and blur, RRDBNet base model   
+2xHFA2kCompact - Anime image upscaler that handles some jpg compression and blur, SRVGGNet model  
+4xHFA2kLUDVAESAFMN - dropped model since there were artifacts on the outputs when training with SAFMN arch 
+
+*AI generated*  
+4xLexicaHAT - An AI generated image upscaler, does not handle any degradations, HAT base model  
+2xLexicaSwinIR - An AI generated image upscaler, does not handle any degradations, SwinIR base model  
+2xLexicaRRDBNet - An AI generated image upscaler, does not handle any degradations, RRDBNet base model  
+2xLexicaRRDBNet_Sharp - An AI generated image upscaler with sharper outputs, does not handle any degradations, RRDBNet base model 
 
 
 ### Interpolations
