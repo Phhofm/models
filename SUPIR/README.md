@@ -1,4 +1,8 @@
-SUPIR comfyui workflow to enforce consistency based on the transformer upscale first stage -
+## SUPIR comfyui workflow with hopefully enforced consistency
+
+![](https://github.com/Phhofm/models/blob/main/SUPIR/screenshot1.png)
+
+SUPIR comfyui workflow to enforce consistency based on the transformer upscale as a first stage.
 
 This was something I was experimenting with over the weekend.
 
@@ -31,4 +35,5 @@ So feel free to test this out if you want, and play around.
 
 You can find some examples in this folder, or in on [SlowPic](https://slow.pics/c/kUN5wRyT), where its first the input image, then 4xRealWebPhoto_v4_dat2 upscale, then 4xRealWebPhoto_v4_dat2_comfyui_supir
 
-- Philip Hofmann
+Philip Hofmann
+
