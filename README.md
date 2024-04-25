@@ -32,7 +32,7 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 
 Model releases sorted by date, linked to their github release:
 
-10.04.2024 - [4xpix_span_pretrain & 4xmssim_span_pretrain](https://github.com/Phhofm/models/releases/tag/4xSPAN_pretrains)
+10.04.2024 - [4xpix_span_pretrain & 4xmssim_span_pretrain](https://github.com/Phhofm/models/releases/tag/4xSPAN_pretrains)   
 04.04.2024 - [4xRealWebPhoto_v4_dat2](https://github.com/Phhofm/models/releases/tag/4xRealWebPhoto_v4_dat2) 4x upscaling photos downloaded from the web, handles jpg&webp compression, some realistic noise and some lens blur, [DAT2](https://github.com/zhengchen1999/dat) model.   
 25.03.2024 - [Ludvae200](https://github.com/Phhofm/models/releases/tag/Ludvae200) 1x realistic noise degradation model for training dataset creation, [LUD-VAE](https://github.com/zhengdharia/LUD-VAE) model.   
 22.03.2024 - [4xRealWebPhoto_v3_atd](https://github.com/Phhofm/models/releases/tag/4xRealWebPhoto_v3_atd) 4x upscaling photos downloaded from the web, handles jpg&webp compression, some realistic noise and some lens blur, [ATD](https://github.com/LabShuHangGU/Adaptive-Token-Dictionary) model - recommended to try out ;)   
