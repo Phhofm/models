@@ -32,6 +32,7 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 
 Model releases sorted by date, linked to their github release:
 
+10.04.2024 - [4xpix_span_pretrain & 4xmssim_span_pretrain](https://github.com/Phhofm/models/releases/tag/4xSPAN_pretrains)
 04.04.2024 - [4xRealWebPhoto_v4_dat2](https://github.com/Phhofm/models/releases/tag/4xRealWebPhoto_v4_dat2) 4x upscaling photos downloaded from the web, handles jpg&webp compression, some realistic noise and some lens blur, [DAT2](https://github.com/zhengchen1999/dat) model.   
 25.03.2024 - [Ludvae200](https://github.com/Phhofm/models/releases/tag/Ludvae200) 1x realistic noise degradation model for training dataset creation, [LUD-VAE](https://github.com/zhengdharia/LUD-VAE) model.   
 22.03.2024 - [4xRealWebPhoto_v3_atd](https://github.com/Phhofm/models/releases/tag/4xRealWebPhoto_v3_atd) 4x upscaling photos downloaded from the web, handles jpg&webp compression, some realistic noise and some lens blur, [ATD](https://github.com/LabShuHangGU/Adaptive-Token-Dictionary) model - recommended to try out ;)   
@@ -45,58 +46,56 @@ Model releases sorted by date, linked to their github release:
 28.01.2024 - [4xNomosUniDAT2_multijpg_ldl & 4xNomosUniDAT2_multijpg_ldl_sharp](https://github.com/Phhofm/models/releases/tag/4xNomosUniDAT2_multijpg_ldl) 4x universal DoF preserving upscaler, handles jpg compression, [DAT2](https://github.com/zhengchen1999/dat) models.   
 27.01.2024 - [1xExposureCorrection_compact & 1xOverExposureCorrection_compact & 1xUnderExposureCorrection_compact](https://github.com/Phhofm/models/releases/tag/1xExposureCorrection_compact) 1x Exposure correction, [SRVGGNetCompact](https://github.com/XPixelGroup/BasicSR/blob/master/basicsr/archs/srvgg_arch.py) models.   
 13.01.2024 - [2xNomosUni_span_multijpg_ldl](https://github.com/Phhofm/models/releases/tag/2xNomosUni_span_multijpg_ldl) 2x fast universal DoF preserving upscaler, handles jpg compression, [SPAN](https://github.com/hongyuanyu/SPAN) model.   
-
--- still making github releases for the following released models on this repo --
-
-11.01.2024 - 2xNomosUni_compact_multijpg_ldl   
-11.01.2024 - 2xNomosUni_compact_otf_medium   
-04.01.2024 - 4xHFA2k_VCISR_GRLGAN_ep200   
-04.01.2024 - 2xHFA2kShallowESRGAN   
-26.12.2024 - 2xHFA2kSPAN   
-26.12.2024 - 2xHFA2k_LUDVAE_SPAN   
-26.12.2024 - 2xHFA2k_LUDVAE_compact   
-26.12.2024 - 2xHFA2k_compact_multijpg   
-26.12.2024 - 2xHFA2Real-CUGAN   
-26.12.2024 - 2xHFA2OmniSR   
-26.12.2024 - 2xHFA2SwinIR-S   
-20.12.2023 - 2xNomosUni_esrgan_multijpg   
-13.12.2023 - 2xNomosUni_span_multijpg   
-13.12.2023 - 2xNomosUni_compact_multijpg   
+11.01.2024 - [2xNomosUni_compact_multijpg_ldl](https://github.com/Phhofm/models/releases/tag/2xNomosUni_compact_multijpg_ldl)   
+11.01.2024 - [2xNomosUni_compact_otf_medium](https://github.com/Phhofm/models/releases/tag/2xNomosUni_compact_otf_medium)   
+04.01.2024 - [4xHFA2k_VCISR_GRLGAN_ep200](https://github.com/Phhofm/models/releases/tag/4xHFA2k_VCISR_GRLGAN_ep200)   
+04.01.2024 - [2xHFA2kShallowESRGAN](https://github.com/Phhofm/models/releases/tag/2xHFA2kShallowESRGAN)   
+26.12.2024 - [2xHFA2kSPAN](https://github.com/Phhofm/models/releases/tag/2xHFA2kSPAN)   
+26.12.2024 - [2xHFA2k_LUDVAE_SPAN](https://github.com/Phhofm/models/releases/tag/2xHFA2k_LUDVAE_SPAN)   
+26.12.2024 - [2xHFA2k_LUDVAE_compact](https://github.com/Phhofm/models/releases/tag/2xHFA2k_LUDVAE_compact)   
+26.12.2024 - [2xHFA2k_compact_multijpg](https://github.com/Phhofm/models/releases/tag/2xHFA2k_compact_multijpg)   
+26.12.2024 - [2xHFA2kReal-CUGAN](https://github.com/Phhofm/models/releases/tag/2xHFA2kReal-CUGAN)   
+26.12.2024 - [2xHFA2kOmniSR](https://github.com/Phhofm/models/releases/tag/2xHFA2kOmniSR)   
+26.12.2024 - [2xHFA2kSwinIR-S](https://github.com/Phhofm/models/releases/tag/2xHFA2kSwinIR-S)      
+20.12.2023 - [2xNomosUni_esrgan_multijpg](https://github.com/Phhofm/models/releases/tag/2xNomosUni_esrgan_multijpg)   
+13.12.2023 - [2xNomosUni_span_multijpg](https://github.com/Phhofm/models/releases/tag/2xNomosUni_span_multijpg)   
+13.12.2023 - [2xNomosUni_compact_multijpg](https://github.com/Phhofm/models/releases/tag/2xNomosUni_compact_multijpg)   
 13.12.2023 - 4xTextureDAT2_otf   
-09.12.2023 - 4xNomosUni_span_multijpg   
-09.12.2023 - 4xNomos8k_span_otf_weak & 4xNomos8k_span_otf_medium & 4xNomos8k_span_otf_strong   
-01.11.2023 - 4xNomosUniDAT_otf   
-01.11.2023 - 4xLexicaDAT2_otf   
-01.11.2023 - 4xNomos8kHAT-L_otf   
-05.10.2023 - 4xNomos8kHAT-L_bokeh_jpg   
-23.09.2023 - 4xNomosUniDAT_otf   
-14.09.2023 - 4xNomosUniDAT_bokeh_jpg   
-10.09.2023 - 4xNomosUniDAT2_box   
-10.09.2023 - 4xLSDIRDAT   
-10.09.2023 - 4xSSDIRDAT   
-02.09.2023 - 4xFaceUpDAT & 4xFaceUpLDAT & 4xFaceUpSharpDAT & 4xFaceUpSharpLDAT   
-25.08.2023 - 4xFFHQDAT & 4xFFHQLDAT   
-13.08.2023 - 4xNomos8kDAT   
-02.08.2023 - 1xDeJPG_SRFormer_light, 1xDeJPG_OmniSR   
-11.07.2023 - 2xHFA2kAVCSRFormer_light   
-30.06.2023 - 4xNomos8kSCHAT-L & 4xNomos8kSCHAT-S  
-26.06.2023 - 4xNomos8kSCSRFormer  
-18.06.2023 - 2xHFA2kAVCCompact & 2xHFA2kAVCEDSR_M & 2xHFA2kAVCOmniSR  
-14.06.2023 - 4xHFA2kLUDVAEGRL_small  
-10.06.2023 - 4xHFA2kLUDVAESwinIR_light & 4xHFA2kLUDVAESRFormer_light  
-01.06.2023 - 2xLexicaRRDBNet & 2xLexicaRRDBNet_Sharp  
-10.05.2023 - 4xNomos8kSC  
-07.05.2023 - 4xHFA2k  
-05.05.2023 - 2xParimgCompact  
-18.04.2023 - 2xHFA2kCompact  
-11.04.2023 - 4xLSDIRCompactv3 (Series 3)  
-25.03.2023 - 4xLSDIRCompactv2 (Series 2)  
-17.03.2023 - 4xLSDIRCompactC & 4xLSDIRCompactR  
-11.03.2023 - 4xLSDIRCompact  
+09.12.2023 - [4xNomosUni_span_multijpg](https://github.com/Phhofm/models/releases/tag/4xNomosUni_span_multijpg)   
+09.12.2023 - 4xNomos8k_span_otf_weak & 4xNomos8k_span_otf_medium & 4xNomos8k_span_otf_strong (because of resave training most of these are undertrained)    
+01.11.2023 - [4xLexicaDAT2_otf](https://github.com/Phhofm/models/releases/tag/4xLexicaDAT2_otf)   
+01.11.2023 - [4xNomos8kHAT-L_otf](https://github.com/Phhofm/models/releases/tag/4xNomos8kHAT-L_otf)   
+05.10.2023 - [4xNomos8kHAT-L_bokeh_jpg](https://github.com/Phhofm/models/releases/tag/4xNomos8kHAT-L_bokeh_jpg)   
+23.09.2023 - [4xNomosUniDAT_otf](https://github.com/Phhofm/models/releases/tag/4xNomosUniDAT_otf)   
+14.09.2023 - [4xNomosUniDAT_bokeh_jpg](https://github.com/Phhofm/models/releases/tag/4xNomosUniDAT_bokeh_jpg)   
+10.09.2023 - [4xNomosUniDAT2_box](https://github.com/Phhofm/models/releases/tag/4xNomosUniDAT2_box)   
+10.09.2023 - [4xLSDIRDAT](https://github.com/Phhofm/models/releases/tag/4xLSDIRDAT)   
+10.09.2023 - [4xReal_SSDIR_DAT_GAN](https://github.com/Phhofm/models/releases/tag/4xReal_SSDIR_DAT_GAN)   
+10.09.2023 - [4xSSDIRDAT](https://github.com/Phhofm/models/releases/tag/4xSSDIRDAT)   
+02.09.2023 - [4xFaceUpDAT & 4xFaceUpLDAT & 4xFaceUpSharpDAT & 4xFaceUpSharpLDAT](https://github.com/Phhofm/models/releases/tag/4xFaceUpDAT_Series)     
+25.08.2023 - [4xFFHQDAT & 4xFFHQLDAT](https://github.com/Phhofm/models/releases/tag/4xFFHQDAT)   
+13.08.2023 - [4xNomos8kDAT](https://github.com/Phhofm/models/releases/tag/4xNomos8kDAT)   
+02.08.2023 - [1xDeJPG_SRFormer_light & 1xDeJPG_OmniSR & 1xDeJPG_HAT](https://github.com/Phhofm/models/releases/tag/1xDeJPG)   
+11.07.2023 - [2xHFA2kAVCSRFormer_light](https://github.com/Phhofm/models/releases/tag/2xHFA2kAVCSRFormer_light)   
+30.06.2023 - [4xNomos8kSCHAT-L & 4xNomos8kSCHAT-S](https://github.com/Phhofm/models/releases/tag/4xNomos8kSCHAT)  
+26.06.2023 - [4xNomos8kSCSRFormer](https://github.com/Phhofm/models/releases/tag/4xNomos8kSCSRFormer)  
+18.06.2023 - [2xHFA2kAVCCompact & 2xHFA2kAVCEDSR_M ](https://github.com/Phhofm/models/releases/tag/2xHFA2kAVCCompact)    
+18.06.2023 - [2xHFA2kAVCOmniSR](https://github.com/Phhofm/models/releases/tag/2xHFA2kAVCOmniSR)   
+14.06.2023 - [4xHFA2kLUDVAEGRL_small](https://github.com/Phhofm/models/releases/tag/4xHFA2kLUDVAEGRL_small)  
+10.06.2023 - [4xHFA2kLUDVAESwinIR_light & 4xHFA2kLUDVAESRFormer_light](https://github.com/Phhofm/models/releases/tag/4xHFA2kLUDVAESwinIR_light%264xHFA2kLUDVAESRFormer_light)   
+01.06.2023 - [2xLexicaRRDBNet & 2xLexicaRRDBNet_Sharp](https://github.com/Phhofm/models/releases/tag/2xLexicaRRDBNet)  
+10.05.2023 - [4xNomos8kSC](https://github.com/Phhofm/models/releases/tag/4xNomos8kSC)  
+07.05.2023 - [4xHFA2k](https://github.com/Phhofm/models/releases/tag/4xHFA2k)  
+05.05.2023 - [2xParimgCompact](https://github.com/Phhofm/models/releases/tag/2xParimgCompact)  
+18.04.2023 - [2xHFA2kCompact](https://github.com/Phhofm/models/releases/tag/2xHFA2kCompact)  
+11.04.2023 - [4xLSDIRCompactv3 (Series 3)](https://github.com/Phhofm/models/releases/tag/4xLSDIRCompact3)  
+25.03.2023 - [4xLSDIRCompact2](https://github.com/Phhofm/models/releases/tag/4xLSDIRCompact2)  
+17.03.2023 - [4xLSDIRCompactC & 4xLSDIRCompactR](https://github.com/Phhofm/models/releases/tag/4xLSDIRCompactC)  
+11.03.2023 - [4xLSDIRCompact](https://github.com/Phhofm/models/releases/tag/4xLSDIRCompact)  
 
 ---
    
-Previous README 
+Previous README
 
 Released (sorted by new)  
 
