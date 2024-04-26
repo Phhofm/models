@@ -60,7 +60,7 @@ Model releases sorted by date, linked to their github release:
 20.12.2023 - [2xNomosUni_esrgan_multijpg](https://github.com/Phhofm/models/releases/tag/2xNomosUni_esrgan_multijpg)   
 13.12.2023 - [2xNomosUni_span_multijpg](https://github.com/Phhofm/models/releases/tag/2xNomosUni_span_multijpg)   
 13.12.2023 - [2xNomosUni_compact_multijpg](https://github.com/Phhofm/models/releases/tag/2xNomosUni_compact_multijpg)   
-13.12.2023 - 4xTextureDAT2_otf   
+13.12.2023 - [4xTextureDAT2_otf](https://github.com/Phhofm/models/releases/tag/4xTextureDAT2_otf)   
 09.12.2023 - [4xNomosUni_span_multijpg](https://github.com/Phhofm/models/releases/tag/4xNomosUni_span_multijpg)   
 09.12.2023 - 4xNomos8k_span_otf_weak & 4xNomos8k_span_otf_medium & 4xNomos8k_span_otf_strong (because of resave training most of these are undertrained)    
 01.11.2023 - [4xLexicaDAT2_otf](https://github.com/Phhofm/models/releases/tag/4xLexicaDAT2_otf)   
