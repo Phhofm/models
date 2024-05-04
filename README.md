@@ -32,9 +32,9 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 
 Model releases sorted by date, linked to their github release:
 
-04.05.2024 - [4xTextures_GTAV_rgt-s](https://github.com/Phhofm/models/releases/tag/4xTextures_GTAV_rgt-s)
-02.05.2024 - [4xRealWebPhoto_v4_drct-l](https://github.com/Phhofm/models/releases/tag/4xRealWebPhoto_v4_drct-l)
-28.04.2024 - [4xDRCT-mssim-pretrains](https://github.com/Phhofm/models/releases/tag/4xDRCT-mssim-pretrains)   
+04.05.2024 - [4xTextures_GTAV_rgt-s](https://github.com/Phhofm/models/releases/tag/4xTextures_GTAV_rgt-s)   
+02.05.2024 - [4xRealWebPhoto_v4_drct-l](https://github.com/Phhofm/models/releases/tag/4xRealWebPhoto_v4_drct-l)   
+28.04.2024 - [4xDRCT-mssim-pretrains](https://github.com/Phhofm/models/releases/tag/4xDRCT-mssim-pretrains)    
 10.04.2024 - [4xpix_span_pretrain & 4xmssim_span_pretrain](https://github.com/Phhofm/models/releases/tag/4xSPAN_pretrains)   
 04.04.2024 - [4xRealWebPhoto_v4_dat2](https://github.com/Phhofm/models/releases/tag/4xRealWebPhoto_v4_dat2) 4x upscaling photos downloaded from the web, handles jpg&webp compression, some realistic noise and some lens blur, [DAT2](https://github.com/zhengchen1999/dat) model.   
 25.03.2024 - [Ludvae200](https://github.com/Phhofm/models/releases/tag/Ludvae200) 1x realistic noise degradation model for training dataset creation, [LUD-VAE](https://github.com/zhengdharia/LUD-VAE) model.   
