@@ -32,15 +32,15 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 
 Model releases sorted by date, linked to their github release:
 
-22.06.2024 - [4xNomos2_otf_esrgan](https://github.com/Phhofm/models/releases/tag/4xNomos2_otf_esrgan)  
-16.06.2024 - [4xNomosWebPhoto_esrgan](https://github.com/Phhofm/models/releases/tag/4xNomosWebPhoto_esrgan)  
-07.06.2024 - [4xNomosWebPhoto_atd](https://github.com/Phhofm/models/releases/tag/4xNomosWebPhoto_atd)  
-28.05.2024 - [4xNomosWebPhoto_RealPLKSR](https://github.com/Phhofm/models/releases/tag/4xNomosWebPhoto_RealPLKSR)  
-08.05.2024 - [4xTextures_GTAV_rgt-s_dither](https://github.com/Phhofm/models/releases/tag/4xTextures_GTAV_rgt-s_dither)  
-04.05.2024 - [4xTextures_GTAV_rgt-s](https://github.com/Phhofm/models/releases/tag/4xTextures_GTAV_rgt-s)   
-02.05.2024 - [4xRealWebPhoto_v4_drct-l](https://github.com/Phhofm/models/releases/tag/4xRealWebPhoto_v4_drct-l)   
-28.04.2024 - [4xDRCT-mssim-pretrains](https://github.com/Phhofm/models/releases/tag/4xDRCT-mssim-pretrains)    
-10.04.2024 - [4xpix_span_pretrain & 4xmssim_span_pretrain](https://github.com/Phhofm/models/releases/tag/4xSPAN_pretrains)   
+22.06.2024 - [4xNomos2_otf_esrgan](https://github.com/Phhofm/models/releases/tag/4xNomos2_otf_esrgan) (4x upscale photos, trained with the Real-ESRGAN pipeline on ESRGAN)  
+16.06.2024 - [4xNomosWebPhoto_esrgan](https://github.com/Phhofm/models/releases/tag/4xNomosWebPhoto_esrgan) (4x upscale photos downloaded from the web, ESRGAN version)  
+07.06.2024 - [4xNomosWebPhoto_atd](https://github.com/Phhofm/models/releases/tag/4xNomosWebPhoto_atd) (4x upscale photos downloaded from the web, ATD model)  
+28.05.2024 - [4xNomosWebPhoto_RealPLKSR](https://github.com/Phhofm/models/releases/tag/4xNomosWebPhoto_RealPLKSR) (A rework of my RealWebPhoto series, info on creating the new dataset in the attached pdf. Trained on [RealPLKSR](https://github.com/dslisleedh/PLKSR/issues/4) which is a modified [PLKSR](https://github.com/dslisleedh/PLKSR) and got released 09.05.24 on neosr)   
+08.05.2024 - [4xTextures_GTAV_rgt-s_dither](https://github.com/Phhofm/models/releases/tag/4xTextures_GTAV_rgt-s_dither) (An improvement upon the previous model by including dithering in the training dataset)  
+04.05.2024 - [4xTextures_GTAV_rgt-s](https://github.com/Phhofm/models/releases/tag/4xTextures_GTAV_rgt-s) (A model to 4x upscale game textures)   
+02.05.2024 - [4xRealWebPhoto_v4_drct-l](https://github.com/Phhofm/models/releases/tag/4xRealWebPhoto_v4_drct-l) (A DRCT-L model trained using my previous pretrain, for 4x upscaling photos from the web)   
+28.04.2024 - [4xDRCT-mssim-pretrains](https://github.com/Phhofm/models/releases/tag/4xDRCT-mssim-pretrains) (First ever released DRCT pretrains / models to use as pretrain to train more drct models. The first official drct pretrain got released on the 02.06)     
+10.04.2024 - [4xpix_span_pretrain & 4xmssim_span_pretrain](https://github.com/Phhofm/models/releases/tag/4xSPAN_pretrains) (Pretrains for SPAN with PixelLoss and one with mssim loss from and for usage with [neosr](https://github.com/muslll/neosr))   
 04.04.2024 - [4xRealWebPhoto_v4_dat2](https://github.com/Phhofm/models/releases/tag/4xRealWebPhoto_v4_dat2) 4x upscaling photos downloaded from the web, handles jpg&webp compression, some realistic noise and some lens blur, [DAT2](https://github.com/zhengchen1999/dat) model.   
 25.03.2024 - [Ludvae200](https://github.com/Phhofm/models/releases/tag/Ludvae200) 1x realistic noise degradation model for training dataset creation, [LUD-VAE](https://github.com/zhengdharia/LUD-VAE) model.   
 22.03.2024 - [4xRealWebPhoto_v3_atd](https://github.com/Phhofm/models/releases/tag/4xRealWebPhoto_v3_atd) 4x upscaling photos downloaded from the web, handles jpg&webp compression, some realistic noise and some lens blur, [ATD](https://github.com/LabShuHangGU/Adaptive-Token-Dictionary) model - recommended to try out ;)   
