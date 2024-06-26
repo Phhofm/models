@@ -32,6 +32,11 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 
 Model releases sorted by date, linked to their github release:
 
+22.06.2024 - [4xNomos2_otf_esrgan](https://github.com/Phhofm/models/releases/tag/4xNomos2_otf_esrgan)  
+16.06.2024 - [4xNomosWebPhoto_esrgan](https://github.com/Phhofm/models/releases/tag/4xNomosWebPhoto_esrgan)  
+07.06.2024 - [4xNomosWebPhoto_atd](https://github.com/Phhofm/models/releases/tag/4xNomosWebPhoto_atd)  
+28.05.2024 - [4xNomosWebPhoto_RealPLKSR](https://github.com/Phhofm/models/releases/tag/4xNomosWebPhoto_RealPLKSR)  
+08.05.2024 - [4xTextures_GTAV_rgt-s_dither](https://github.com/Phhofm/models/releases/tag/4xTextures_GTAV_rgt-s_dither)  
 04.05.2024 - [4xTextures_GTAV_rgt-s](https://github.com/Phhofm/models/releases/tag/4xTextures_GTAV_rgt-s)   
 02.05.2024 - [4xRealWebPhoto_v4_drct-l](https://github.com/Phhofm/models/releases/tag/4xRealWebPhoto_v4_drct-l)   
 28.04.2024 - [4xDRCT-mssim-pretrains](https://github.com/Phhofm/models/releases/tag/4xDRCT-mssim-pretrains)    
