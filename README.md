@@ -32,6 +32,7 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 
 Model releases sorted by date, linked to their github release:
 
+27.06.1013 - [4xmssim_realplksr_dysample_pretrain](https://github.com/Phhofm/models/releases/tag/4xmssim_realplksr_dysample_pretrain) (A pretrain to train photo upscaling models for realplksr dysample)
 22.06.2024 - [4xNomos2_otf_esrgan](https://github.com/Phhofm/models/releases/tag/4xNomos2_otf_esrgan) (4x upscale photos, trained with the Real-ESRGAN pipeline on ESRGAN)  
 16.06.2024 - [4xNomosWebPhoto_esrgan](https://github.com/Phhofm/models/releases/tag/4xNomosWebPhoto_esrgan) (4x upscale photos downloaded from the web, ESRGAN version)  
 07.06.2024 - [4xNomosWebPhoto_atd](https://github.com/Phhofm/models/releases/tag/4xNomosWebPhoto_atd) (4x upscale photos downloaded from the web, ATD model)  
