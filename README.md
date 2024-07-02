@@ -303,7 +303,92 @@ Slow Pics Examples SPAN otf series:
 
 These 'medium' settings then became the default values in the current neosr otf default configs.
 
-Just to show, instead of using Real-ESRGAN otf pipeline, I had made my own manual degradation workflow instead. 
+Something else that I had seen that was also interesting, was when I tried out / trained StarSRGAN in July 23 (but I never officially released any model trained on it), was the used of the Real-ESRGAN otf pipeline but in a manner of defining three different degradation strenght settings and using them in a probabilistic manner:
+```
+# ----------------- options for synthesizing training data in StarSRGANModel ----------------- #
+# USM the ground-truth
+l1_gt_usm: True
+percep_gt_usm: True
+gan_gt_usm: False
+
+degree_list: ['weak_degrade_one_stage', 'standard_degrade_one_stage', 'severe_degrade_two_stage']
+degree_prob: [0.3, 0.3, 0.4]
+
+# the degradation process of weak_degrade_one_stage
+resize_prob_weak1: [0.1, 0.2, 0.7]  # up, down, keep
+resize_range_weak1: [0.85, 1.2]
+gaussian_noise_prob_weak1: 0.5
+noise_range_weak1: [1, 10]
+poisson_scale_range_weak1: [0.05, 0.5]
+gray_noise_prob_weak1: 0.4
+jpeg_range_weak1: [90, 95]
+
+# the degradation process of standard_degrade_one_stage
+resize_prob_standard1: [0.3, 0.4, 0.3]  # up, down, keep
+resize_range_standard1: [0.5, 1.2]
+gaussian_noise_prob_standard1: 0.5
+noise_range_standard1: [1, 20]
+poisson_scale_range_standard1: [0.05, 1.5]
+gray_noise_prob_standard1: 0.4
+jpeg_range_standard1: [50, 95]
+
+# the first degradation process of severe_degrade_two_stage
+resize_prob: [0.2, 0.7, 0.1]  # up, down, keep
+resize_range: [0.15, 1.5]
+gaussian_noise_prob: 0.5
+noise_range: [1, 30]
+poisson_scale_range: [0.05, 3]
+gray_noise_prob: 0.4
+jpeg_range: [30, 95]
+
+# the second degradation process of severe_degrade_two_stage
+second_blur_prob: 0.8
+resize_prob2: [0.3, 0.4, 0.3]  # up, down, keep
+resize_range2: [0.3, 1.2]
+gaussian_noise_prob2: 0.5
+noise_range2: [1, 25]
+poisson_scale_range2: [0.05, 2.5]
+gray_noise_prob2: 0.4
+jpeg_range2: [30, 95]
+
+gt_size: 256
+queue_size: 320
+```
+
+And then another interesting thing I had seen was the expansion of the Real-ESRGAN otf pipeline with more degradation options, like in this case video compression, which I had used to train my [4xHFA2k_VCISR_GRLGAN_ep200](https://github.com/Phhofm/models/releases/tag/4xHFA2k_VCISR_GRLGAN_ep200) model:
+```
+if opt['degradation_mode'] == "V2":         
+    # Setting for Degradation with Video Compression (V2)
+
+    # V1 Skip setting
+    opt['v1_proportion'] = 0.05                     # [~0.05] 
+    opt['jpeg_range2'] = [30, 95]                   # V1 JPEG proportion
+    
+    # Codec
+    opt['video_codec'] = ["mpeg2video", "libxvid", "libx264", "libx265"]     # codec
+    opt['video_codec_prob'] = [0.2, 0.2, 0.4, 0.2]  
+
+    # CRF
+    opt['crf_range'] = [20, 32]                                                                
+    opt['crf_offset'] = [0, 0, 0, 5]                            # CRF=23: AVC's default value; CRF=8: HEVC's default value
+    opt['mpeg2_4_bitrate_range'] = [3800, 5800]                 
+
+    # Preset
+    opt['encode_preset'] = ["slow", "medium", "fast", "faster", "superfast"]         
+    opt['encode_preset_prob'] = [0.1, 0.5, 0.25, 0.12, 0.03]                        
+
+    # Auxiliary (Ratio Scaling + FPS)    
+    opt['ratio_prob'] = [0.2, 0.4, 0.4]                         # shrink, expand, keep: just width adjust prob
+    opt['ratio_range'] = [0.8, 1.35]                            # bottom, ceil 
+    opt['fps_range'] = [16, 30]                                 
+```
+With some visual examples of the model I had trained on it:  
+![320867776-8baeac11-72a2-4955-8a65-e67b88dd1f55](https://github.com/Phhofm/models/assets/14755670/f7d8227b-4e1a-4ef9-a5a9-7bbc3ea6594f)
+![320867789-5a940e22-10be-4043-a5ad-c8bed1fbbb80](https://github.com/Phhofm/models/assets/14755670/4a8dc6c5-912c-4687-a83c-9240ef810d38)
+
+
+
+And then, just to show, instead of using Real-ESRGAN otf pipeline, I had made my own manual degradation workflow instead. 
 
 Utilizing my own realistic noise degradation [Ludvae200](https://github.com/Phhofm/models/releases/tag/Ludvae200) model instead of gaussian noise:  
 ![316479937-ec81280a-777d-4e08-b2a5-65e5411f744c](https://github.com/Phhofm/models/assets/14755670/e40c95fc-c34a-43fc-bcfc-451879b411e0)
