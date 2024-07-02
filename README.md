@@ -103,9 +103,270 @@ Model releases sorted by date, linked to their github release:
 17.03.2023 - [4xLSDIRCompactC & 4xLSDIRCompactR](https://github.com/Phhofm/models/releases/tag/4xLSDIRCompactC)  
 11.03.2023 - [4xLSDIRCompact](https://github.com/Phhofm/models/releases/tag/4xLSDIRCompact)  
 
+
+# Real-ESRGAN Pipeline OTF Settings
+
+I normally try out a lot of things while training, I thought I make a section about one of these things, the Real-ESRGAN pipeline otf settings
+
+While training my first Compact model in the beginning of 2023 (was my new years resolution to try and learn how to train my own sisr model back then), the 4xLSDIRCompact series, it felt to me like the settings used for the otf (on-the-fly) degradations in the Real-ESRGAN pipeline were too strong. 
+
+This can be seen in the [4xLSDIRCompactR](https://github.com/Phhofm/models/releases/tag/4xLSDIRCompactC) model I had released on the 17.03.2023 which used the standard Real-ESRGAN otf values. 
+In comparison to the non-degraded model, it lost a lot of details: [https://imgsli.com/MTYyODY3/17/19](https://imgsli.com/MTYyODY3/17/19)    
+
+In the above comparison is also the 4xLSDIRCompactC model outputs, which was my try back then to have a bit more control over jpg compression especially, where I manually degraded the 85'000 training images with jpg compression by degrading 10'000 images with jpg qualiy 100, the next 10'000 with jpg quality 90, and so forth, until 30. Nowadays i would not recommend going that low, and there are dataset destroyer scripts around now who automate that process and are using randomization, but it was my try back then.     
+This was simply to show that the standard Real-ESRGAN otf values (as used by Real-ESRGAN, then HAT, and so forth, most official real-world gan trained models using the Real-ESRGAN pipeline used their standard values) are too strong.    
+
+The Real-ESRGAN otf standard values:  
+```
+# the first degradation process
+resize_prob: [0.2, 0.7, 0.1]  # up, down, keep
+resize_range: [0.15, 1.5]
+gaussian_noise_prob: 0.5
+noise_range: [1, 30]
+poisson_scale_range: [0.05, 3]
+gray_noise_prob: 0.4
+jpeg_range: [30, 95]
+
+# the second degradation process
+second_blur_prob: 0.8
+resize_prob2: [0.3, 0.4, 0.3]  # up, down, keep
+resize_range2: [0.3, 1.2]
+gaussian_noise_prob2: 0.5
+noise_range2: [1, 25]
+poisson_scale_range2: [0.05, 2.5]
+gray_noise_prob2: 0.4
+jpeg_range2: [30, 95]
+
+blur_kernel_size: 21
+kernel_list: ['iso', 'aniso', 'generalized_iso', 'generalized_aniso', 'plateau_iso', 'plateau_aniso']
+kernel_prob: [0.45, 0.25, 0.12, 0.03, 0.12, 0.03]
+sinc_prob: 0.1
+blur_sigma: [0.2, 3]
+betag_range: [0.5, 4]
+betap_range: [1, 2]
+
+blur_kernel_size2: 21
+kernel_list2: ['iso', 'aniso', 'generalized_iso', 'generalized_aniso', 'plateau_iso', 'plateau_aniso']
+kernel_prob2: [0.45, 0.25, 0.12, 0.03, 0.12, 0.03]
+sinc_prob2: 0.1
+blur_sigma2: [0.2, 1.5]
+betag_range2: [0.5, 4]
+betap_range2: [1, 2]
+```
+
+After that, on the model I had released on the 18.04.2023, [2xHFA2kCompact](https://github.com/Phhofm/models/releases/tag/2xHFA2kCompact), I used the otf pipeline but without the noise components. Then I tested an ESRGAN model with slightly different settings, [https://imgsli.com/MTczNzA0/1/2]([https://github.com/Phhofm/models/releases/tag/2xHFA2kCompact](https://imgsli.com/MTczNzA0/1/2)) , both trained for 12 hours with gt size 256, batch 10 and x4plus pretrain. The S is with l1_gt_usm:True and percep_gt_usm:True and some otf compression&blur&noise, while the SC is those both set to False and only some otf compression&blur (no noise). I posted it in the community and in general, SC was preferred. This became the released [4xNomos8kSC](https://github.com/Phhofm/models/releases/tag/4xNomos8kSC) model on the 10.05.2023.
+
+Coming back to that in December 2023 when training my [2xNomosUni_compact_multijpg](https://github.com/Phhofm/models/releases/tag/2xNomosUni_compact_multijpg) model, I thought I could takle these otf settings and train 3 different compact models with three different otf settings / strenghts to then test out the outputs these models were to produce and to see which settings I would like best.
+
+Since, like I already stated, the standard Real-ESRGAN otf values were too strong, I weakened the degradations by quite a bit. I called them "strong", "medium" and "weak", and they resulted in the 2xNomosUni_compact_otf_strong, [2xNomosUni_compact_otf_medium](https://github.com/Phhofm/models/releases/tag/2xNomosUni_compact_otf_medium) and 2xNomosUni_compact_otf_weak models. I will show the settings used in the configs here:
+
+2xNomosUni_compact_otf_strong
+```
+# the first degradation process
+resize_prob: [0.3, 0.4, 0.3] # up, down, keep
+resize_range: [0.5, 1.5]
+gaussian_noise_prob: 0.2
+noise_range: [0, 4]
+poisson_scale_range: [0.05, 0.5]
+gray_noise_prob: 0.1
+jpeg_range: [70, 95]
+
+# the second degradation process
+second_blur_prob: 0.8
+resize_prob2: [0.3, 0.4, 0.3] # up, down, keep
+resize_range2: [0.3, 1.5]
+gaussian_noise_prob2: 0.2
+noise_range2: [0, 4]
+poisson_scale_range2: [0.05, 0.25]
+gray_noise_prob2: 0.1
+jpeg_range2: [60, 95]
+
+blur_kernel_size: 7
+kernel_list: ["iso", "aniso", "generalized_iso", "generalized_aniso", "plateau_iso", "plateau_aniso"]
+kernel_prob: [0.45, 0.25, 0.12, 0.03, 0.12, 0.03]
+sinc_prob: 0.1
+blur_sigma: [0.2, 3]
+betag_range: [0.5, 4]
+betap_range: [1, 2]
+
+blur_kernel_size2: 9
+kernel_list2: ["iso", "aniso", "generalized_iso", "generalized_aniso", "plateau_iso", "plateau_aniso"]
+kernel_prob2: [0.45, 0.25, 0.12, 0.03, 0.12, 0.03]
+sinc_prob2: 0.1
+blur_sigma2: [0.2, 1.5]
+betag_range2: [0.5, 4]
+betap_range2: [1, 2]
+```
+
+
+2xNomosUni_compact_otf_medium
+```
+# the first degradation process
+resize_prob: [0.3, 0.4, 0.3] # up, down, keep
+resize_range: [0.5, 1.5]
+gaussian_noise_prob: 0.2
+noise_range: [0, 2]
+poisson_scale_range: [0.05, 0.25]
+gray_noise_prob: 0.1
+jpeg_range: [40, 95] #lets crack down on jpg compression, after 148k iter, from 75,95 to 40,95
+
+# the second degradation process
+second_blur_prob: 0.4
+resize_prob2: [0.3, 0.4, 0.3] # up, down, keep
+resize_range2: [0.5, 1.5]
+gaussian_noise_prob2: 0.2
+noise_range2: [0, 2]
+poisson_scale_range2: [0.05, 0.1]
+gray_noise_prob2: 0.1
+jpeg_range2: [40, 95] #jpg compression crackdown, after 148k iter, from 75,95 to 40,95
+
+blur_kernel_size: 7
+kernel_list: ["iso", "aniso", "generalized_iso", "generalized_aniso", "plateau_iso", "plateau_aniso"]
+kernel_prob: [0.45, 0.25, 0.12, 0.03, 0.12, 0.03]
+sinc_prob: 0.1
+blur_sigma: [0.2, 3]
+betag_range: [0.5, 4]
+betap_range: [1, 2]
+
+blur_kernel_size2: 9
+kernel_list2: ["iso", "aniso", "generalized_iso", "generalized_aniso", "plateau_iso", "plateau_aniso"]
+kernel_prob2: [0.45, 0.25, 0.12, 0.03, 0.12, 0.03]
+sinc_prob2: 0.1
+blur_sigma2: [0.2, 1.5]
+betag_range2: [0.5, 4]
+betap_range2: [1, 2]
+```
+
+2xNomosUni_compact_otf_weak
+```
+# the first degradation process
+resize_prob: [0.3, 0.4, 0.3] # up, down, keep
+resize_range: [0.85, 1.25]
+gaussian_noise_prob: 0.2
+noise_range: [0, 1]
+poisson_scale_range: [0.05, 0.1]
+gray_noise_prob: 0.1
+jpeg_range: [85, 100]
+
+# the second degradation process
+second_blur_prob: 0.2
+resize_prob2: [0.3, 0.4, 0.3] # up, down, keep
+resize_range2: [0.85, 1.25]
+gaussian_noise_prob2: 0.2
+noise_range2: [0, 1]
+poisson_scale_range2: [0.05, 0.1]
+gray_noise_prob2: 0.1
+jpeg_range2: [85, 100]
+
+blur_kernel_size: 7
+kernel_list: ["iso", "aniso", "generalized_iso", "generalized_aniso", "plateau_iso", "plateau_aniso"]
+kernel_prob: [0.45, 0.25, 0.12, 0.03, 0.12, 0.03]
+sinc_prob: 0.1
+blur_sigma: [0.2, 1.5]
+betag_range: [0.5, 2]
+betap_range: [1, 2]
+
+blur_kernel_size2: 7
+kernel_list2: ["iso", "aniso", "generalized_iso", "generalized_aniso", "plateau_iso", "plateau_aniso"]
+kernel_prob2: [0.45, 0.25, 0.12, 0.03, 0.12, 0.03]
+sinc_prob2: 0.1
+blur_sigma2: [0.2, 1.5]
+betag_range2: [0.5, 2]
+betap_range2: [1, 2]
+```
+
+I can show some visual outputs of these models:  
+Degraded:  
+![degraded_compact](https://github.com/Phhofm/models/assets/14755670/af2ef4a5-71ff-4b6f-9313-9d4ba9866764)  
+Noisy:  
+![noisy_compact](https://github.com/Phhofm/models/assets/14755670/a6c1a794-d670-4501-9467-19a9f3e6adfb)  
+Face:  
+![face_compact](https://github.com/Phhofm/models/assets/14755670/fda2117f-3a56-4180-a581-98a0ed324d51)  
+
+
+
+I redid the whole training / test by training with the same degradation strengths again, but this time SPAN models.   
+I can also show the visual outputs of those:  
+![degraded_span](https://github.com/Phhofm/models/assets/14755670/9a548683-ad18-45e6-9376-2e935ace00ce)
+![noisy_span](https://github.com/Phhofm/models/assets/14755670/8a35f16f-8b66-4fb3-af87-3cbc26994749)
+![face_span](https://github.com/Phhofm/models/assets/14755670/2634e098-7cf7-45fe-bbe3-bf0abd6db689)
+
+
+Slow Pics Examples SPAN otf series:  
+[Face](https://slow.pics/c/oUwjORg3)  
+[ani_bokeh](https://slow.pics/c/x55KBHNV)  
+[real_degraded](https://slow.pics/c/vAWyo587)  
+[noisy](https://slow.pics/c/TYufcfBh)  
+[BF4](https://slow.pics/c/gT00liog)  
+[Control](https://slow.pics/c/bzE5AX1S)  
+
+
+These 'medium' settings then became the default values in the current neosr otf default configs.
+
+Just to show, instead of using Real-ESRGAN otf pipeline, I had made my own manual degradation workflow instead. 
+
+Utilizing my own realistic noise degradation [Ludvae200](https://github.com/Phhofm/models/releases/tag/Ludvae200) model instead of gaussian noise:  
+![316479937-ec81280a-777d-4e08-b2a5-65e5411f744c](https://github.com/Phhofm/models/assets/14755670/e40c95fc-c34a-43fc-bcfc-451879b411e0)
+
+Utilizing the lens blur that umzi implemented for me then in his [wtp_dataset_destroyer](https://github.com/umzi2/wtp_dataset_destroyer):  
+![image](https://github.com/Phhofm/models/assets/14755670/e41b0951-59ef-456a-b9a2-a91d544e71c5)
+
+This was all applied in the 4xNomosWebPhoto dataset I created which can process can be seen [in this pdf file](https://github.com/Phhofm/models/releases/download/4xNomosWebPhoto_RealPLKSR/4xNomosWebPhoto.pdf). The previous version of this dataset was the 4xRealWebPhoto dataset which went over 4 iterations/reworks, where at the beginning I had used a realistic blur dataset to start, and then switched to adding lens blur, [v4 pdf info](https://github.com/Phhofm/models/releases/download/4xRealWebPhoto_v4_dat2/4xRealWebPhoto_v4.pdf). I also talked about it in the last section of this [youtube video](https://youtu.be/QS4ZF7yzH88?si=hGYK9bkjdLfDGZgL)
+
+# Other Experiments
+
+## Inference Speeds
+I also made some other experiments like testing inference speeds of networks:  
+With neosr testscript, 50 256x256 images, fastest of 3 runs:  
+
+Compact: 1.90s, 26.35fps  
+SPAN: 2.33s, 21.44fps  
+SAFMN: 2.92s, 17.11fps  
+SeemoRe_t: 4.07s, 12.29fps  
+DITN: 4.26s, 11.72fps  
+CUGAN: 4.45s, 11.22fps  
+PLKSR_tiny: 4.42s, 11.31fps  
+MSDAN: 5.30s, 9.43fps  
+SeemoRe: 5.54s, 9.02fps  
+PLKSR: 8.86s, 5.64fps  
+OmniSR: 8.90s, 5.62fps  
+Seemore_l: 8.97s, 5.57fps  
+SAFMN-L: 9.87s, 5.07fps  
+RealPLKSR: 9.90s, 5.05fps  
+DCTLSA: 11.53s, 4.43fps  
+SwinIR-S: 14.18s, 3.53fps  
+SRFormer-light: 16.28s, 3.07fps  
+CRAFT: 18.02s, 2.78fps  
+ESRGAN: 22.51s, 2.22fps  
+DRCT-S: 26.22s,1.91fps  
+ATD-Light: 28.51s, 1.75fps  
+SwinIR-M: 46.46s, 1.08fps  
+DRCT: 58.83s, 0.85fps  
+HAT-S: 71.37s, 0.70fps  
+RGT_S: 74.83s, 0.67fps  
+DAT-S: 74.96s, 0.67fps  
+SRFormer-M: 79.02s, 0.63fps  
+DAT2: 81.90s, 0.61fps  
+HAT-M: 90.19s, 0.55fps  
+RGT: 96.07s, 0.52fps  
+SwinIR-L: 96.39s, 0.52fps  
+DAT: 97.08s, 0.52fps  
+DRCT-L: 110.93s, 0.45fps  
+ATD: 152.13s, 0.33fps  
+HAT-L: 177.75s, 0.28fps  
+
+## Official Pretrains
+We can also run the official pretrains of each network that was trained with pixel loss only on the same input. Now doing this oneself meaning training every network option (/ 'arch') with the same settings deterministically would be better, still these have been trained on the same dataset with same losses in a similiar manner and can still give us an impression of the network. For example:  
+![face_test](https://github.com/Phhofm/models/assets/14755670/ff65f670-539f-4070-ac1c-ac510c793c81)
+![car_test](https://github.com/Phhofm/models/assets/14755670/e2d7c04e-e946-4318-bba8-22c7445fe786)
+![anime_test](https://github.com/Phhofm/models/assets/14755670/a4b561d9-6ce4-4f5f-886a-eed4697bb37f)
+
+## Youtube Videos
+I basically tried to show and list all my experiments and learnings and findings in [this youtube video](https://www.youtube.com/watch?v=QS4ZF7yzH88)
+
 ---
    
-Previous README
+# OLD README
 
 Released (sorted by new)  
 
