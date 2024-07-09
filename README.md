@@ -32,6 +32,7 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 
 Model releases sorted by date, linked to their github release:
 
+09.07.2024 - [1xDeJPG_realplksr_otf](https://github.com/Phhofm/models/releases/tag/1xDeJPG_realplksr_otf) (1x dejpg model, trained on otf, jpg down to 40 (and recompressed down to 40))
 30.06.2024 - [4xNomos2_realplksr_dysample](https://github.com/Phhofm/models/releases/tag/4xNomos2_realplksr_dysample) (4x realplksr dysample upscale model, DoF preserving, jpg down to 70)  
 27.06.2024 - [4xmssim_realplksr_dysample_pretrain](https://github.com/Phhofm/models/releases/tag/4xmssim_realplksr_dysample_pretrain) (A pretrain to train photo upscaling models for realplksr dysample)  
 22.06.2024 - [4xNomos2_otf_esrgan](https://github.com/Phhofm/models/releases/tag/4xNomos2_otf_esrgan) (4x upscale photos, trained with the Real-ESRGAN pipeline on ESRGAN)  
