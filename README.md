@@ -32,6 +32,9 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 
 Model releases sorted by date, linked to their github release:
 
+08.08.2024 - [4xArtFaces_realplksr_dysample](https://github.com/Phhofm/models/releases/tag/4xArtFaces_realplksr_dysample) (4x realplksr dysample upscale model for art / paintings of faces)  
+08.08.2024 - [ArtFaces Dataset]() (Curated version of the [metfaces dataset](https://github.com/NVlabs/metfaces-dataset), for the purpose of training single image super resolution models.
+Consisting of 5630 image tiles that are 512x512px of human faces extracted from works of art from the Metropolitan Museum of Art Collection.)  
 19.07.2024 - [4xmssim_hma_pretrains](https://github.com/Phhofm/models/releases/tag/4xmssim_hma_pretrains) (4x [hma](https://github.com/korouuuuu/HMA) mssim pretrains since there are no official released models yet)   
 13.07.2024 - [4xHFA2k_ludvae_realplksr_dysample](https://github.com/Phhofm/models/releases/tag/4xHFA2k_ludvae_realplksr_dysample) (4x anime single-image super-resolution with degradation handling)   
 09.07.2024 - [1xDeJPG_realplksr_otf](https://github.com/Phhofm/models/releases/tag/1xDeJPG_realplksr_otf) (1x dejpg model, trained on otf, jpg down to 40 (and recompressed down to 40))  
