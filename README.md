@@ -30,8 +30,12 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 
 [All my 111 released models as safetensors files in a zip file](https://github.com/Phhofm/models/releases/tag/all_models)
 
-Model releases sorted by date, linked to their github release:
-
+Model releases sorted by date, linked to their github release:  
+13.08.2024 - [4xNature_realplksr_dysample](https://github.com/Phhofm/models/releases/tag/4xNature_realplksr_dysample) (A realplksr dysample model for photographs of nature, based on the released nature dataset)  
+13.08.2024 - [Nature Dataset](https://github.com/Phhofm/models/releases/tag/nature_dataset) (Curated version of the [iNaturalist 2017 dataset](https://github.com/visipedia/inat_comp/tree/master/2017), for the purpose of training single image super resolution models.
+Consisting of a small version of 3000 images for lightweight networks or a medium version of 7000 images for medium/heavy networks. 512x512px tiles of different Animals and Plants.)   
+08.08.2024 - [1xDeH264_realplksr](https://github.com/Phhofm/models/releases/tag/1xDeH264_realplksr) (A 1x realplksr model that removes h264 compression)   
+08.08.2024 - [1xDeNoise_realplksr_otf](https://github.com/Phhofm/models/releases/tag/1xDeNoise_realplksr_otf) (A 1x realplksr denoise model, also handles a bit of resizing and jpg compression additionally)   
 08.08.2024 - [4xArtFaces_realplksr_dysample](https://github.com/Phhofm/models/releases/tag/4xArtFaces_realplksr_dysample) (4x realplksr dysample upscale model for art / paintings of faces)  
 08.08.2024 - [ArtFaces Dataset]() (Curated version of the [metfaces dataset](https://github.com/NVlabs/metfaces-dataset), for the purpose of training single image super resolution models.
 Consisting of 5630 image tiles that are 512x512px of human faces extracted from works of art from the Metropolitan Museum of Art Collection.)  
