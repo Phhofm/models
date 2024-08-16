@@ -30,7 +30,11 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 
 [All my 134 released models as safetensors files in a zip file](https://github.com/Phhofm/models/releases/tag/all_models)
 
-Model releases sorted by date, linked to their github release:  
+Model releases sorted by date, linked to their github release:   
+16.08.2024 - [4xNomosRealWeb Dataset](https://github.com/Phhofm/models/releases/tag/4xnomosrealweb_dataset) (Degraded x4 LR version with realistic degradations of the Nomosv2 dataset for training 4x upscaling models for upscaling images downloaded from the web).  
+16.08.2024 - [SSDIR Dataset](https://github.com/Phhofm/models/releases/tag/ssdir_dataset) (Curated version of the [LSDIR dataset](https://data.vision.ee.ethz.ch/yawli/index.html), for the purpose of training single image super resolution models).  
+16.08.2024 - [Lexica Dataset](https://github.com/Phhofm/models/releases/tag/lexica_dataset) (Dataset for the purpose of training single image super resolution models for AI generated images).  
+16.08.2024 - [FaceUp Dataset](https://github.com/Phhofm/models/releases/tag/faceup_dataset) (Curated version of the [FFHQ dataset](https://github.com/NVlabs/ffhq-dataset), for the purpose of training single image super resolution models for photographs of faces / portrait photographs).  
 13.08.2024 - [4xNature_realplksr_dysample](https://github.com/Phhofm/models/releases/tag/4xNature_realplksr_dysample) (A realplksr dysample model for photographs of nature, based on the released nature dataset)  
 13.08.2024 - [Nature Dataset](https://github.com/Phhofm/models/releases/tag/nature_dataset) (Curated version of the [iNaturalist 2017 dataset](https://github.com/visipedia/inat_comp/tree/master/2017), for the purpose of training single image super resolution models.
 Consisting of a small version of 3000 images for lightweight networks or a medium version of 7000 images for medium/heavy networks. 512x512px tiles of different Animals and Plants.)   
