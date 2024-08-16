@@ -41,7 +41,7 @@ Consisting of a small version of 3000 images for lightweight networks or a mediu
 08.08.2024 - [1xDeH264_realplksr](https://github.com/Phhofm/models/releases/tag/1xDeH264_realplksr) (A 1x realplksr model that removes h264 compression)   
 08.08.2024 - [1xDeNoise_realplksr_otf](https://github.com/Phhofm/models/releases/tag/1xDeNoise_realplksr_otf) (A 1x realplksr denoise model, also handles a bit of resizing and jpg compression additionally)   
 08.08.2024 - [4xArtFaces_realplksr_dysample](https://github.com/Phhofm/models/releases/tag/4xArtFaces_realplksr_dysample) (4x realplksr dysample upscale model for art / paintings of faces)  
-08.08.2024 - [ArtFaces Dataset]() (Curated version of the [metfaces dataset](https://github.com/NVlabs/metfaces-dataset), for the purpose of training single image super resolution models.
+08.08.2024 - [ArtFaces Dataset](https://github.com/Phhofm/models/releases/tag/dataset_artfaces) (Curated version of the [metfaces dataset](https://github.com/NVlabs/metfaces-dataset), for the purpose of training single image super resolution models.
 Consisting of 5630 image tiles that are 512x512px of human faces extracted from works of art from the Metropolitan Museum of Art Collection.)  
 19.07.2024 - [4xmssim_hma_pretrains](https://github.com/Phhofm/models/releases/tag/4xmssim_hma_pretrains) (4x [hma](https://github.com/korouuuuu/HMA) mssim pretrains since there are no official released models yet)   
 13.07.2024 - [4xHFA2k_ludvae_realplksr_dysample](https://github.com/Phhofm/models/releases/tag/4xHFA2k_ludvae_realplksr_dysample) (4x anime single-image super-resolution with degradation handling)   
