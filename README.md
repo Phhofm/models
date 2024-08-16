@@ -28,7 +28,7 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 
 -- Newly Updated Section --  
 
-[All my 111 released models as safetensors files in a zip file](https://github.com/Phhofm/models/releases/tag/all_models)
+[All my 134 released models as safetensors files in a zip file](https://github.com/Phhofm/models/releases/tag/all_models)
 
 Model releases sorted by date, linked to their github release:  
 13.08.2024 - [4xNature_realplksr_dysample](https://github.com/Phhofm/models/releases/tag/4xNature_realplksr_dysample) (A realplksr dysample model for photographs of nature, based on the released nature dataset)  
