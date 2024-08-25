@@ -31,6 +31,7 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 [All my 134 released models as safetensors files in a zip file](https://github.com/Phhofm/models/releases/tag/all_models)
 
 Model releases sorted by date, linked to their github release:   
+25.08.2024 - [4xmssim_mosr_pretrain](https://github.com/Phhofm/models/releases/tag/4xmssim_mosr_pretrain) (A 4x mssim only mosr pretrain model at 420k iters for training mosr models)   
 16.08.2024 - [4xNomosRealWeb Dataset](https://github.com/Phhofm/models/releases/tag/4xnomosrealweb_dataset) (Degraded x4 LR version with realistic degradations of the Nomosv2 dataset for training 4x upscaling models for upscaling images downloaded from the web).  
 16.08.2024 - [SSDIR Dataset](https://github.com/Phhofm/models/releases/tag/ssdir_dataset) (Curated version of the [LSDIR dataset](https://data.vision.ee.ethz.ch/yawli/index.html), for the purpose of training single image super resolution models).  
 16.08.2024 - [Lexica Dataset](https://github.com/Phhofm/models/releases/tag/lexica_dataset) (Dataset for the purpose of training single image super resolution models for AI generated images).  
