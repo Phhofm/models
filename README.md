@@ -30,8 +30,9 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 
 [All my 134 released models as safetensors files in a zip file](https://github.com/Phhofm/models/releases/tag/all_models)
 
-Model releases sorted by date, linked to their github release:   
-05.09.2024 - [4xNomos2_hq_atd](https://github.com/Phhofm/models/releases/tag/4xNomos2_hq_atd) (A 4x atd upscale model for good quality/non-degraded input)    
+Model releases sorted by date, linked to their github release:     
+05.09.2024 - [4xNomos2_hq_drct-l](https://github.com/Phhofm/models/releases/tag/4xNomos2_hq_drct-l) (A 4x drct-l upscale model for good quality/non-degraded input)    
+05.09.2024 - [4xNomos2_hq_atd](https://github.com/Phhofm/models/releases/tag/4xNomos2_hq_atd) (A 4x atd upscale model for good quality/non-degraded input)      
 29.08.2024 - [4xNomos2_hq_dat2](https://github.com/Phhofm/models/releases/tag/4xNomos2_hq_dat2) (A 4x dat2 upscale model for good quality/non-degraded input)   
 25.08.2024 - [4xNomos2_hq_mosr](https://github.com/Phhofm/models/releases/tag/4xNomos2_hq_mosr) (A 4x mosr upscale model for good quality/non-degraded input)     
 25.08.2024 - [4xmssim_mosr_pretrain](https://github.com/Phhofm/models/releases/tag/4xmssim_mosr_pretrain) (A 4x mssim only mosr pretrain model at 420k iters for training mosr models)   
