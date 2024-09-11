@@ -28,7 +28,7 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 
 -- Newly Updated Section --  
 
-[All my 134 released models as safetensors files in a zip file](https://github.com/Phhofm/models/releases/tag/all_models)
+[All my released models simply downloadable through a python script](https://github.com/Phhofm/models/releases/tag/all_models)
 
 Model releases sorted by date, linked to their github release:     
 05.09.2024 - [4xNomos2_hq_drct-l](https://github.com/Phhofm/models/releases/tag/4xNomos2_hq_drct-l) (A 4x drct-l upscale model for good quality/non-degraded input)    
