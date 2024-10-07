@@ -1,6 +1,6 @@
 # Models
 
-Try out most of my models [online here](https://huggingface.co/spaces/Phips/Upscaler)
+[Try out most of my models online here](https://huggingface.co/spaces/Phips/Upscaler)
 
 This is a repo for me to publish my self trained single image super resolution (sisr) models.
 
