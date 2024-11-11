@@ -33,6 +33,8 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 [All my released models simply downloadable through a python script](https://github.com/Phhofm/models/releases/tag/all_models)
 
 Model releases sorted by date, linked to their github release:    
+11.11.2024 - [4xpix_sebica_pretrains](https://github.com/Phhofm/models/releases/tag/4xpix_sebica_pretrains) (Two simple sebica pretrains of 100k iters for both sebica and sebica_mini options)  
+07.11.2024 - [DF2K_BHI Dataset](https://huggingface.co/datasets/Phips/DF2K_BHI) (A BHI filtered version of DF2K, which I released together with [my huggingface community blog post on my BHI filtering method](https://huggingface.co/blog/Phips/bhi-filtering))  
 21.09.2024 - [2xAoMR_mosr](https://github.com/Phhofm/models/releases/tag/2xAoMR_mosr) (A 2x game texture mosr upscaling model, trained on and for (but not limited to) Age of Mythology: Retold textures)  
 05.09.2024 - [4xNomos2_hq_drct-l](https://github.com/Phhofm/models/releases/tag/4xNomos2_hq_drct-l) (A 4x drct-l upscale model for good quality/non-degraded input)    
 05.09.2024 - [4xNomos2_hq_atd](https://github.com/Phhofm/models/releases/tag/4xNomos2_hq_atd) (A 4x atd upscale model for good quality/non-degraded input)      
