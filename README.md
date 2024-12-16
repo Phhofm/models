@@ -33,6 +33,11 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 [All my released models simply downloadable through a python script](https://github.com/Phhofm/models/releases/tag/all_models)
 
 Model releases sorted by date, linked to their github release:    
+14.12.2024 - [4xBHI_dat2_real](https://github.com/Phhofm/models/releases/tag/4xBHI_dat2_real) (4x dat2 model for web images/real degraded photos with (but not only) lens blur, realistic noise and jpeg&webp (re)compression handling)    
+14.12.2024 - [4xBHI_dat2_otf](https://github.com/Phhofm/models/releases/tag/4xBHI_dat2_otf) (4x dat2 model trained with real-esrgan otf pipeline on my bhi dataset)    
+14.12.2024 - [4xBHI_dat2_multiblurjpg & 4xBHI_dat2_multiblur](https://github.com/Phhofm/models/releases/tag/4xBHI_dat2_multiblurjpg) (4x dat2 model on my bhi dataset, trained on multiscaled LR and jpg compression)    
+14.12.2024 - [4x BHI realplksr models](https://github.com/Phhofm/models/releases/tag/4xbhi_realplksr) (4x models with realplksr dysample on my bhi dataset: multi, multiblur, otf_nn, otf and real)    
+14.12.2024 - My BHI SISR dataset, consisting of around 390k training tiles, 512x512, webp format - [external huggingface link](https://huggingface.co/datasets/Phips/BHI).    
 11.11.2024 - [4xpix_sebica_pretrains](https://github.com/Phhofm/models/releases/tag/4xpix_sebica_pretrains) (Two simple sebica pretrains of 100k iters for both sebica and sebica_mini options)  
 07.11.2024 - [DF2K_BHI Dataset](https://huggingface.co/datasets/Phips/DF2K_BHI) (A BHI filtered version of DF2K, which I released together with [my huggingface community blog post on my BHI filtering method](https://huggingface.co/blog/Phips/bhi-filtering))  
 21.09.2024 - [2xAoMR_mosr](https://github.com/Phhofm/models/releases/tag/2xAoMR_mosr) (A 2x game texture mosr upscaling model, trained on and for (but not limited to) Age of Mythology: Retold textures)  
