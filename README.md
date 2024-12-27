@@ -32,7 +32,8 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 
 [All my released models simply downloadable through a python script](https://github.com/Phhofm/models/releases/tag/all_models)
 
-Model releases sorted by date, linked to their github release:    
+Model releases sorted by date, linked to their github release:   
+27.12.2024 - [4xBHI_dat2_otf_nn](https://github.com/Phhofm/models/releases/tag/4xBHI_dat2_otf_nn) (4x dat2 model, similiar to 4xBHI_dat2_otf but trained without noise. Handles resizes, and jpg compression)   
 14.12.2024 - [4xBHI_dat2_real](https://github.com/Phhofm/models/releases/tag/4xBHI_dat2_real) (4x dat2 model for web images/real degraded photos with (but not only) lens blur, realistic noise and jpeg&webp (re)compression handling)    
 14.12.2024 - [4xBHI_dat2_otf](https://github.com/Phhofm/models/releases/tag/4xBHI_dat2_otf) (4x dat2 model trained with real-esrgan otf pipeline on my bhi dataset)    
 14.12.2024 - [4xBHI_dat2_multiblurjpg & 4xBHI_dat2_multiblur](https://github.com/Phhofm/models/releases/tag/4xBHI_dat2_multiblurjpg) (4x dat2 model on my bhi dataset, trained on multiscaled LR and jpg compression)    
