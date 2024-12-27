@@ -22,7 +22,7 @@ I also made some youtube videos you might find interesting, like [this one](http
 
 Find more sisr models trained by the community in [openmodeldb](https://openmodeldb.info/).
 
-Here also a link to the [Enhance Everything! Discord Server](https://discord.gg/enhance-everything-547949405949657098) where I had been active.
+Here also a link to the [Enhance Everything! Discord Server](https://discord.gg/q593VfcDW7) where I had been active.
 
 Also this weekend I played around with a comfyui workflow using SUPIR, I just uploaded the result in the SUPIR folder. Basically diffusion based upscalers in general have the tendency to produce output that is pretty different to an input image as to resemble more an 'img2img enlarger' process than super resolving. My play around was to try to use the consistency of transformers as the upscale, and then SUPIR in the second step but with settings that enforce consistency. Use case would be for very degraded input image where my transformer model hits a limit. Examples and readme and workflow in the folder.
 
