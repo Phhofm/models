@@ -33,6 +33,11 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 [All my released models simply downloadable through a python script](https://github.com/Phhofm/models/releases/tag/all_models)
 
 Model releases sorted by date, linked to their github release:   
+19.05.2025 - [2xBHI_small_esc_large_pretrain](https://github.com/Phhofm/models/releases/tag/2xBHI_small_esc_large_pretrain)     
+19.05.2025 - [2xBHI_small_esc_pretrain](https://github.com/Phhofm/models/releases/tag/2xBHI_small_esc_pretrain)       
+19.05.2025 - [2xBHI_small_esc_light_pretrain](https://github.com/Phhofm/models/releases/tag/2xBHI_small_esc_light_pretrain)        
+19.05.2025 - [2xBHI_small_span_pretrain](https://github.com/Phhofm/models/releases/tag/2xBHI_small_span_pretrain)         
+19.05.2025 - [2xBHI_small_span_fast_pretrain](https://github.com/Phhofm/models/releases/tag/2xBHI_small_span_fast_pretrain)        
 17.01.2025 - [2xBHI_small_realplksr_dysample_pretrain](https://github.com/Phhofm/models/releases/tag/2xBHI_small_realplksr_dysample_pretrain) (2x realplksr bicubic only pretrain)   
 12.01.2025 - [2xBHI_small_compact_pretrain](https://github.com/Phhofm/models/releases/tag/2xBHI_small_compact_pretrain) (2x compact bicubic only pretrain, goal was to reach high metrics on psnry)   
 27.12.2024 - [4xBHI_dat2_otf_nn](https://github.com/Phhofm/models/releases/tag/4xBHI_dat2_otf_nn) (4x dat2 model, similiar to 4xBHI_dat2_otf but trained without noise. Handles resizes, and jpg compression)   
