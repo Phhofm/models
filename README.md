@@ -33,6 +33,12 @@ Also this weekend I played around with a comfyui workflow using SUPIR, I just up
 [All my released models simply downloadable through a python script](https://github.com/Phhofm/models/releases/tag/all_models)
 
 Model releases sorted by date, linked to their github release:   
+21.05.2025 - [2xBHI_small_realplksr_large_dysample_pretrain](https://github.com/Phhofm/models/releases/tag/2xBHI_small_realplksr_large_dysample_pretrain)    
+21.05.2025 - [2xBHI_small_realplksr_large_pretrain](https://github.com/Phhofm/models/releases/tag/2xBHI_small_realplksr_large_pretrain)    
+21.05.2025 - [2xBHI_small_realplksr_dysample_pretrain](https://github.com/Phhofm/models/releases/tag/2xBHI_small_realplksr_dysample_pretrain_series)    
+21.05.2025 - [2xBHI_small_realplksr_pretrain](https://github.com/Phhofm/models/releases/tag/2xBHI_small_realplksr_pretrain)    
+21.05.2025 - [2xBHI_small_realplksr_small_dysample_pretrain](https://github.com/Phhofm/models/releases/tag/2xBHI_small_realplksr_small_dysample_pretrain)    
+21.05.2025 - [2xBHI_small_realplksr_small_pretrain](https://github.com/Phhofm/models/releases/tag/2xBHI_small_realplksr_small_pretrain)     
 19.05.2025 - [2xBHI_small_esc_large_pretrain](https://github.com/Phhofm/models/releases/tag/2xBHI_small_esc_large_pretrain)     
 19.05.2025 - [2xBHI_small_esc_pretrain](https://github.com/Phhofm/models/releases/tag/2xBHI_small_esc_pretrain)       
 19.05.2025 - [2xBHI_small_esc_light_pretrain](https://github.com/Phhofm/models/releases/tag/2xBHI_small_esc_light_pretrain)        
